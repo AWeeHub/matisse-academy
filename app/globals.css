@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: theme("colors.void");
+    color: #efe9dd;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .text-gold-gradient {
+    background: linear-gradient(
+      180deg,
+      theme("colors.gold-bright") 0%,
+      theme("colors.gold") 55%,
+      #a9772a 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Elements that fade in during the scroll reveal start hidden. */
+  .reveal-hidden {
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+}
+
+/* Respect users who prefer reduced motion: everything is shown immediately,
+   the pinned scroll transition is neutralized, and idle loops are stopped. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
