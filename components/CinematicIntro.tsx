@@ -5,6 +5,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { intro } from "@/lib/motion";
+import { links } from "@/lib/links";
 import Homepage from "@/components/Homepage";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -169,7 +170,7 @@ export default function CinematicIntro() {
           </a>
         </nav>
         <a
-          href="https://matisseacademy.com"
+          href={links.challenge3Day}
           target="_blank"
           rel="noopener noreferrer"
           className="reveal-hidden rounded-full border border-gold/40 px-5 py-2 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10"
@@ -232,7 +233,7 @@ export default function CinematicIntro() {
               commerce, and private wealth — with Amyr Samah El.
             </p>
             <a
-              href="https://matisseacademy.com"
+              href={links.challenge3Day}
               target="_blank"
               rel="noopener noreferrer"
               className="reveal-hidden pointer-events-auto mt-10 rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black transition-transform hover:scale-[1.03]"
