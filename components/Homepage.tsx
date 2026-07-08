@@ -7,12 +7,14 @@ const challenges = [
   {
     tier: "3-Day",
     title: "Master Your Rights Challenge",
+    dates: "August 8 – 10, 2026",
     blurb: "A focused, live intensive to master your rights, fast.",
     href: links.challenge3Day,
   },
   {
     tier: "5-Day",
     title: "Master Your Rights Challenge",
+    dates: "September 15 – 19, 2026",
     blurb: "The deep-dive format — equity, law, and private wealth in full.",
     href: links.challenge5Day,
   },
@@ -147,6 +149,9 @@ export default function Homepage() {
                   {c.tier}
                 </span>
                 <h3 className="mt-4 font-serif text-xl text-white">{c.title}</h3>
+                <p className="mt-1 text-sm font-medium text-gold-bright">
+                  {c.dates}
+                </p>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-white/50">
                   {c.blurb}
                 </p>
