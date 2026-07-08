@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
+import Seal from "@/components/Seal";
 import { links, socials } from "@/lib/links";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
+const romans = ["I", "II", "III", "IV", "V", "VI"];
 
 const challenges = [
   {
@@ -202,33 +204,48 @@ export default function Homepage() {
         </Reveal>
       </section>
 
-      {/* Pathways */}
+      {/* Pathways — the Charter's articles */}
       <section className="border-t border-white/5 bg-ink py-24">
-        <div className="mx-auto grid max-w-6xl gap-6 px-6 sm:grid-cols-2 lg:grid-cols-3">
-          {pathways.map((p, i) => (
-            <Reveal
-              key={p.title}
-              delay={(i % 3) * 70}
-              as="article"
-              className="card flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] px-8 py-10"
-            >
-              <span className="text-[0.7rem] uppercase tracking-luxe text-gold/80">
-                {p.tag}
-              </span>
-              <div className="rule-luxe my-4 max-w-[3rem]" />
-              <h3 className="font-serif text-2xl text-white">{p.title}</h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">
-                {p.body}
-              </p>
-              <a
-                href={p.href}
-                {...ext}
-                className="mt-7 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:text-white"
+        <div className="mx-auto max-w-6xl px-6">
+          <Reveal className="mb-14 text-center">
+            <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
+              The Charter
+            </p>
+            <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.12] text-white sm:text-4xl">
+              Six articles, one path to private mastery.
+            </h2>
+          </Reveal>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {pathways.map((p, i) => (
+              <Reveal
+                key={p.title}
+                delay={(i % 3) * 70}
+                as="article"
+                className="card flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] px-8 py-10"
               >
-                {p.cta} →
-              </a>
-            </Reveal>
-          ))}
+                <div className="flex items-baseline justify-between">
+                  <span className="font-serif text-3xl leading-none text-gold-gradient">
+                    {romans[i]}
+                  </span>
+                  <span className="text-[0.65rem] uppercase tracking-luxe text-gold/70">
+                    {p.tag}
+                  </span>
+                </div>
+                <div className="rule-luxe my-5" />
+                <h3 className="font-serif text-2xl text-white">{p.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">
+                  {p.body}
+                </p>
+                <a
+                  href={p.href}
+                  {...ext}
+                  className="mt-7 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:text-white"
+                >
+                  {p.cta} →
+                </a>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -261,6 +278,7 @@ export default function Homepage() {
           }}
         />
         <Reveal className="relative">
+          <Seal size={128} className="mx-auto mb-10" />
           <p className="mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
             Matthew 4:19 · KJV 1611
           </p>

@@ -39,6 +39,13 @@
     color: transparent;
   }
 
+  /* Wax-seal legend rotates slowly, like a spinning signet. */
+  .seal-ring {
+    transform-box: view-box;
+    transform-origin: 100px 100px;
+    animation: seal-spin 48s linear infinite;
+  }
+
   /* Hairline decree rule — the legal-instrument motif. */
   .rule-luxe {
     height: 1px;
@@ -97,6 +104,12 @@
   border-radius: 4px;
 }
 
+@keyframes seal-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rise {
     opacity: 1 !important;
@@ -106,6 +119,9 @@
   .press,
   .card {
     transition: none !important;
+  }
+  .seal-ring {
+    animation: none !important;
   }
 }
 
