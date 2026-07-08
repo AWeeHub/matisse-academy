@@ -16,6 +16,7 @@ export default function CinematicIntro() {
     const ctx = gsap.context((self) => {
       const q = self.selector!;
       const heroLogo = q(".hero-logo")[0] as HTMLElement;
+      const heroLogoInner = q(".hero-logo-inner")[0] as HTMLElement;
       const stage = q(".stage")[0] as HTMLElement;
       const glow = q(".ambient-glow")[0] as HTMLElement;
       const cue = q(".scroll-cue")[0] as HTMLElement;
@@ -40,15 +41,16 @@ export default function CinematicIntro() {
         return;
       }
 
-      // --- Idle loops (before / during the very start of scroll) ---
-      gsap.to(heroLogo, {
+      // --- Idle loops (on the inner wrapper, so the scroll timeline can own
+      //     scale/opacity on the outer wrapper without conflict) ---
+      gsap.to(heroLogoInner, {
         scale: intro.breathe.scaleTo,
         duration: intro.breathe.durationSec,
         ease: intro.breathe.ease,
         repeat: -1,
         yoyo: true,
       });
-      gsap.to(heroLogo, {
+      gsap.to(heroLogoInner, {
         yPercent: -(intro.float.yPx / 6),
         duration: intro.float.durationSec,
         ease: intro.float.ease,
@@ -84,21 +86,25 @@ export default function CinematicIntro() {
         },
       });
 
-      // Camera pull-back (subtle stage scale-down).
+      // Camera pull-back (stage eases back as you scroll).
       tl.to(
         stage,
         { scale: intro.scroll.stage.scaleTo, ease: "none" },
         0
       );
 
-      // Hero logo scales down + travels to the permanent nav slot.
+      // Hero logo recedes (zoom out) and dissolves in place.
+      tl.to(
+        heroLogo,
+        { scale: intro.scroll.logo.scaleTo, ease: "power1.out" },
+        0
+      );
       tl.to(
         heroLogo,
         {
-          scale: intro.scroll.logo.scaleTo,
-          x: () => intro.scroll.logo.xToVw * window.innerWidth,
-          y: () => intro.scroll.logo.yToVh * window.innerHeight,
-          ease: "power2.inOut",
+          opacity: 0,
+          ease: "power1.in",
+          duration: intro.scroll.logo.fadeDuration,
         },
         0
       );
@@ -127,9 +133,8 @@ export default function CinematicIntro() {
         intro.reveal.startAt
       );
 
-      // Crossfade: hero logo hands off to the fixed nav logo at the end.
-      tl.to(navLogo, { opacity: 1, ease: "none" }, 0.82);
-      tl.to(heroLogo, { opacity: 0, ease: "none" }, 0.86);
+      // Permanent nav logo fades in as the hero logo dissolves.
+      tl.to(navLogo, { opacity: 1, ease: "none" }, intro.scroll.navFadeInAt);
     }, root);
 
     return () => ctx.revert();
@@ -195,16 +200,20 @@ export default function CinematicIntro() {
             }}
           />
 
-          {/* The hero 3D logo. */}
+          {/* The hero 3D logo. Outer wrapper = scroll zoom-out + fade;
+              inner wrapper = idle breathe + float (kept on separate elements
+              so the two transforms never fight). */}
           <div className="hero-logo relative z-10 will-change-transform">
-            <Image
-              src="/logo-3d.png"
-              alt="Matisse Academy"
-              width={760}
-              height={760}
-              priority
-              className="h-[40vh] max-h-[520px] w-auto object-contain drop-shadow-[0_0_70px_rgba(120,70,160,0.35)]"
-            />
+            <div className="hero-logo-inner will-change-transform">
+              <Image
+                src="/logo-3d.png"
+                alt="Matisse Academy"
+                width={760}
+                height={760}
+                priority
+                className="h-[40vh] max-h-[520px] w-auto object-contain drop-shadow-[0_0_70px_rgba(120,70,160,0.35)]"
+              />
+            </div>
           </div>
 
           {/* Homepage-hero copy — revealed as the logo transitions. */}
