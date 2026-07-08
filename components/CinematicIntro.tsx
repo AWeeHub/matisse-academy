@@ -173,7 +173,7 @@ export default function CinematicIntro() {
           href={links.challenge3Day}
           target="_blank"
           rel="noopener noreferrer"
-          className="reveal-hidden rounded-full border border-gold/40 px-5 py-2 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10"
+          className="reveal-hidden press rounded-full border border-gold/40 px-5 py-2 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10"
         >
           Secure My Spot
         </a>
@@ -228,6 +228,9 @@ export default function CinematicIntro() {
               Notice is the heart
               <span className="block text-gold-gradient">of equity</span>
             </h1>
+            <p className="reveal-hidden mt-4 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
+              Matthew 4:19 · KJV 1611
+            </p>
             <p className="reveal-hidden mt-6 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base">
               Education, mentorship, and strategic guidance in equity, law,
               commerce, and private wealth — with Amyr Samah El.
@@ -236,7 +239,7 @@ export default function CinematicIntro() {
               href={links.challenge3Day}
               target="_blank"
               rel="noopener noreferrer"
-              className="reveal-hidden pointer-events-auto mt-10 rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black transition-transform hover:scale-[1.03]"
+              className="reveal-hidden press pointer-events-auto mt-10 rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black"
             >
               Secure My Spot
             </a>
