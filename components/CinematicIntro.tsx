@@ -158,21 +158,23 @@ export default function CinematicIntro() {
           </span>
         </div>
         <nav className="reveal-hidden hidden items-center gap-9 text-xs uppercase tracking-luxe text-white/60 md:flex">
-          <a className="transition-colors hover:text-white" href="#program">
-            Program
+          <a className="transition-colors hover:text-white" href="#challenge">
+            The Challenge
           </a>
-          <a className="transition-colors hover:text-white" href="#philosophy">
-            Philosophy
+          <a className="transition-colors hover:text-white" href="#services">
+            Services
           </a>
-          <a className="transition-colors hover:text-white" href="#admissions">
-            Admissions
+          <a className="transition-colors hover:text-white" href="#founder">
+            Founder
           </a>
         </nav>
         <a
-          href="#admissions"
+          href="https://matisseacademy.com"
+          target="_blank"
+          rel="noopener noreferrer"
           className="reveal-hidden rounded-full border border-gold/40 px-5 py-2 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10"
         >
-          Enquire
+          Secure My Spot
         </a>
       </header>
 
@@ -219,21 +221,23 @@ export default function CinematicIntro() {
           {/* Homepage-hero copy — revealed as the logo transitions. */}
           <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center">
             <p className="reveal-hidden mb-5 text-xs uppercase tracking-luxe text-gold/80">
-              Est. Excellence
+              Matisse Academy
             </p>
             <h1 className="reveal-hidden max-w-4xl font-serif text-4xl leading-[1.08] text-white sm:text-6xl md:text-7xl">
-              Where potential is
-              <span className="block text-gold-gradient">refined into mastery</span>
+              Notice is the heart
+              <span className="block text-gold-gradient">of equity</span>
             </h1>
             <p className="reveal-hidden mt-6 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base">
-              An exclusive academy devoted to transformation, discipline, and
-              enduring excellence.
+              Education, mentorship, and strategic guidance in equity, law,
+              commerce, and private wealth — with Amyr Samah El.
             </p>
             <a
-              href="#admissions"
+              href="https://matisseacademy.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="reveal-hidden pointer-events-auto mt-10 rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black transition-transform hover:scale-[1.03]"
             >
-              Begin Your Application
+              Secure My Spot
             </a>
           </div>
 
