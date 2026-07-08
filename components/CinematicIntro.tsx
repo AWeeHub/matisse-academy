@@ -1,17 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { intro } from "@/lib/motion";
 import { links } from "@/lib/links";
 import Homepage from "@/components/Homepage";
 
+const ChamberScene = dynamic(() => import("@/components/ChamberScene"), {
+  ssr: false,
+});
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CinematicIntro() {
   const root = useRef<HTMLDivElement>(null);
+  const progress = useRef(0);
+  const [use3D, setUse3D] = useState(false);
+
+  // Decide whether to run the WebGL chamber: skip on reduced-motion, small
+  // screens, and browsers without WebGL — those get the static fallback.
+  useEffect(() => {
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const small = window.innerWidth < 768;
+    let webgl = false;
+    try {
+      const c = document.createElement("canvas");
+      webgl = !!(c.getContext("webgl2") || c.getContext("webgl"));
+    } catch {
+      webgl = false;
+    }
+    setUse3D(!reduced && !small && webgl);
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context((self) => {
@@ -42,33 +66,37 @@ export default function CinematicIntro() {
         return;
       }
 
-      // --- Idle loops (on the inner wrapper, so the scroll timeline can own
-      //     scale/opacity on the outer wrapper without conflict) ---
-      gsap.to(heroLogoInner, {
-        scale: intro.breathe.scaleTo,
-        duration: intro.breathe.durationSec,
-        ease: intro.breathe.ease,
-        repeat: -1,
-        yoyo: true,
-      });
-      gsap.to(heroLogoInner, {
-        yPercent: -(intro.float.yPx / 6),
-        duration: intro.float.durationSec,
-        ease: intro.float.ease,
-        repeat: -1,
-        yoyo: true,
-      });
-      gsap.fromTo(
-        glow,
-        { opacity: intro.glow.opacityFrom },
-        {
-          opacity: intro.glow.opacityTo,
-          duration: intro.glow.durationSec,
-          ease: intro.glow.ease,
+      // --- Idle loops. The DOM logo/glow only exist in the static fallback;
+      //     in 3D mode the chamber carries the visual, so guard them. ---
+      if (heroLogoInner) {
+        gsap.to(heroLogoInner, {
+          scale: intro.breathe.scaleTo,
+          duration: intro.breathe.durationSec,
+          ease: intro.breathe.ease,
           repeat: -1,
           yoyo: true,
-        }
-      );
+        });
+        gsap.to(heroLogoInner, {
+          yPercent: -(intro.float.yPx / 6),
+          duration: intro.float.durationSec,
+          ease: intro.float.ease,
+          repeat: -1,
+          yoyo: true,
+        });
+      }
+      if (glow) {
+        gsap.fromTo(
+          glow,
+          { opacity: intro.glow.opacityFrom },
+          {
+            opacity: intro.glow.opacityTo,
+            duration: intro.glow.durationSec,
+            ease: intro.glow.ease,
+            repeat: -1,
+            yoyo: true,
+          }
+        );
+      }
       gsap.to(cue, {
         y: intro.cue.bounceYPx,
         duration: intro.cue.durationSec,
@@ -78,37 +106,42 @@ export default function CinematicIntro() {
       });
 
       // --- Scroll-driven master timeline (scrubbed, pinned) ---
+      // onUpdate feeds the WebGL chamber its 0-1 camera-journey progress.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".pin-wrap",
           start: "top top",
           end: "bottom bottom",
           scrub: intro.scroll.scrub,
+          onUpdate: (self) => {
+            progress.current = self.progress;
+          },
         },
       });
 
-      // Camera pull-back (stage eases back as you scroll).
-      tl.to(
-        stage,
-        { scale: intro.scroll.stage.scaleTo, ease: "none" },
-        0
-      );
+      // Fallback only: gently pull the flat stage back as you scroll. In 3D
+      // mode the camera does the moving, so leave the canvas untouched.
+      if (!use3D) {
+        tl.to(stage, { scale: intro.scroll.stage.scaleTo, ease: "none" }, 0);
+      }
 
-      // Hero logo recedes (zoom out) and dissolves in place.
-      tl.to(
-        heroLogo,
-        { scale: intro.scroll.logo.scaleTo, ease: "power1.out" },
-        0
-      );
-      tl.to(
-        heroLogo,
-        {
-          opacity: 0,
-          ease: "power1.in",
-          duration: intro.scroll.logo.fadeDuration,
-        },
-        0
-      );
+      // Fallback only: the flat hero logo recedes and dissolves in place.
+      if (heroLogo) {
+        tl.to(
+          heroLogo,
+          { scale: intro.scroll.logo.scaleTo, ease: "power1.out" },
+          0
+        );
+        tl.to(
+          heroLogo,
+          {
+            opacity: 0,
+            ease: "power1.in",
+            duration: intro.scroll.logo.fadeDuration,
+          },
+          0
+        );
+      }
 
       // Scroll cue fades out almost immediately.
       tl.to(
@@ -139,7 +172,7 @@ export default function CinematicIntro() {
     }, root);
 
     return () => ctx.revert();
-  }, []);
+  }, [use3D]);
 
   return (
     <div ref={root} className="relative">
@@ -186,38 +219,61 @@ export default function CinematicIntro() {
         style={{ height: `${intro.scroll.pinWrapVh}vh` }}
       >
         <div className="stage sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
-          {/* Ambient cinematic glow behind the logo. */}
-          <div
-            className="ambient-glow pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(120,70,160,0.45) 0%, rgba(160,120,40,0.18) 38%, rgba(5,5,5,0) 70%)",
-              filter: "blur(10px)",
-            }}
-          />
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(120% 90% at 50% 40%, rgba(20,14,28,0.6) 0%, rgba(5,5,5,0.95) 70%, #050505 100%)",
-            }}
-          />
-
-          {/* The hero 3D logo. Outer wrapper = scroll zoom-out + fade;
-              inner wrapper = idle breathe + float (kept on separate elements
-              so the two transforms never fight). */}
-          <div className="hero-logo relative z-10 will-change-transform">
-            <div className="hero-logo-inner will-change-transform">
-              <Image
-                src="/logo-3d.png"
-                alt="Matisse Academy"
-                width={760}
-                height={760}
-                priority
-                className="h-[40vh] max-h-[520px] w-auto object-contain drop-shadow-[0_0_70px_rgba(120,70,160,0.35)]"
+          {use3D ? (
+            <>
+              {/* WebGL "Chamber of Equity" — camera flies down the hall on scroll. */}
+              <div className="absolute inset-0">
+                <ChamberScene progress={progress} />
+              </div>
+              {/* Legibility scrim so the hero copy reads over the scene:
+                  a soft dark oval behind the text plus an edge vignette. */}
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(60% 46% at 50% 44%, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.4) 55%, rgba(5,5,5,0) 100%)",
+                }}
               />
-            </div>
-          </div>
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(130% 100% at 50% 60%, rgba(5,5,5,0) 40%, rgba(5,5,5,0.5) 74%, rgba(5,5,5,0.9) 100%)",
+                }}
+              />
+            </>
+          ) : (
+            <>
+              {/* Static fallback: ambient glow + flat 3D logo. */}
+              <div
+                className="ambient-glow pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(120,70,160,0.45) 0%, rgba(160,120,40,0.18) 38%, rgba(5,5,5,0) 70%)",
+                  filter: "blur(10px)",
+                }}
+              />
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(120% 90% at 50% 40%, rgba(20,14,28,0.6) 0%, rgba(5,5,5,0.95) 70%, #050505 100%)",
+                }}
+              />
+              <div className="hero-logo relative z-10 will-change-transform">
+                <div className="hero-logo-inner will-change-transform">
+                  <Image
+                    src="/logo-3d.png"
+                    alt="Matisse Academy"
+                    width={760}
+                    height={760}
+                    priority
+                    className="h-[40vh] max-h-[520px] w-auto object-contain drop-shadow-[0_0_70px_rgba(120,70,160,0.35)]"
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Homepage-hero copy — revealed as the logo transitions. */}
           <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center">
