@@ -171,11 +171,21 @@ export default function CinematicIntro() {
       tl.to(navLogo, { opacity: 1, ease: "none" }, intro.scroll.navFadeInAt);
     }, root);
 
-    return () => ctx.revert();
+    // Front-load layout settling so the async WebGL/texture init doesn't
+    // trigger a late refresh that nudges the scroll position.
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+    const t = window.setTimeout(() => ScrollTrigger.refresh(), 400);
+
+    return () => {
+      window.removeEventListener("load", onLoad);
+      clearTimeout(t);
+      ctx.revert();
+    };
   }, [use3D]);
 
   return (
-    <div ref={root} className="relative">
+    <div ref={root} className="grain relative">
       {/* Persistent navigation. Contents fade in during the transition. */}
       <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 md:px-12">
         <div className="nav-logo flex items-center gap-3">

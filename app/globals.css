@@ -39,6 +39,33 @@
     color: transparent;
   }
 
+  /* Filmic grain — kills the flat, empty feel of large dark areas. */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Faint receding-column echo of the 3D hall, for dark sections. */
+  .hall-lines {
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0 96px,
+      rgba(217, 164, 65, 0.035) 96px 98px
+    );
+    -webkit-mask-image: radial-gradient(
+      120% 100% at 50% 0%,
+      #000 0%,
+      transparent 72%
+    );
+    mask-image: radial-gradient(120% 100% at 50% 0%, #000 0%, transparent 72%);
+  }
+
   /* Wax-seal legend rotates slowly, like a spinning signet. */
   .seal-ring {
     transform-box: view-box;

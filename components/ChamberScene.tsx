@@ -122,6 +122,18 @@ function EndLight() {
         <circleGeometry args={[2.6, 48]} />
         <meshBasicMaterial color="#ffdd93" toneMapped={false} />
       </mesh>
+      {/* Soft additive halo — bloom turns this into a god-ray glow. */}
+      <mesh position={[0, 0, -0.5]}>
+        <circleGeometry args={[7.5, 48]} />
+        <meshBasicMaterial
+          color="#ffcf7a"
+          transparent
+          opacity={0.12}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          toneMapped={false}
+        />
+      </mesh>
       <pointLight color="#ffcf7a" intensity={110} distance={95} decay={1.5} />
     </group>
   );

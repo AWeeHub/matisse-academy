@@ -72,10 +72,16 @@ export default function Homepage() {
   return (
     <main className="relative z-10 bg-void">
       {/* Founder */}
-      <section
-        id="founder"
-        className="mx-auto grid max-w-6xl items-center gap-14 px-6 py-28 md:grid-cols-[0.85fr_1fr] md:py-40"
-      >
+      <section id="founder" className="relative overflow-hidden">
+        <div className="hall-lines pointer-events-none absolute inset-0" />
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-[60vmin] w-[90vmin] -translate-x-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(120,70,160,0.16) 0%, rgba(5,5,5,0) 70%)",
+          }}
+        />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-28 md:grid-cols-[0.85fr_1fr] md:py-40">
         <Reveal className="relative mx-auto w-full max-w-xs">
           <div
             className="pointer-events-none absolute -inset-6 rounded-full"
@@ -116,6 +122,7 @@ export default function Homepage() {
             Work With Amyr
           </a>
         </Reveal>
+        </div>
       </section>
 
       {/* The Challenge */}
@@ -123,6 +130,7 @@ export default function Homepage() {
         id="challenge"
         className="relative overflow-hidden border-t border-white/5 bg-ink py-28"
       >
+        <div className="hall-lines pointer-events-none absolute inset-0" />
         <div
           className="pointer-events-none absolute left-1/2 top-0 h-[50vmin] w-[80vmin] -translate-x-1/2 rounded-full"
           style={{
@@ -185,8 +193,18 @@ export default function Homepage() {
       </section>
 
       {/* Services */}
-      <section id="services" className="mx-auto max-w-5xl px-6 py-32 text-center">
-        <Reveal>
+      <section
+        id="services"
+        className="relative overflow-hidden px-6 py-32 text-center"
+      >
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(120,70,160,0.14) 0%, rgba(5,5,5,0) 68%)",
+          }}
+        />
+        <Reveal className="relative mx-auto max-w-5xl">
           <p className="mb-6 text-xs uppercase tracking-luxe text-gold/70">
             Services We Provide
           </p>
@@ -205,8 +223,9 @@ export default function Homepage() {
       </section>
 
       {/* Pathways — the Charter's articles */}
-      <section className="border-t border-white/5 bg-ink py-24">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative overflow-hidden border-t border-white/5 bg-ink py-24">
+        <div className="hall-lines pointer-events-none absolute inset-0" />
+        <div className="relative mx-auto max-w-6xl px-6">
           <Reveal className="mb-14 text-center">
             <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
               The Charter
@@ -251,6 +270,13 @@ export default function Homepage() {
 
       {/* Newsletter */}
       <section className="relative overflow-hidden px-6 py-28 text-center">
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[55vmin] w-[75vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(160,120,40,0.12) 0%, rgba(5,5,5,0) 70%)",
+          }}
+        />
         <Reveal className="relative mx-auto max-w-2xl">
           <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
             Stay Close
