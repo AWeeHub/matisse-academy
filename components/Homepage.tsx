@@ -251,16 +251,32 @@ export default function Homepage() {
         });
       }
 
-      // V. Newsletter — the message blooms.
+      // V. Correspondence — section pins and holds while the heading
+      //    highlights word by word, then releases.
       const n = q("[data-scene='newsletter']")[0];
       if (n) {
         gsap.from(n.querySelectorAll(".n-line"), {
-          y: 26,
+          y: 22,
           opacity: 0,
-          duration: 0.9,
+          duration: 0.8,
           ease: "power3.out",
-          stagger: 0.1,
+          stagger: 0.12,
           ...onEnter(n),
+        });
+        const cwords = n.querySelectorAll(".corr-word");
+        gsap.set(cwords, { opacity: 0.16 });
+        gsap.to(cwords, {
+          opacity: 1,
+          ease: "none",
+          stagger: 0.5,
+          scrollTrigger: {
+            trigger: n,
+            start: "top top",
+            end: "+=90%",
+            scrub: true,
+            pin: true,
+            anticipatePin: 1,
+          },
         });
       }
 
@@ -477,17 +493,22 @@ export default function Homepage() {
         {/* V. The Correspondence */}
         <section
           data-scene="newsletter"
-          className="scene relative flex min-h-[70vh] items-center overflow-hidden py-24 text-center"
+          className="scene relative flex min-h-screen items-center overflow-hidden py-24 text-center"
         >
-          <div data-depth="12" className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
-          <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,160,80,0.1), transparent)" }} />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
 
-          <div className="relative mx-auto max-w-2xl px-6">
-            <p className="n-line mb-4 text-xs uppercase tracking-luxe text-gold/70">V · The Correspondence</p>
-            <h2 className="n-line font-serif text-3xl leading-[1.12] text-white sm:text-4xl">
-              Equity, law, and private wealth — straight to your inbox.
+          <div className="relative mx-auto max-w-3xl px-6">
+            <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">V · The Correspondence</p>
+            <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.14] text-white sm:text-5xl">
+              {"Equity, law, and private wealth — straight to your inbox."
+                .split(" ")
+                .map((w, i) => (
+                  <span key={i} className="corr-word">
+                    {w}{" "}
+                  </span>
+                ))}
             </h2>
-            <a href={links.newsletter} {...ext} className="n-line press mt-8 inline-block rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black">
+            <a href={links.newsletter} {...ext} className="n-line press mt-10 inline-block rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black">
               Join the Newsletter
             </a>
           </div>
