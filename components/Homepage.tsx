@@ -162,6 +162,16 @@ const testimonials = [
   },
 ];
 
+// Founder areas of focus — derived from the academy's offerings (scene I).
+// Factual to the brand; the bio prose below is a draft — verify with Amyr.
+const founderFocus = [
+  "Private Trusts",
+  "Asset Protection",
+  "Tax-Free Strategy",
+  "Lawful Process",
+  "Generational Wealth",
+];
+
 // The four domains of the Doctrine — right-column index in scene IV.
 const domains = [
   { name: "Equity", desc: "The law of fairness, notice, and remedy." },
@@ -559,12 +569,37 @@ export default function Homepage() {
               <p className="f-line mt-4 text-xs uppercase tracking-[0.25em] text-gold-gradient">
                 Private Trust &amp; Wealth Protection Strategist
               </p>
-              <div className="f-line rule-luxe my-8 max-w-[8rem]" />
-              <p className="f-line max-w-md text-lg leading-relaxed text-white/65">
+              <div className="f-line rule-luxe my-7 max-w-[8rem]" />
+              <p className="f-line max-w-lg text-base leading-relaxed text-white/60">
+                Amyr Samah El built his practice around a single conviction: the
+                private side of law and finance — trusts, notice, and equity — is
+                the real path to protecting what you build. His work brings the
+                lawful strategies once reserved for the few within reach of
+                ordinary families.
+              </p>
+              <blockquote className="f-line mt-7 max-w-lg border-l-2 border-gold/40 pl-5 font-serif text-lg italic leading-relaxed text-white/75">
                 &ldquo;I guide individuals and families to protect their assets,
                 minimize liabilities, and secure generational wealth through
                 private trusts and lawful strategies.&rdquo;
-              </p>
+              </blockquote>
+
+              {/* Areas of focus */}
+              <div className="f-line mt-8">
+                <p className="mb-3 text-[0.65rem] uppercase tracking-luxe text-gold/60">
+                  Areas of Focus
+                </p>
+                <ul className="flex flex-wrap gap-2.5">
+                  {founderFocus.map((f) => (
+                    <li
+                      key={f}
+                      className="rounded-full border border-gold/25 px-3.5 py-1.5 text-[0.68rem] uppercase tracking-[0.15em] text-white/60"
+                    >
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
               <a href={links.appointment} {...ext} className="f-line btn-lux mt-9">
                 Work With Amyr
                 <span aria-hidden>→</span>
