@@ -5,7 +5,6 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Atmosphere from "@/components/Atmosphere";
-import LibraryScene from "@/components/LibraryScene";
 import { links, socials } from "@/lib/links";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -450,9 +449,6 @@ export default function Homepage() {
             </div>
           </div>
         </section>
-
-        {/* Interlude — The Library of Equity (2.5-D parallax) */}
-        <LibraryScene />
 
         {/* II. The Summons */}
         <section
