@@ -113,8 +113,8 @@ const challenges = [
   {
     tier: "3-Day",
     title: "Master Your Rights Challenge",
-    start: "2026-08-08",
-    end: "2026-08-10",
+    start: "2026-07-13",
+    end: "2026-07-15",
     blurb: "A focused, live intensive to master your rights, fast.",
     href: links.challenge3Day,
   },
