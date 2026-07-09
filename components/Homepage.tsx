@@ -136,19 +136,24 @@ export default function Homepage() {
   const root = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    let removeTilt: (() => void) | undefined;
+
     const ctx = gsap.context((self) => {
       const q = self.selector!;
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (reduced) {
-        gsap.set(q("[data-enter], [data-depth], [data-sweep]"), {
+        gsap.set(q("[data-enter], [data-depth], [data-sweep], [data-tilt]"), {
           clearProps: "all",
         });
         gsap.set(".atmo-articles", { opacity: 1 });
         return;
       }
 
-      // --- Parallax depth: layers drift at scroll-scrubbed speeds ---
+      // --- Parallax depth: each plane drifts at a scroll-scrubbed speed set
+      //     by data-depth. Values are deliberately spread far apart
+      //     (far ~6 → near ~44) so planes visibly separate = real depth. A
+      //     touch of scale on the deepest planes deepens the recession. ---
       (q("[data-depth]") as HTMLElement[]).forEach((el) => {
         const d = parseFloat(el.dataset.depth || "0");
         const scene = el.closest(".scene");
@@ -167,6 +172,32 @@ export default function Homepage() {
           }
         );
       });
+
+      // --- Pointer-parallax: the "alive" layer. Planes tagged data-tilt ease
+      //     toward the cursor, deeper planes moving further, so the page has
+      //     dimension even at rest. Composes over the scroll parallax because
+      //     GSAP tracks x/y (px, tilt) separately from yPercent (%, scroll).
+      //     Fine-pointer only; skipped for touch and reduced-motion. ---
+      const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      if (fine) {
+        const tilters = (q("[data-tilt]") as HTMLElement[]).map((el) => ({
+          depth: parseFloat(el.dataset.tilt || "0"),
+          x: gsap.quickTo(el, "x", { duration: 0.7, ease: "power3.out" }),
+          y: gsap.quickTo(el, "y", { duration: 0.7, ease: "power3.out" }),
+        }));
+        if (tilters.length) {
+          const onMove = (e: PointerEvent) => {
+            const nx = (e.clientX / window.innerWidth - 0.5) * 2; // -1..1
+            const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+            for (const t of tilters) {
+              t.x(nx * t.depth * 42);
+              t.y(ny * t.depth * 42);
+            }
+          };
+          window.addEventListener("pointermove", onMove, { passive: true });
+          removeTilt = () => window.removeEventListener("pointermove", onMove);
+        }
+      }
 
       // --- Doctrine band: the shared library image drifts slower than scroll,
       //     parallaxing from the Doctrine scene down to the Correspondence. ---
@@ -406,7 +437,10 @@ export default function Homepage() {
       });
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      removeTilt?.();
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -425,20 +459,26 @@ export default function Homepage() {
           id="founder"
           className="scene relative flex min-h-screen items-center overflow-hidden py-28"
         >
+          {/* far plane */}
           <div
-            data-depth="14"
+            data-depth="6"
+            data-tilt="0.2"
             className="pointer-events-none absolute -left-20 top-10 h-[70vmin] w-[70vmin] rounded-full"
             style={{ background: "radial-gradient(circle, rgba(120,70,160,0.28) 0%, rgba(5,5,5,0) 70%)" }}
           />
-          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="8" />
+          {/* mid plane */}
+          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div
             data-sweep
             className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen"
             style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,70,0.10), transparent)" }}
           />
+          {/* near plane — foreground column edges that pass in front, fastest & tilt most */}
+          <div data-depth="40" data-tilt="0.75" className="pointer-events-none absolute inset-y-0 left-0 w-[16vw] max-w-[180px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0) 100%)" }} />
+          <div data-depth="44" data-tilt="0.85" className="pointer-events-none absolute inset-y-0 right-0 w-[16vw] max-w-[180px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0) 100%)" }} />
 
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 md:grid-cols-[0.85fr_1fr]">
-            <div className="relative mx-auto w-full max-w-xs">
+            <div className="relative mx-auto w-full max-w-xs" data-tilt="0.3">
               <div className="pointer-events-none absolute -inset-6 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.4) 0%, rgba(5,5,5,0) 70%)" }} />
               <Image
                 src="/amyr-hero-portrait.jpg"
@@ -478,9 +518,12 @@ export default function Homepage() {
           id="challenge"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-28"
         >
-          <div data-depth="16" className="pointer-events-none absolute left-1/2 top-0 h-[55vmin] w-[85vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.3) 0%, rgba(5,5,5,0) 68%)" }} />
-          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="8" />
+          <div data-depth="6" data-tilt="0.2" className="pointer-events-none absolute left-1/2 top-0 h-[55vmin] w-[85vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.3) 0%, rgba(5,5,5,0) 68%)" }} />
+          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,150,70,0.12), transparent)" }} />
+          {/* near foreground edges */}
+          <div data-depth="42" data-tilt="0.8" className="pointer-events-none absolute inset-y-0 left-0 w-[14vw] max-w-[160px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.8) 0%, rgba(5,5,5,0) 100%)" }} />
+          <div data-depth="42" data-tilt="0.8" className="pointer-events-none absolute inset-y-0 right-0 w-[14vw] max-w-[160px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.8) 0%, rgba(5,5,5,0) 100%)" }} />
 
           <div className="relative mx-auto w-full max-w-5xl px-6 text-center">
             <div className="c-head">
@@ -530,8 +573,10 @@ export default function Homepage() {
           id="services"
           className="scene relative flex min-h-screen items-center overflow-hidden py-28 text-center"
         >
-          <div data-depth="14" className="pointer-events-none absolute left-1/2 top-1/2 h-[75vmin] w-[75vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(58,58,128,0.32) 0%, rgba(5,5,5,0) 66%)" }} />
+          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/2 h-[75vmin] w-[75vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(58,58,128,0.32) 0%, rgba(5,5,5,0) 66%)" }} />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(120,120,200,0.10), transparent)" }} />
+          <div data-depth="38" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
+          <div data-depth="38" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
 
           <div className="relative mx-auto max-w-5xl px-6">
             <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">III · The Doctrine</p>
@@ -556,8 +601,8 @@ export default function Homepage() {
           data-scene="articles"
           className="scene relative overflow-hidden border-t border-white/5 py-28"
         >
-          <div data-depth="12" className="pointer-events-none absolute left-1/2 top-0 h-[70vmin] w-[95vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,60,150,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
-          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="7" />
+          <div data-depth="6" data-tilt="0.2" className="pointer-events-none absolute left-1/2 top-0 h-[70vmin] w-[95vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,60,150,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
+          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,80,0.10), transparent)" }} />
 
           <div className="relative mx-auto max-w-6xl px-6" style={{ perspective: "1200px" }}>
@@ -589,7 +634,7 @@ export default function Homepage() {
           data-scene="newsletter"
           className="scene relative flex min-h-screen items-center overflow-hidden py-24 text-center"
         >
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
+          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
 
           <div className="relative mx-auto max-w-3xl px-6">
             <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">V · The Correspondence</p>
@@ -616,7 +661,9 @@ export default function Homepage() {
           data-scene="final"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-32 text-center"
         >
-          <div data-depth="10" className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
+          <div data-depth="6" data-tilt="0.24" className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
+          <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
+          <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
 
           <div className="relative mx-auto max-w-2xl px-6">
             <div className="seal-wrap mb-10 flex justify-center">
