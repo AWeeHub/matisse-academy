@@ -42,6 +42,37 @@ const socialLinks = [
   { label: "Facebook", href: socials.facebook },
 ];
 
+const footerIcons: Record<string, JSX.Element> = {
+  explore: (
+    <path d="M3 21h18M5 10h14M12 4l7 4H5l7-4zM6.5 10v8M10 10v8M14 10v8M17.5 10v8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  ),
+  solutions: (
+    <>
+      <rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7M3 12.5h18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  resources: (
+    <>
+      <path d="M6 7h12l-1 13H7L6 7z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M9 7a3 3 0 0 1 6 0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M9.5 12.5l1.7 1.7 3.3-3.4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  events: (
+    <>
+      <rect x="3" y="4.5" width="18" height="16.5" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M3 9.5h18M8 2.5v4M16 2.5v4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  connect: (
+    <>
+      <circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+};
+
 const footerCols = [
   {
     key: "explore",
@@ -903,57 +934,61 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* Footer — the charter's closing monument (a premium ending, not a
-            sitemap): a centered seal + decree + single CTA, then quiet link
-            groups, colophon, and the legal strip. */}
+        {/* Footer — the charter colophon */}
         <footer className="relative z-10 overflow-hidden border-t border-white/8">
-          {/* Centered seal watermark + ambient glow behind the closing. */}
-          <div className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 opacity-[0.05]">
+          {/* Centered faint shield watermark + ambient glow behind it. */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]">
             <Image src="/logo-mark.png" alt="" width={640} height={427} className="h-[30rem] w-auto object-contain" />
           </div>
           <div
-            className="pointer-events-none absolute left-1/2 top-0 h-96 w-[120%] -translate-x-1/2"
-            style={{ background: "radial-gradient(50% 100% at 50% 0%, rgba(120,70,160,0.18) 0%, rgba(176,120,42,0.08) 45%, rgba(5,5,5,0) 72%)" }}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-[90%] -translate-x-1/2 -translate-y-1/2"
+            style={{ background: "radial-gradient(50% 60% at 50% 50%, rgba(120,70,160,0.16) 0%, rgba(176,120,42,0.07) 45%, rgba(5,5,5,0) 72%)" }}
           />
 
-          {/* Closing monument */}
-          <div className="relative mx-auto max-w-3xl px-6 pb-16 pt-24 text-center">
-            <div className="mb-9 flex justify-center">
-              <Image src="/logo-mark.png" alt="Matisse Academy" width={200} height={133} className="h-20 w-auto object-contain drop-shadow-[0_0_40px_rgba(120,70,160,0.35)]" />
-            </div>
-            <p className="text-[0.7rem] uppercase tracking-[0.35em] text-gold/60">
-              The Charter Awaits
-            </p>
-            <h2 className="mt-5 font-serif text-5xl leading-[1.02] text-white sm:text-6xl">
-              Begin your <span className="text-gold-gradient">charter.</span>
-            </h2>
-            <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-white/45">
-              Notice is the heart of equity. Your legacy starts with a single decision.
-            </p>
-            <div className="mt-10 flex justify-center">
-              <a href={links.challenge3Day} {...ext} className="btn-lux">
+          {/* Top band */}
+          <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-16">
+            <div className="flex flex-col items-start justify-between gap-10 md:flex-row md:items-end">
+              <div>
+                <p className="text-[0.7rem] uppercase tracking-[0.35em] text-gold/60">
+                  The Charter Awaits
+                </p>
+                <h2 className="mt-4 font-serif text-5xl leading-[1.02] text-white sm:text-6xl">
+                  Begin your <span className="text-gold-gradient">charter.</span>
+                </h2>
+                <p className="mt-5 text-sm text-white/45">
+                  Your legacy starts with a decision.
+                </p>
+              </div>
+              <a href={links.challenge3Day} {...ext} className="btn-lux shrink-0">
                 Secure My Spot
                 <span aria-hidden>→</span>
               </a>
             </div>
           </div>
 
-          {/* Hairline decree rule */}
-          <div className="relative mx-auto max-w-4xl px-6">
-            <div className="rule-luxe" />
+          {/* Divider with a centred chevron notch */}
+          <div className="relative mx-auto max-w-6xl px-6">
+            <div className="border-t border-gold/25" />
+            <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 bg-void px-3 text-gold/70">
+              <svg viewBox="0 0 24 24" className="h-5 w-5">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
           </div>
 
-          {/* Quiet link groups — kept for navigation, stripped of the sitemap
-              weight (no icons, no column rules). */}
-          <div className="relative mx-auto max-w-4xl px-6 py-14">
-            <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-center sm:grid-cols-4 sm:text-left">
-              {footerCols.map((col) => (
-                <div key={col.key}>
-                  <p className="mb-4 text-[0.6rem] uppercase tracking-[0.28em] text-gold/50">{col.title}</p>
-                  <ul className="space-y-2.5">
+          {/* Link columns */}
+          <div className="relative mx-auto max-w-6xl px-6 py-16">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 md:grid-cols-5">
+              {footerCols.map((col, ci) => (
+                <div key={col.key} className={ci > 0 ? "md:border-l md:border-white/8 md:pl-8" : ""}>
+                  <div className="flex items-center gap-2.5">
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 text-gold-bright">{footerIcons[col.key]}</svg>
+                    <span className="text-[0.68rem] uppercase tracking-luxe text-gold/70">{col.title}</span>
+                  </div>
+                  <ul className="mt-5 space-y-3">
                     {col.links.map((l) => (
                       <li key={l.label}>
-                        <a href={l.href} {...ext} className="text-sm text-white/55 transition-colors hover:text-gold-bright">
+                        <a href={l.href} {...ext} className="text-sm text-white/60 transition-colors hover:text-gold-bright">
                           {l.label}
                         </a>
                       </li>
@@ -961,29 +996,52 @@ export default function Homepage() {
                   </ul>
                 </div>
               ))}
+              {/* Connect */}
+              <div className="md:border-l md:border-white/8 md:pl-8">
+                <div className="flex items-center gap-2.5">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 text-gold-bright">{footerIcons.connect}</svg>
+                  <span className="text-[0.68rem] uppercase tracking-luxe text-gold/70">Connect</span>
+                </div>
+                <p className="mt-5 text-sm leading-relaxed text-white/50">
+                  Join a community of high achievers building generational impact.
+                </p>
+                <a href={links.appointment} {...ext} className="mt-4 inline-flex items-center gap-1.5 text-xs uppercase tracking-luxe text-[#a878e0] transition-colors hover:text-white">
+                  Contact Us <span aria-hidden>→</span>
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* Colophon — wordmark, socials, copyright */}
+          {/* Bottom bar */}
           <div className="relative border-t border-white/8">
-            <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 py-10 text-center">
-              <p className="font-serif text-2xl text-gold-gradient">Matisse Academy</p>
-              <div className="flex items-center gap-3">
-                {socialLinks.map((s) => (
-                  <a key={s.label} href={s.href} {...ext} aria-label={s.label} className="press flex h-10 w-10 items-center justify-center rounded-full border border-gold/45 text-gold-bright transition-colors hover:bg-gold hover:text-black">
-                    <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" aria-hidden>{socialIcons[s.label]}</svg>
-                  </a>
-                ))}
+            <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 md:grid-cols-3 md:items-center">
+              <div className="flex items-center gap-4">
+                <Image src="/logo-mark.png" alt="Matisse Academy" width={140} height={93} className="h-12 w-auto object-contain" />
+                <div>
+                  <p className="font-serif text-xl leading-none text-gold-gradient">Matisse Academy</p>
+                  <p className="mt-1.5 font-serif text-sm italic text-white/55">
+                    &ldquo;Notice is the heart of equity.&rdquo;
+                  </p>
+                  <p className="mt-1 text-[0.58rem] uppercase tracking-[0.3em] text-gold/45">Matthew 4:19</p>
+                </div>
               </div>
-              <div className="text-xs text-white/35">
-                <p>© {new Date().getFullYear()} Matisse Academy · Matthew 4:19</p>
+              <div className="text-center text-xs text-white/35">
+                <p>© {new Date().getFullYear()} Matisse Academy. All rights reserved.</p>
                 <p className="mt-2">
-                  <a href={links.appointment} {...ext} className="transition-colors hover:text-white">Contact</a>
-                  <span className="mx-2 text-white/20">·</span>
-                  <a href="https://matisseacademy.com" {...ext} className="transition-colors hover:text-white">Privacy</a>
-                  <span className="mx-2 text-white/20">·</span>
-                  <a href="https://matisseacademy.com" {...ext} className="transition-colors hover:text-white">Terms</a>
+                  <a href="https://matisseacademy.com" {...ext} className="transition-colors hover:text-white">Privacy Policy</a>
+                  <span className="mx-2 text-white/20">|</span>
+                  <a href="https://matisseacademy.com" {...ext} className="transition-colors hover:text-white">Terms of Service</a>
                 </p>
+              </div>
+              <div className="flex flex-col items-start gap-3 md:items-end">
+                <p className="text-[0.65rem] uppercase tracking-luxe text-gold/60">Follow Us</p>
+                <div className="flex items-center gap-3">
+                  {socialLinks.map((s) => (
+                    <a key={s.label} href={s.href} {...ext} aria-label={s.label} className="press flex h-10 w-10 items-center justify-center rounded-full border border-gold/45 text-gold-bright transition-colors hover:bg-gold hover:text-black">
+                      <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" aria-hidden>{socialIcons[s.label]}</svg>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
