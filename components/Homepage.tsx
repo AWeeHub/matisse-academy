@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Atmosphere from "@/components/Atmosphere";
+import Particles from "@/components/Particles";
 import { links, socials } from "@/lib/links";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -539,6 +540,7 @@ export default function Homepage() {
   return (
     <div ref={root} className="relative">
       <Atmosphere />
+      <Particles />
 
       {/* Narrative spine */}
       <div className="pointer-events-none fixed left-5 top-0 z-30 hidden h-full w-px bg-white/8 md:block">
