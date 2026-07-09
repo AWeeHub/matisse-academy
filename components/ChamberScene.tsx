@@ -52,7 +52,7 @@ function Columns() {
 /** The gold seal, floating mid-hall as a lit billboard. Dissolves as the
  *  camera advances so it never collides with the revealed hero copy. */
 function Seal({ progress }: { progress: MutableRefObject<number> }) {
-  const tex = useTexture("/logo-3d.png");
+  const tex = useTexture("/logo-3d-clean.png");
   const ref = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.MeshBasicMaterial>(null);
   useFrame((state) => {
@@ -71,7 +71,7 @@ function Seal({ progress }: { progress: MutableRefObject<number> }) {
   });
   return (
     <mesh ref={ref} position={[0, 1.1, -3]}>
-      <planeGeometry args={[6.6, 4.4]} />
+      <planeGeometry args={[4.3, 5.2]} />
       <meshBasicMaterial ref={matRef} map={tex} transparent toneMapped={false} />
     </mesh>
   );
