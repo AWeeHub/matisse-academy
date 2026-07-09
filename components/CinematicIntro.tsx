@@ -37,6 +37,31 @@ export default function CinematicIntro() {
     setUse3D(!reduced && !small && webgl);
   }, []);
 
+  // Scroll-aware header: gains a blurred background once past the hero, and
+  // hides on scroll-down / reappears on scroll-up so it never collides with
+  // the content scrolling beneath it.
+  useEffect(() => {
+    const header = root.current?.querySelector(".site-header") as HTMLElement | null;
+    if (!header) return;
+    let lastY = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const vh = window.innerHeight;
+        header.classList.toggle("is-scrolled", y > vh * 0.55);
+        if (y > vh && y > lastY + 4) header.classList.add("is-hidden");
+        else if (y < lastY - 4) header.classList.remove("is-hidden");
+        lastY = y;
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useLayoutEffect(() => {
     const ctx = gsap.context((self) => {
       const q = self.selector!;
@@ -200,7 +225,7 @@ export default function CinematicIntro() {
   return (
     <div ref={root} className="grain relative">
       {/* Persistent navigation. Contents fade in during the transition. */}
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 md:px-12">
+      <header className="site-header fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 md:px-12">
         <div className="nav-logo flex items-center gap-3">
           <Image
             src="/logo-mark.png"

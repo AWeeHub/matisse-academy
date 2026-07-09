@@ -39,6 +39,34 @@
     color: transparent;
   }
 
+  /* Scroll-aware header: transparent over the hero, then a blurred bar once
+     scrolled; hides on scroll-down and returns on scroll-up. */
+  .site-header {
+    border-bottom: 1px solid transparent;
+    transition: transform 0.45s var(--ease-out), background-color 0.4s ease,
+      backdrop-filter 0.4s ease, padding 0.35s ease, border-color 0.4s ease;
+    will-change: transform;
+  }
+  .site-header.is-scrolled {
+    background-color: rgba(5, 5, 5, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom-color: rgba(217, 164, 65, 0.16);
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header {
+      transition: none;
+    }
+    .site-header.is-hidden {
+      transform: none;
+    }
+  }
+
   /* Filmic grain — kills the flat, empty feel of large dark areas. */
   .grain::after {
     content: "";
