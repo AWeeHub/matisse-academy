@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Atmosphere from "@/components/Atmosphere";
 import Particles from "@/components/Particles";
+import ChapterRail from "@/components/ChapterRail";
 import { links, socials } from "@/lib/links";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -149,6 +150,21 @@ const testimonials = [
   },
 ];
 
+// Gold hairline drawn across a chapter's top edge as it enters (see the
+// .chapter-line GSAP block). One per scene = a felt "new chapter" beat.
+function ChapterLine() {
+  return (
+    <span
+      aria-hidden
+      className="chapter-line pointer-events-none absolute inset-x-0 top-0 z-20 h-px w-full origin-left scale-x-0"
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(217,164,65,0) 0%, rgba(243,205,122,0.75) 18%, rgba(217,164,65,0.45) 55%, rgba(217,164,65,0) 100%)",
+      }}
+    />
+  );
+}
+
 // Founder areas of focus — derived from the academy's offerings (scene I).
 // Factual to the brand; the bio prose below is a draft — verify with Amyr.
 const founderFocus = [
@@ -186,6 +202,7 @@ export default function Homepage() {
         gsap.set(q("[data-enter], [data-depth], [data-sweep], [data-tilt]"), {
           clearProps: "all",
         });
+        gsap.set(q(".chapter-line"), { scaleX: 1 });
         gsap.set(".atmo-articles", { opacity: 1 });
         return;
       }
@@ -486,17 +503,21 @@ export default function Homepage() {
         });
       }
 
-      // --- Narrative spine: the gold thread fills with progress ---
-      gsap.to(".spine-fill", {
-        scaleY: 1,
-        ease: "none",
-        transformOrigin: "top",
-        scrollTrigger: {
-          trigger: root.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-        },
+      // --- Chapter-opener rule: a gold hairline draws across the top of each
+      //     chapter as it enters — the felt beat of turning to a new page. ---
+      (q(".chapter-line") as HTMLElement[]).forEach((line) => {
+        const scene = line.closest(".scene");
+        gsap.fromTo(
+          line,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            duration: 1.1,
+            ease: "power3.out",
+            transformOrigin: "left",
+            scrollTrigger: { trigger: scene, start: "top 82%", once: true },
+          }
+        );
       });
     }, root);
 
@@ -510,11 +531,7 @@ export default function Homepage() {
     <div ref={root} className="relative">
       <Atmosphere />
       <Particles />
-
-      {/* Narrative spine */}
-      <div className="pointer-events-none fixed left-5 top-0 z-30 hidden h-full w-px bg-white/8 md:block">
-        <div className="spine-fill h-full w-full origin-top scale-y-0 bg-gradient-to-b from-gold-bright via-gold to-transparent" />
-      </div>
+      <ChapterRail />
 
       <main className="relative z-10">
         {/* I. The Founder */}
@@ -523,6 +540,7 @@ export default function Homepage() {
           id="founder"
           className="scene relative flex min-h-screen items-center overflow-hidden py-28"
         >
+          <ChapterLine />
           {/* far plane */}
           <div
             data-depth="6"
@@ -607,6 +625,7 @@ export default function Homepage() {
           id="challenge"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-28"
         >
+          <ChapterLine />
           <div data-depth="6" data-tilt="0.2" className="pointer-events-none absolute left-1/2 top-0 h-[55vmin] w-[85vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.3) 0%, rgba(5,5,5,0) 68%)" }} />
           <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,150,70,0.12), transparent)" }} />
@@ -658,6 +677,7 @@ export default function Homepage() {
           data-scene="testimony"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-28"
         >
+          <ChapterLine />
           {/* far / mid / near parallax planes, matching the depth system */}
           <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/3 h-[70vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
           <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
@@ -728,6 +748,7 @@ export default function Homepage() {
           id="services"
           className="scene relative flex min-h-screen items-center overflow-hidden py-28"
         >
+          <ChapterLine />
           <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-0 top-1/2 h-[75vmin] w-[75vmin] -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(58,58,128,0.32) 0%, rgba(5,5,5,0) 66%)" }} />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(120,120,200,0.10), transparent)" }} />
           <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
@@ -773,6 +794,7 @@ export default function Homepage() {
           data-scene="articles"
           className="scene relative overflow-hidden border-t border-white/5 py-28"
         >
+          <ChapterLine />
           <div data-depth="6" data-tilt="0.2" className="pointer-events-none absolute left-1/2 top-0 h-[70vmin] w-[95vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,60,150,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
           <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,80,0.10), transparent)" }} />
@@ -806,6 +828,7 @@ export default function Homepage() {
           data-scene="newsletter"
           className="scene relative flex min-h-screen items-center overflow-hidden py-24"
         >
+          <ChapterLine />
           <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute right-0 top-1/2 h-[60vmin] w-[80vmin] -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
 
           <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1fr_0.82fr]">
@@ -849,6 +872,7 @@ export default function Homepage() {
           data-scene="final"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-32 text-center"
         >
+          <ChapterLine />
           <div data-depth="6" data-tilt="0.24" className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
           <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
           <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
