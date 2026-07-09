@@ -215,6 +215,23 @@
   }
 }
 
+/* Floating dust motes in the 2.5-D library scene. */
+.dust {
+  animation-name: dust-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+@keyframes dust-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rise {
     opacity: 1 !important;
@@ -234,6 +251,9 @@
     translate: none;
   }
   .seal-ring {
+    animation: none !important;
+  }
+  .dust {
     animation: none !important;
   }
 }
