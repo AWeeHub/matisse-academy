@@ -286,12 +286,12 @@ export default function CinematicIntro() {
               <div className="hero-logo relative z-10 will-change-transform">
                 <div className="hero-logo-inner will-change-transform">
                   <Image
-                    src="/logo-3d.png"
+                    src="/logo-intro.png"
                     alt="Matisse Academy"
-                    width={760}
-                    height={760}
+                    width={900}
+                    height={600}
                     priority
-                    className="h-[40vh] max-h-[520px] w-auto object-contain drop-shadow-[0_0_70px_rgba(120,70,160,0.35)]"
+                    className="h-[42vh] max-h-[540px] w-auto object-contain drop-shadow-[0_0_70px_rgba(120,70,160,0.35)]"
                   />
                 </div>
               </div>
