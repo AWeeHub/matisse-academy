@@ -1,16 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Atmosphere from "@/components/Atmosphere";
+import Seal from "@/components/Seal";
 import { links, socials } from "@/lib/links";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 const romans = ["I", "II", "III", "IV", "V", "VI"];
+
+function FooterCol({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div>
+      <h4 className="text-[0.65rem] uppercase tracking-luxe text-gold/60">{title}</h4>
+      <div className="mt-3 h-px w-8 bg-gold/25" />
+      <nav className="mt-4 flex flex-col gap-2.5">{children}</nav>
+    </div>
+  );
+}
+
+function FooterLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <a
+      href={href}
+      {...ext}
+      className="group inline-flex w-fit items-center text-sm text-white/55 transition-colors hover:text-white"
+    >
+      {/* Gold dash slides in on hover — transform-only, space reserved. */}
+      <span className="mr-2 h-px w-4 origin-left scale-x-0 bg-gold transition-transform duration-300 ease-out group-hover:scale-x-100" />
+      {children}
+    </a>
+  );
+}
 
 const challenges = [
   {
@@ -458,30 +483,86 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="relative z-10 border-t border-white/5 px-6 py-14">
-          <div className="mx-auto max-w-6xl">
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-luxe text-white/50">
-              <a href={links.events} {...ext} className="hover:text-white">Events</a>
-              <a href={links.services} {...ext} className="hover:text-white">Services</a>
-              <a href={links.shop} {...ext} className="hover:text-white">Shop</a>
-              <a href={links.appointment} {...ext} className="hover:text-white">Coaching</a>
-              <a href={links.blackSheep} {...ext} className="hover:text-white">Community</a>
-              <a href={links.affiliate} {...ext} className="hover:text-white">Affiliates</a>
-              <a href={links.newsletter} {...ext} className="hover:text-white">Newsletter</a>
+        {/* Footer — the colophon */}
+        <footer className="relative z-10 overflow-hidden border-t border-gold/15">
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-px"
+            style={{ background: "linear-gradient(90deg, transparent, rgba(217,164,65,0.6), transparent)" }}
+          />
+          <div className="mx-auto max-w-6xl px-6 py-20">
+            <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+              {/* Brand */}
+              <div>
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/logo-3d.png"
+                    alt="Matisse Academy"
+                    width={200}
+                    height={133}
+                    className="h-12 w-auto object-contain"
+                  />
+                  <span className="font-serif text-xl tracking-wide text-gold-gradient">
+                    Matisse Academy
+                  </span>
+                </div>
+                <p className="mt-6 max-w-xs text-sm leading-relaxed text-white/45">
+                  Education, mentorship, and strategy in equity, law, commerce,
+                  and private wealth — with Amyr Samah El.
+                </p>
+                <p className="mt-6 font-serif text-lg italic text-white/70">
+                  &ldquo;Notice is the heart of equity.&rdquo;
+                </p>
+                <p className="mt-1 text-[0.65rem] uppercase tracking-[0.3em] text-gold/50">
+                  Matthew 4:19 · KJV 1611
+                </p>
+              </div>
+
+              {/* Programs */}
+              <FooterCol title="Programs">
+                <FooterLink href={links.challenge3Day}>The Challenge</FooterLink>
+                <FooterLink href={links.services}>Services</FooterLink>
+                <FooterLink href={links.shop}>Digital Store</FooterLink>
+                <FooterLink href={links.appointment}>1:1 Coaching</FooterLink>
+                <FooterLink href={links.events}>Events</FooterLink>
+              </FooterCol>
+
+              {/* Access */}
+              <FooterCol title="Access">
+                <FooterLink href={links.taxFree}>Tax-Free Strategy</FooterLink>
+                <FooterLink href={links.secureTheCar}>Secure the Car</FooterLink>
+                <FooterLink href={links.blackSheep}>Black Sheep</FooterLink>
+                <FooterLink href={links.affiliate}>Affiliates</FooterLink>
+                <FooterLink href={links.newsletter}>Newsletter</FooterLink>
+              </FooterCol>
+
+              {/* Connect + sigil */}
+              <div>
+                <FooterCol title="Connect">
+                  <FooterLink href={socials.instagram}>Instagram</FooterLink>
+                  <FooterLink href={socials.youtube}>YouTube</FooterLink>
+                  <FooterLink href={socials.tiktok}>TikTok</FooterLink>
+                  <FooterLink href={socials.facebook}>Facebook</FooterLink>
+                </FooterCol>
+                <div className="mt-8 hidden md:block">
+                  <Seal size={72} />
+                </div>
+              </div>
             </div>
-            <div className="mt-8 flex items-center justify-center gap-6 text-xs uppercase tracking-luxe text-gold-bright/80">
-              <a href={socials.instagram} {...ext} className="hover:text-white">Instagram</a>
-              <a href={socials.youtube} {...ext} className="hover:text-white">YouTube</a>
-              <a href={socials.tiktok} {...ext} className="hover:text-white">TikTok</a>
-              <a href={socials.facebook} {...ext} className="hover:text-white">Facebook</a>
+
+            {/* Disclaimer plate */}
+            <div className="mt-16 rounded-xl border border-white/8 bg-white/[0.015] px-6 py-5">
+              <p className="text-[0.72rem] leading-relaxed text-white/35">
+                <span className="font-medium uppercase tracking-luxe text-gold/50">Disclaimer — </span>
+                For informational purposes only. We are not BAR-card licensed
+                enrollees, nor is any content herein legal, tax, or financial advice.
+              </p>
             </div>
-            <p className="mx-auto mt-10 max-w-2xl text-center text-[0.7rem] leading-relaxed text-white/30">
-              This is for informational purposes only. We are not BAR-card licensed enrollees, nor is any content herein legal, tax, or financial advice.
-            </p>
-            <p className="mt-6 text-center text-xs uppercase tracking-luxe text-white/40">
-              © {new Date().getFullYear()} Matisse Academy · Amyr Samah El
-            </p>
+
+            {/* Bottom bar */}
+            <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-white/5 pt-8 text-xs uppercase tracking-luxe text-white/40 sm:flex-row">
+              <span>© {new Date().getFullYear()} Matisse Academy · Amyr Samah El</span>
+              <span className="text-gold/45">All rights reserved</span>
+            </div>
           </div>
         </footer>
       </main>
