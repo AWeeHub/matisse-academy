@@ -203,20 +203,29 @@ export default function Homepage() {
         });
       }
 
-      // III. Services — the statement focuses in (scale + blur pull).
+      // III. Services — the doctrine highlights word by word as you scroll.
       const s = q("[data-scene='services']")[0];
       if (s) {
-        gsap.fromTo(
-          s.querySelector(".s-head"),
-          { scale: 1.14, opacity: 0, filter: "blur(14px)" },
-          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out", ...onEnter(s) }
-        );
-        gsap.from(s.querySelector(".s-cta"), {
-          y: 20,
+        gsap.from(s.querySelectorAll(".s-fade"), {
+          y: 18,
           opacity: 0,
           duration: 0.8,
           ease: "power3.out",
-          scrollTrigger: { trigger: s, start: "top 55%", once: true },
+          stagger: 0.1,
+          ...onEnter(s),
+        });
+        const words = s.querySelectorAll(".doc-word");
+        gsap.set(words, { opacity: 0.16 });
+        gsap.to(words, {
+          opacity: 1,
+          ease: "none",
+          stagger: 0.5,
+          scrollTrigger: {
+            trigger: s,
+            start: "top 75%",
+            end: "bottom 65%",
+            scrub: true,
+          },
         });
       }
 
@@ -416,11 +425,17 @@ export default function Homepage() {
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(120,120,200,0.10), transparent)" }} />
 
           <div className="relative mx-auto max-w-5xl px-6">
-            <p className="s-head mb-6 text-xs uppercase tracking-luxe text-gold/70">III · The Doctrine</p>
-            <h2 className="s-head mx-auto max-w-3xl font-serif text-3xl leading-[1.12] text-white sm:text-5xl">
-              Education, mentorship, and strategic guidance for those seeking mastery in equity, law, commerce, and private wealth.
+            <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">III · The Doctrine</p>
+            <h2 className="mx-auto max-w-3xl font-serif text-3xl leading-[1.14] text-white sm:text-5xl">
+              {"Education, mentorship, and strategic guidance for those seeking mastery in equity, law, commerce, and private wealth."
+                .split(" ")
+                .map((w, i) => (
+                  <span key={i} className="doc-word">
+                    {w}{" "}
+                  </span>
+                ))}
             </h2>
-            <a href={links.services} {...ext} className="s-cta press mt-10 inline-block rounded-full border border-gold/40 px-7 py-3 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10">
+            <a href={links.services} {...ext} className="s-fade press mt-10 inline-block rounded-full border border-gold/40 px-7 py-3 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10">
               Explore Our Services
             </a>
           </div>
