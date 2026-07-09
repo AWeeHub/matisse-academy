@@ -475,11 +475,11 @@ export default function Homepage() {
           <div className="relative mx-auto max-w-2xl px-6">
             <div className="seal-wrap mb-10 flex justify-center">
               <Image
-                src="/logo-3d.png"
+                src="/logo-mark.png"
                 alt="Matisse Academy"
-                width={760}
-                height={507}
-                className="h-40 w-auto object-contain drop-shadow-[0_0_50px_rgba(120,70,160,0.4)]"
+                width={900}
+                height={600}
+                className="h-44 w-auto object-contain drop-shadow-[0_0_50px_rgba(120,70,160,0.4)]"
               />
             </div>
             <p className="fin-line mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
