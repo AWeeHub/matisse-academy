@@ -162,6 +162,14 @@ const testimonials = [
   },
 ];
 
+// The four domains of the Doctrine — right-column index in scene IV.
+const domains = [
+  { name: "Equity", desc: "The law of fairness, notice, and remedy." },
+  { name: "Law", desc: "Lawful process, private standing, and rights." },
+  { name: "Commerce", desc: "Contracts, instruments, and value in motion." },
+  { name: "Private Wealth", desc: "Trusts, protection, and generational holding." },
+];
+
 export default function Homepage() {
   const root = useRef<HTMLDivElement>(null);
 
@@ -420,8 +428,9 @@ export default function Homepage() {
         });
       }
 
-      // V. Correspondence — section pins and holds while the heading
-      //    highlights word by word, then releases.
+      // VI. Correspondence — asymmetric split; both columns rise in on enter.
+      //     (No pinned word-reveal here — that mechanic belongs to the Doctrine
+      //     alone, so the two scenes don't read as duplicates.)
       const n = q("[data-scene='newsletter']")[0];
       if (n) {
         gsap.from(n.querySelectorAll(".n-line"), {
@@ -432,19 +441,12 @@ export default function Homepage() {
           stagger: 0.12,
           ...onEnter(n),
         });
-        const cwords = n.querySelectorAll(".corr-word");
-        gsap.set(cwords, { color: DIM });
-        gsap.to(cwords, {
-          color: GOLD,
-          ease: "none",
-          stagger: 1,
-          scrollTrigger: {
-            trigger: n,
-            start: "top top",
-            end: "+=110%",
-            scrub: true,
-            pin: true,
-          },
+        gsap.from(n.querySelector(".n-card"), {
+          y: 40,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: n, start: "top 62%", once: true },
         });
       }
 
@@ -685,28 +687,45 @@ export default function Homepage() {
         <section
           data-scene="services"
           id="services"
-          className="scene relative flex min-h-screen items-center overflow-hidden py-28 text-center"
+          className="scene relative flex min-h-screen items-center overflow-hidden py-28"
         >
-          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/2 h-[75vmin] w-[75vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(58,58,128,0.32) 0%, rgba(5,5,5,0) 66%)" }} />
+          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-0 top-1/2 h-[75vmin] w-[75vmin] -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(58,58,128,0.32) 0%, rgba(5,5,5,0) 66%)" }} />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(120,120,200,0.10), transparent)" }} />
-          <div data-depth="38" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
-          <div data-depth="38" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
+          <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
 
-          <div className="relative mx-auto max-w-5xl px-6">
-            <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">IV · The Doctrine</p>
-            <h2 className="mx-auto max-w-3xl font-serif text-3xl leading-[1.14] text-white sm:text-5xl">
-              {"Education, mentorship, and strategic guidance for those seeking mastery in equity, law, commerce, and private wealth."
-                .split(" ")
-                .map((w, i) => (
-                  <span key={i} className="doc-word">
-                    {w}{" "}
-                  </span>
+          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <div>
+              <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">IV · The Doctrine</p>
+              <h2 className="max-w-xl font-serif text-3xl leading-[1.16] text-white sm:text-5xl">
+                {"Mastery in equity, law, commerce, and private wealth — taught as one discipline."
+                  .split(" ")
+                  .map((w, i) => (
+                    <span key={i} className="doc-word">
+                      {w}{" "}
+                    </span>
+                  ))}
+              </h2>
+              <a href={links.services} {...ext} className="s-fade btn-lux mt-10">
+                Explore Our Services
+                <span aria-hidden>→</span>
+              </a>
+            </div>
+
+            {/* Right column — the four domains as a numbered ledger. */}
+            <div className="s-fade">
+              <div className="rule-luxe mb-8 max-w-[8rem]" />
+              <ul>
+                {domains.map((d, i) => (
+                  <li key={d.name} className="flex items-baseline gap-5 border-b border-white/8 py-5">
+                    <span className="font-serif text-2xl leading-none text-gold-gradient">{romans[i]}</span>
+                    <div>
+                      <div className="font-serif text-xl text-white">{d.name}</div>
+                      <div className="mt-1 text-sm leading-relaxed text-white/50">{d.desc}</div>
+                    </div>
+                  </li>
                 ))}
-            </h2>
-            <a href={links.services} {...ext} className="s-fade btn-lux mt-10">
-              Explore Our Services
-              <span aria-hidden>→</span>
-            </a>
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -746,25 +765,41 @@ export default function Homepage() {
         {/* V. The Correspondence */}
         <section
           data-scene="newsletter"
-          className="scene relative flex min-h-screen items-center overflow-hidden py-24 text-center"
+          className="scene relative flex min-h-screen items-center overflow-hidden py-24"
         >
-          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
+          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute right-0 top-1/2 h-[60vmin] w-[80vmin] -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
 
-          <div className="relative mx-auto max-w-3xl px-6">
-            <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">VI · The Correspondence</p>
-            <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.14] text-white sm:text-5xl">
-              {"Equity, law, and private wealth — straight to your inbox."
-                .split(" ")
-                .map((w, i) => (
-                  <span key={i} className="corr-word">
-                    {w}{" "}
-                  </span>
-                ))}
-            </h2>
-            <a href={links.newsletter} {...ext} className="n-line btn-lux mt-10">
-              Join the Newsletter
-              <span aria-hidden>→</span>
-            </a>
+          <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1fr_0.82fr]">
+            <div>
+              <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">VI · The Correspondence</p>
+              <h2 className="max-w-xl font-serif text-4xl leading-[1.08] text-white sm:text-6xl">
+                Equity, law, and private wealth —{" "}
+                <span className="text-gold-gradient">straight to your inbox.</span>
+              </h2>
+              <p className="n-line mt-6 max-w-md text-base leading-relaxed text-white/55">
+                Occasional dispatches — private strategies, event notices, and lawful insights, sent only when they matter.
+              </p>
+            </div>
+
+            {/* The dispatch — a framed, sealed-letter panel. */}
+            <div className="n-card relative">
+              <div className="relative overflow-hidden rounded-2xl border border-gold/25 bg-white/[0.03] p-8 backdrop-blur-sm sm:p-10">
+                <div className="pointer-events-none absolute -right-8 -top-10 opacity-[0.07]">
+                  <Image src="/logo-mark.png" alt="" width={220} height={147} className="h-40 w-auto object-contain" />
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-[0.68rem] uppercase tracking-luxe text-gold/70">The Dispatch</span>
+                </div>
+                <div className="rule-luxe my-6" />
+                <p className="text-sm leading-relaxed text-white/60">
+                  Join the correspondence and receive the record as it&rsquo;s written — no noise, no filler, only what advances your mastery.
+                </p>
+                <a href={links.newsletter} {...ext} className="btn-lux mt-8 w-full justify-center">
+                  Join the Newsletter
+                  <span aria-hidden>→</span>
+                </a>
+              </div>
+            </div>
           </div>
         </section>
         </div>
