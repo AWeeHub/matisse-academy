@@ -25,6 +25,32 @@ const footerNav = [
   { label: "Newsletter", href: links.newsletter },
 ];
 
+const socialIcons: Record<string, JSX.Element> = {
+  Instagram: (
+    <>
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="17.6" cy="6.4" r="1.3" fill="currentColor" />
+    </>
+  ),
+  YouTube: (
+    <path d="M23 12s0-3.5-.44-5.06a2.62 2.62 0 0 0-1.85-1.85C19.14 4.65 12 4.65 12 4.65s-7.14 0-8.71.44A2.62 2.62 0 0 0 1.44 6.94C1 8.5 1 12 1 12s0 3.5.44 5.06a2.62 2.62 0 0 0 1.85 1.85c1.57.44 8.71.44 8.71.44s7.14 0 8.71-.44a2.62 2.62 0 0 0 1.85-1.85C23 15.5 23 12 23 12zM9.75 15.3V8.7L15.5 12l-5.75 3.3z" fill="currentColor" />
+  ),
+  TikTok: (
+    <path d="M16.6 5.8a4.28 4.28 0 0 1-1.04-2.8h-3.1v12.4a2.32 2.32 0 1 1-2.32-2.32c.24 0 .47.04.69.1V8a5.42 5.42 0 1 0 4.72 5.37V9.09a7.28 7.28 0 0 0 4.28 1.37V7.38a4.28 4.28 0 0 1-3.23-1.58z" fill="currentColor" />
+  ),
+  Facebook: (
+    <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46H15.2c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z" fill="currentColor" />
+  ),
+};
+
+const socialLinks = [
+  { label: "Instagram", href: socials.instagram },
+  { label: "YouTube", href: socials.youtube },
+  { label: "TikTok", href: socials.tiktok },
+  { label: "Facebook", href: socials.facebook },
+];
+
 const challenges = [
   {
     tier: "3-Day",
@@ -546,11 +572,20 @@ export default function Homepage() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-8 text-xs uppercase tracking-luxe text-white/50">
-                <a href={socials.instagram} {...ext} className="transition-colors hover:text-gold-bright">Instagram</a>
-                <a href={socials.youtube} {...ext} className="transition-colors hover:text-gold-bright">YouTube</a>
-                <a href={socials.tiktok} {...ext} className="transition-colors hover:text-gold-bright">TikTok</a>
-                <a href={socials.facebook} {...ext} className="transition-colors hover:text-gold-bright">Facebook</a>
+              <div className="flex items-center gap-3">
+                {socialLinks.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    {...ext}
+                    aria-label={s.label}
+                    className="press flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white/60 transition-colors duration-300 hover:border-gold hover:bg-gold hover:text-black"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden>
+                      {socialIcons[s.label]}
+                    </svg>
+                  </a>
+                ))}
               </div>
             </div>
 
