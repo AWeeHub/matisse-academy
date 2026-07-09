@@ -123,6 +123,24 @@ const challenges = [
   },
 ];
 
+// Faint scales-of-justice watermark for the non-photo scenes — the law motif
+// echoed as a quiet structural mark rather than decoration.
+const motifScales = (
+  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="50" cy="17" r="3.4" />
+    <line x1="50" y1="20.4" x2="50" y2="80" />
+    <line x1="38" y1="82" x2="62" y2="82" />
+    <line x1="43" y1="80" x2="57" y2="80" />
+    <line x1="20" y1="26" x2="80" y2="26" />
+    <line x1="20" y1="26" x2="12" y2="46" />
+    <line x1="20" y1="26" x2="28" y2="46" />
+    <path d="M11 46a9 5.5 0 0 0 18 0" />
+    <line x1="80" y1="26" x2="72" y2="46" />
+    <line x1="80" y1="26" x2="88" y2="46" />
+    <path d="M71 46a9 5.5 0 0 0 18 0" />
+  </svg>
+);
+
 const pathways = [
   { tag: "Tax-Free", title: "Private Church Strategy", body: "Lawfully grow and protect your wealth tax-free — private strategies studied by top earners.", cta: "Unlock the Tax-Free Strategy", href: links.taxFree },
   { tag: "Course", title: "Secure the Car", body: "The signature course on securing your property through lawful, private process.", cta: "Start the Course", href: links.secureTheCar },
@@ -414,6 +432,7 @@ export default function Homepage() {
             className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen"
             style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,70,0.10), transparent)" }}
           />
+          <div data-depth="6" className="pointer-events-none absolute -right-10 top-1/2 h-[52vmin] w-[52vmin] -translate-y-1/2 text-gold opacity-[0.05]">{motifScales}</div>
 
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 md:grid-cols-[0.85fr_1fr]">
             <div className="relative mx-auto w-full max-w-xs">
@@ -456,6 +475,13 @@ export default function Homepage() {
           id="challenge"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-28"
         >
+          {/* Courthouse atmosphere — neoclassical columns, heavily darkened and
+              graded purple→gold so it reads as mood, not a literal photo. */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <Image src="/bg-courthouse.jpg" alt="" fill sizes="100vw" className="object-cover object-[center_15%] opacity-[0.16] grayscale-[0.35]" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(90,55,140,0.4) 0%, rgba(5,5,5,0.2) 46%, rgba(176,120,42,0.2) 100%)" }} />
+            <div className="absolute inset-0" style={{ background: "radial-gradient(115% 85% at 50% 42%, rgba(5,5,5,0) 30%, rgba(5,5,5,0.74) 76%, #050505 100%)" }} />
+          </div>
           <div data-depth="16" className="pointer-events-none absolute left-1/2 top-0 h-[55vmin] w-[85vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.3) 0%, rgba(5,5,5,0) 68%)" }} />
           <div className="hall-lines pointer-events-none absolute inset-0" data-depth="8" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,150,70,0.12), transparent)" }} />
@@ -494,6 +520,13 @@ export default function Homepage() {
           id="services"
           className="scene relative flex min-h-screen items-center overflow-hidden py-28 text-center"
         >
+          {/* Law-library atmosphere — old bound volumes, dimmed and graded to
+              brand so the doctrine statement reads over it cleanly. */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <Image src="/bg-library.jpg" alt="" fill sizes="100vw" className="object-cover object-center opacity-[0.13] grayscale-[0.3]" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(58,42,96,0.42) 0%, rgba(5,5,5,0.24) 50%, rgba(176,120,42,0.16) 100%)" }} />
+            <div className="absolute inset-0" style={{ background: "radial-gradient(110% 82% at 50% 48%, rgba(5,5,5,0) 26%, rgba(5,5,5,0.78) 72%, #050505 100%)" }} />
+          </div>
           <div data-depth="14" className="pointer-events-none absolute left-1/2 top-1/2 h-[75vmin] w-[75vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(58,58,128,0.32) 0%, rgba(5,5,5,0) 66%)" }} />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(120,120,200,0.10), transparent)" }} />
 
@@ -523,6 +556,7 @@ export default function Homepage() {
           <div data-depth="12" className="pointer-events-none absolute left-1/2 top-0 h-[70vmin] w-[95vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,60,150,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
           <div className="hall-lines pointer-events-none absolute inset-0" data-depth="7" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,80,0.10), transparent)" }} />
+          <div data-depth="6" className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[60vmin] -translate-x-1/2 -translate-y-1/2 text-gold opacity-[0.04]">{motifScales}</div>
 
           <div className="relative mx-auto max-w-6xl px-6" style={{ perspective: "1200px" }}>
             <div className="a-head mb-14 text-center">
@@ -554,6 +588,7 @@ export default function Homepage() {
           className="scene relative flex min-h-screen items-center overflow-hidden py-24 text-center"
         >
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
+          <div data-depth="6" className="pointer-events-none absolute left-1/2 top-1/2 h-[50vmin] w-[50vmin] -translate-x-1/2 -translate-y-1/2 text-gold opacity-[0.04]">{motifScales}</div>
 
           <div className="relative mx-auto max-w-3xl px-6">
             <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">V · The Correspondence</p>
@@ -579,6 +614,7 @@ export default function Homepage() {
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-32 text-center"
         >
           <div data-depth="10" className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[72vmin] w-[72vmin] -translate-x-1/2 -translate-y-1/2 text-gold opacity-[0.03]">{motifScales}</div>
 
           <div className="relative mx-auto max-w-2xl px-6">
             <div className="seal-wrap mb-10 flex justify-center">
