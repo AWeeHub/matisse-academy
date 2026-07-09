@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Atmosphere from "@/components/Atmosphere";
@@ -106,22 +106,39 @@ const footerCols = [
   },
 ];
 
+// Cohort dates as ISO (YYYY-MM-DD) so they format consistently and can be
+// compared to "today" — no stale hardcoded strings. Update start/end when the
+// next cohort is scheduled; the label + status relabel themselves.
 const challenges = [
   {
     tier: "3-Day",
     title: "Master Your Rights Challenge",
-    dates: "August 8 – 10, 2026",
+    start: "2026-08-08",
+    end: "2026-08-10",
     blurb: "A focused, live intensive to master your rights, fast.",
     href: links.challenge3Day,
   },
   {
     tier: "5-Day",
     title: "Master Your Rights Challenge",
-    dates: "September 15 – 19, 2026",
+    start: "2026-09-15",
+    end: "2026-09-19",
     blurb: "The deep-dive format — equity, law, and private wealth in full.",
     href: links.challenge5Day,
   },
 ];
+
+/** "August 8 – 10, 2026" (same month) or "Sept 30 – Oct 2, 2026" (crossing). */
+function formatRange(startISO: string, endISO: string): string {
+  const s = new Date(`${startISO}T00:00:00`);
+  const e = new Date(`${endISO}T00:00:00`);
+  const mS = s.toLocaleString("en-US", { month: "long" });
+  const mE = e.toLocaleString("en-US", { month: "long" });
+  const year = e.getFullYear();
+  return mS === mE
+    ? `${mS} ${s.getDate()} – ${e.getDate()}, ${year}`
+    : `${mS} ${s.getDate()} – ${mE} ${e.getDate()}, ${year}`;
+}
 
 const pathways = [
   { tag: "Tax-Free", title: "Private Church Strategy", body: "Lawfully grow and protect your wealth tax-free — private strategies studied by top earners.", cta: "Unlock the Tax-Free Strategy", href: links.taxFree },
@@ -182,6 +199,11 @@ const domains = [
 
 export default function Homepage() {
   const root = useRef<HTMLDivElement>(null);
+  // Server + first client render assume upcoming (shows the date); after mount
+  // we know the real clock and can relabel any cohort that has already passed.
+  // Rendering the date on both sides first avoids a hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useLayoutEffect(() => {
     let removeTilt: (() => void) | undefined;
@@ -633,15 +655,26 @@ export default function Homepage() {
             </div>
 
             <div className="mx-auto mt-14 grid max-w-3xl gap-6 sm:grid-cols-2">
-              {challenges.map((c) => (
-                <div key={c.tier} className="c-card card flex flex-col rounded-2xl border border-white/10 bg-white/[0.025] px-8 py-10 text-left backdrop-blur-sm">
-                  <span className="font-serif text-5xl text-gold-gradient">{c.tier}</span>
-                  <h3 className="mt-4 font-serif text-xl text-white">{c.title}</h3>
-                  <p className="mt-1 text-sm font-medium text-gold-bright">{c.dates}</p>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">{c.blurb}</p>
-                  <a href={c.href} {...ext} className="btn-lux btn-lux-sm mt-6 self-start">Secure My Spot</a>
-                </div>
-              ))}
+              {challenges.map((c) => {
+                const past = mounted && new Date(`${c.end}T23:59:59`) < new Date();
+                return (
+                  <div key={c.tier} className="c-card card flex flex-col rounded-2xl border border-white/10 bg-white/[0.025] px-8 py-10 text-left backdrop-blur-sm">
+                    <span className="font-serif text-5xl text-gold-gradient">{c.tier}</span>
+                    <h3 className="mt-4 font-serif text-xl text-white">{c.title}</h3>
+                    <p className="mt-1 text-sm font-medium text-gold-bright">
+                      {past ? "New dates announced soon" : formatRange(c.start, c.end)}
+                    </p>
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">{c.blurb}</p>
+                    <a
+                      href={past ? links.events : c.href}
+                      {...ext}
+                      className="btn-lux btn-lux-sm mt-6 self-start"
+                    >
+                      {past ? "Join the Waitlist" : "Secure My Spot"}
+                    </a>
+                  </div>
+                );
+              })}
             </div>
             <a href={links.events} {...ext} className="c-card mt-20 inline-block text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:text-white">
               See all upcoming events →
