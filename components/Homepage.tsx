@@ -891,10 +891,10 @@ export default function Homepage() {
               VII · The Seal — Matthew 4:19 · KJV 1611
             </p>
             <h2 className="fin-line mx-auto max-w-2xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
-              Notice is the heart of <span className="text-gold-gradient">equity.</span>
+              The record is open. Add <span className="text-gold-gradient">your name.</span>
             </h2>
             <p className="fin-line mx-auto mt-5 max-w-lg text-sm text-white/50">
-              Begin your path to mastery in private wealth and lawful strategy.
+              Notice was the beginning. Mastery in private wealth and lawful strategy is the path — and it starts with a single decision.
             </p>
             <a href={links.challenge3Day} {...ext} className="fin-line btn-lux mt-10">
               Secure My Spot
