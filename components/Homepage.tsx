@@ -5,7 +5,6 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Atmosphere from "@/components/Atmosphere";
-import Seal from "@/components/Seal";
 import { links, socials } from "@/lib/links";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -435,8 +434,14 @@ export default function Homepage() {
           <div data-depth="10" className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
 
           <div className="relative mx-auto max-w-2xl px-6">
-            <div className="seal-wrap">
-              <Seal size={128} className="mx-auto mb-10" />
+            <div className="seal-wrap mb-10 flex justify-center">
+              <Image
+                src="/logo-3d.png"
+                alt="Matisse Academy"
+                width={760}
+                height={507}
+                className="h-40 w-auto object-contain drop-shadow-[0_0_50px_rgba(120,70,160,0.4)]"
+              />
             </div>
             <p className="fin-line mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
               VI · The Seal — Matthew 4:19 · KJV 1611
