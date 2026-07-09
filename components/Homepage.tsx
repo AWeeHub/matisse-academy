@@ -255,16 +255,29 @@ export default function Homepage() {
         });
       }
 
-      // VI. Final — the seal is set, the decree resolves.
+      // VI. Final — the seal resolves into focus, then breathes.
       const fin = q("[data-scene='final']")[0];
       if (fin) {
-        gsap.from(fin.querySelector(".seal-wrap"), {
-          scale: 0.7,
-          opacity: 0,
-          rotate: -25,
-          duration: 1.2,
-          ease: "power3.out",
-          ...onEnter(fin),
+        gsap.fromTo(
+          fin.querySelector(".seal-wrap"),
+          { opacity: 0, scale: 0.92, y: 26, filter: "blur(12px)" },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1.3,
+            ease: "power3.out",
+            ...onEnter(fin),
+          }
+        );
+        // Gentle idle float on the mark itself (separate node, no conflict).
+        gsap.to(fin.querySelector(".seal-wrap img"), {
+          y: -10,
+          duration: 3.6,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
         });
         gsap.from(fin.querySelectorAll(".fin-line"), {
           y: 28,
@@ -497,7 +510,7 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* Footer — the colophon */}
+        {/* Footer — centered colophon */}
         <footer className="relative z-10 overflow-hidden border-t border-gold/15">
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-px"
@@ -505,7 +518,7 @@ export default function Homepage() {
           />
           {/* Giant watermark wordmark — the signature. */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center overflow-hidden">
-            <span className="translate-y-[26%] select-none whitespace-nowrap font-serif text-[22vw] leading-none text-white/[0.022]">
+            <span className="translate-y-[24%] select-none whitespace-nowrap font-serif text-[22vw] leading-none text-white/[0.022]">
               Matisse
             </span>
           </div>
@@ -515,89 +528,80 @@ export default function Homepage() {
             style={{ background: "radial-gradient(circle, rgba(120,70,160,0.2) 0%, rgba(5,5,5,0) 70%)" }}
           />
 
-          <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-24">
-            {/* Closing statement + CTA */}
-            <div className="flex flex-col items-start justify-between gap-10 md:flex-row md:items-end">
-              <div>
-                <p className="text-[0.7rem] uppercase tracking-[0.35em] text-gold/60">
-                  The Charter Awaits
-                </p>
-                <h3 className="mt-4 max-w-xl font-serif text-4xl leading-[1.03] text-white sm:text-6xl">
-                  Begin your <span className="text-gold-gradient">charter.</span>
-                </h3>
-              </div>
-              <a
-                href={links.challenge3Day}
-                {...ext}
-                className="press inline-flex shrink-0 items-center gap-3 rounded-full bg-gold px-9 py-4 text-xs uppercase tracking-luxe text-black"
-              >
-                Secure My Spot
-                <span aria-hidden>→</span>
-              </a>
-            </div>
+          <div className="relative mx-auto max-w-4xl px-6 pt-24 text-center">
+            {/* Brand */}
+            <Image
+              src="/logo-mark.png"
+              alt="Matisse Academy"
+              width={300}
+              height={200}
+              className="mx-auto h-16 w-auto object-contain"
+            />
+            <p className="mt-6 font-serif text-3xl tracking-wide text-gold-gradient">
+              Matisse Academy
+            </p>
+            <p className="mt-3 font-serif text-base italic text-white/60">
+              &ldquo;Notice is the heart of equity.&rdquo;
+            </p>
+            <p className="mt-1 text-[0.62rem] uppercase tracking-[0.35em] text-gold/50">
+              Matthew 4:19 · KJV 1611
+            </p>
 
-            {/* Heading nav — programs & access as an oversized serif menu. */}
-            <nav className="mt-16 flex flex-wrap gap-x-10 gap-y-3 border-t border-white/10 pt-12">
+            <a
+              href={links.challenge3Day}
+              {...ext}
+              className="press mt-10 inline-flex items-center gap-3 rounded-full bg-gold px-9 py-3.5 text-xs uppercase tracking-luxe text-black"
+            >
+              Secure My Spot
+              <span aria-hidden>→</span>
+            </a>
+
+            {/* Centered rule */}
+            <div className="mx-auto mt-16 h-px w-16 bg-gold/40" />
+
+            {/* Nav — centered serif menu */}
+            <nav className="mx-auto mt-12 flex max-w-3xl flex-wrap justify-center gap-x-8 gap-y-3">
               {footerNav.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
                   {...ext}
-                  className="font-serif text-xl text-white/55 transition-colors duration-300 hover:text-gold-bright sm:text-2xl"
+                  className="font-serif text-lg text-white/55 transition-colors duration-300 hover:text-gold-bright sm:text-xl"
                 >
                   {item.label}
                 </a>
               ))}
             </nav>
 
-            {/* Brand + socials */}
-            <div className="mt-20 flex flex-col gap-10 border-t border-white/10 pt-12 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center gap-4">
-                <Image
-                  src="/logo-3d.png"
-                  alt="Matisse Academy"
-                  width={200}
-                  height={133}
-                  className="h-14 w-auto object-contain"
-                />
-                <div>
-                  <p className="font-serif text-2xl leading-none text-gold-gradient">
-                    Matisse Academy
-                  </p>
-                  <p className="mt-2 font-serif text-sm italic text-white/55">
-                    &ldquo;Notice is the heart of equity.&rdquo;
-                    <span className="ml-2 not-italic text-[0.6rem] uppercase tracking-[0.3em] text-gold/45">
-                      Matthew 4:19
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                {socialLinks.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    {...ext}
-                    aria-label={s.label}
-                    className="press flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white/60 transition-colors duration-300 hover:border-gold hover:bg-gold hover:text-black"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden>
-                      {socialIcons[s.label]}
-                    </svg>
-                  </a>
-                ))}
-              </div>
+            {/* Socials — centered icon buttons */}
+            <div className="mt-12 flex items-center justify-center gap-3">
+              {socialLinks.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  {...ext}
+                  aria-label={s.label}
+                  className="press flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white/60 transition-colors duration-300 hover:border-gold hover:bg-gold hover:text-black"
+                >
+                  <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden>
+                    {socialIcons[s.label]}
+                  </svg>
+                </a>
+              ))}
             </div>
+          </div>
 
-            {/* Disclaimer + bottom bar */}
-            <div className="mt-16 border-t border-white/10 pt-8">
-              <p className="max-w-3xl text-[0.72rem] leading-relaxed text-white/30">
+          {/* Disclaimer + bottom bar */}
+          <div className="relative mt-20 border-t border-white/10">
+            <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 px-6 py-8 text-center">
+              <p className="max-w-2xl text-[0.7rem] leading-relaxed text-white/30">
                 <span className="uppercase tracking-luxe text-gold/45">Disclaimer — </span>
                 For informational purposes only. We are not BAR-card licensed
                 enrollees, nor is any content herein legal, tax, or financial advice.
               </p>
-              <div className="mt-6 flex flex-col gap-2 text-[0.7rem] uppercase tracking-luxe text-white/35 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col items-center gap-1 text-[0.68rem] uppercase tracking-luxe text-white/35 sm:flex-row sm:gap-4">
                 <span>© {new Date().getFullYear()} Matisse Academy · Amyr Samah El</span>
+                <span className="hidden text-gold/30 sm:inline">·</span>
                 <span className="text-gold/40">All rights reserved</span>
               </div>
             </div>
