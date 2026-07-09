@@ -574,10 +574,10 @@ export default function Homepage() {
             <div className="relative mx-auto w-full max-w-xs" data-tilt="0.3">
               <div className="pointer-events-none absolute -inset-6 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.4) 0%, rgba(5,5,5,0) 70%)" }} />
               <Image
-                src="/amyr-hero-portrait.jpg"
+                src="/amyr-suit-portrait.jpg"
                 alt="Amyr Samah El, founder of Matisse Academy"
-                width={654}
-                height={963}
+                width={786}
+                height={806}
                 className="portrait relative aspect-[4/5] rounded-2xl border border-white/10 object-cover object-top shadow-2xl"
               />
             </div>
