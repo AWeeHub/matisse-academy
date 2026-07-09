@@ -14,6 +14,10 @@ const layers: { name: string; css: string }[] = [
     css: "radial-gradient(75% 65% at 50% 32%, rgba(176,120,42,0.42) 0%, rgba(5,5,5,0) 60%)",
   },
   {
+    name: "testimony",
+    css: "radial-gradient(72% 62% at 50% 42%, rgba(176,120,42,0.4) 0%, rgba(91,42,134,0.14) 46%, rgba(5,5,5,0) 66%)",
+  },
+  {
     name: "services",
     css: "radial-gradient(70% 60% at 68% 50%, rgba(58,58,128,0.46) 0%, rgba(5,5,5,0) 62%)",
   },

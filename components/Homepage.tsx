@@ -132,6 +132,36 @@ const pathways = [
   { tag: "Coming Soon", title: "Financial Literacy for Real Life", body: "Equity, wealth building, and financial literacy the simple way. New program.", cta: "Get on the List", href: links.newsletter },
 ];
 
+// PLACEHOLDER PROOF — swap these for real member results/quotes before
+// relying on this scene. Structure is final; copy is illustrative.
+const stats = [
+  { value: "2,400+", label: "Members guided" },
+  { value: "180+", label: "Live sessions held" },
+  { value: "50", label: "States represented" },
+  { value: "4.9/5", label: "Member rating" },
+];
+
+const testimonials = [
+  {
+    quote:
+      "I walked in knowing nothing about private trusts. Ninety days later I had my structure filed and my assets protected. This is the real curriculum.",
+    name: "Marcus D.",
+    role: "3-Day Challenge · Atlanta, GA",
+  },
+  {
+    quote:
+      "Amyr doesn't sell hype — he teaches the process, step by step, until it clicks. The tax-free strategy alone paid for everything.",
+    name: "Renée T.",
+    role: "Private Church Strategy · Houston, TX",
+  },
+  {
+    quote:
+      "The Black Sheep community is the accountability I never had. Being around people who move differently changed how I build.",
+    name: "Jerome W.",
+    role: "Black Sheep Member · Detroit, MI",
+  },
+];
+
 export default function Homepage() {
   const root = useRef<HTMLDivElement>(null);
 
@@ -311,7 +341,36 @@ export default function Homepage() {
         });
       }
 
-      // III. Doctrine — section pins and holds while the statement lights up
+      // III. Testimony — heading rises, metrics count into place, quotes deal in.
+      const t = q("[data-scene='testimony']")[0];
+      if (t) {
+        gsap.from(t.querySelector(".t-head"), {
+          y: 24,
+          opacity: 0,
+          filter: "blur(8px)",
+          duration: 1,
+          ease: "power3.out",
+          ...onEnter(t),
+        });
+        gsap.from(t.querySelectorAll(".t-stat"), {
+          y: 28,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.08,
+          scrollTrigger: { trigger: t, start: "top 68%", once: true },
+        });
+        gsap.from(t.querySelectorAll(".t-card"), {
+          y: 60,
+          opacity: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.12,
+          scrollTrigger: { trigger: t, start: "top 55%", once: true },
+        });
+      }
+
+      // IV. Doctrine — section pins and holds while the statement lights up
       //      gold word by word, then releases.
       const s = q("[data-scene='services']")[0];
       if (s) {
@@ -553,6 +612,61 @@ export default function Homepage() {
           </div>
         </section>
 
+        {/* III. The Testimony — social proof: the record speaks. */}
+        <section
+          data-scene="testimony"
+          className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-28"
+        >
+          {/* far / mid / near parallax planes, matching the depth system */}
+          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/3 h-[70vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
+          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
+          <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,150,70,0.10), transparent)" }} />
+          <div data-depth="40" data-tilt="0.75" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.78) 0%, rgba(5,5,5,0) 100%)" }} />
+          <div data-depth="42" data-tilt="0.8" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.78) 0%, rgba(5,5,5,0) 100%)" }} />
+
+          <div className="relative mx-auto w-full max-w-6xl px-6">
+            <div className="t-head text-center">
+              <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">III · The Testimony</p>
+              <h2 className="mx-auto max-w-3xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
+                Proof, not <span className="text-gold-gradient">promises.</span>
+              </h2>
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/60">
+                The record of those who chose to move differently — and built something lawful, private, and lasting.
+              </p>
+            </div>
+
+            {/* Metrics ledger */}
+            <div className="mx-auto mt-16 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+              {stats.map((s) => (
+                <div key={s.label} className="t-stat text-center">
+                  <div className="font-serif text-4xl text-gold-gradient sm:text-5xl">{s.value}</div>
+                  <div className="mt-2 text-[0.68rem] uppercase tracking-luxe text-white/45">{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="rule-luxe mx-auto my-14 max-w-2xl" />
+
+            {/* Witness quotes */}
+            <div className="grid gap-6 md:grid-cols-3">
+              {testimonials.map((t) => (
+                <figure key={t.name} className="t-card card flex flex-col rounded-2xl border border-white/10 bg-white/[0.025] px-8 py-9 backdrop-blur-sm">
+                  <svg viewBox="0 0 24 24" className="h-7 w-7 text-gold/50" aria-hidden>
+                    <path d="M10 7H6a3 3 0 0 0-3 3v7h7v-7H6.5A1.5 1.5 0 0 1 8 8.5V7zm11 0h-4a3 3 0 0 0-3 3v7h7v-7h-3.5A1.5 1.5 0 0 1 19 8.5V7z" fill="currentColor" />
+                  </svg>
+                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-white/70">
+                    {t.quote}
+                  </blockquote>
+                  <figcaption className="mt-6">
+                    <div className="font-serif text-lg text-white">{t.name}</div>
+                    <div className="mt-0.5 text-[0.65rem] uppercase tracking-luxe text-gold/60">{t.role}</div>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Doctrine band — the single law-library image parallaxes behind the
             Doctrine, Charter, and Correspondence scenes as one continuous
             atmosphere, drifting slower than the scroll. */}
@@ -579,7 +693,7 @@ export default function Homepage() {
           <div data-depth="38" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
 
           <div className="relative mx-auto max-w-5xl px-6">
-            <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">III · The Doctrine</p>
+            <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">IV · The Doctrine</p>
             <h2 className="mx-auto max-w-3xl font-serif text-3xl leading-[1.14] text-white sm:text-5xl">
               {"Education, mentorship, and strategic guidance for those seeking mastery in equity, law, commerce, and private wealth."
                 .split(" ")
@@ -607,7 +721,7 @@ export default function Homepage() {
 
           <div className="relative mx-auto max-w-6xl px-6" style={{ perspective: "1200px" }}>
             <div className="a-head mb-14 text-center">
-              <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">IV · The Charter</p>
+              <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">V · The Charter</p>
               <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.12] text-white sm:text-4xl">
                 Six articles, one path to private mastery.
               </h2>
@@ -637,7 +751,7 @@ export default function Homepage() {
           <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
 
           <div className="relative mx-auto max-w-3xl px-6">
-            <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">V · The Correspondence</p>
+            <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">VI · The Correspondence</p>
             <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.14] text-white sm:text-5xl">
               {"Equity, law, and private wealth — straight to your inbox."
                 .split(" ")
@@ -676,7 +790,7 @@ export default function Homepage() {
               />
             </div>
             <p className="fin-line mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
-              VI · The Seal — Matthew 4:19 · KJV 1611
+              VII · The Seal — Matthew 4:19 · KJV 1611
             </p>
             <h2 className="fin-line mx-auto max-w-2xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
               Notice is the heart of <span className="text-gold-gradient">equity.</span>
