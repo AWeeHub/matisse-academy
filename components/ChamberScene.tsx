@@ -52,7 +52,7 @@ function Columns() {
 /** The gold seal, floating mid-hall as a lit billboard. Dissolves as the
  *  camera advances so it never collides with the revealed hero copy. */
 function Seal({ progress }: { progress: MutableRefObject<number> }) {
-  const tex = useTexture("/logo-intro.png");
+  const tex = useTexture("/logo-3d.png");
   const ref = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.MeshBasicMaterial>(null);
   useFrame((state) => {
