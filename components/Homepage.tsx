@@ -482,7 +482,7 @@ export default function Homepage() {
                 </div>
               ))}
             </div>
-            <a href={links.events} {...ext} className="c-card mt-12 inline-block text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:text-white">
+            <a href={links.events} {...ext} className="c-card mt-20 inline-block text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:text-white">
               See all upcoming events →
             </a>
           </div>
