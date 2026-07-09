@@ -11,19 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 const romans = ["I", "II", "III", "IV", "V", "VI"];
-
-const footerNav = [
-  { label: "The Challenge", href: links.challenge3Day },
-  { label: "Services", href: links.services },
-  { label: "Digital Store", href: links.shop },
-  { label: "1:1 Coaching", href: links.appointment },
-  { label: "Events", href: links.events },
-  { label: "Tax-Free Strategy", href: links.taxFree },
-  { label: "Secure the Car", href: links.secureTheCar },
-  { label: "Black Sheep", href: links.blackSheep },
-  { label: "Affiliates", href: links.affiliate },
-  { label: "Newsletter", href: links.newsletter },
-];
+const GOLD = "#eecb73"; // highlight colour for scroll word-reveals
+const DIM = "#5b5346"; // muted start colour (solid hex so gsap eases cleanly)
 
 const socialIcons: Record<string, JSX.Element> = {
   Instagram: (
@@ -49,6 +38,72 @@ const socialLinks = [
   { label: "YouTube", href: socials.youtube },
   { label: "TikTok", href: socials.tiktok },
   { label: "Facebook", href: socials.facebook },
+];
+
+const footerIcons: Record<string, JSX.Element> = {
+  explore: (
+    <path d="M3 21h18M5 10h14M12 4l7 4H5l7-4zM6.5 10v8M10 10v8M14 10v8M17.5 10v8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  ),
+  solutions: (
+    <>
+      <rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7M3 12.5h18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  resources: (
+    <>
+      <path d="M6 7h12l-1 13H7L6 7z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M9 7a3 3 0 0 1 6 0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M9.5 12.5l1.7 1.7 3.3-3.4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  events: (
+    <>
+      <rect x="3" y="4.5" width="18" height="16.5" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M3 9.5h18M8 2.5v4M16 2.5v4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  connect: (
+    <>
+      <circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+};
+
+const footerCols = [
+  {
+    key: "explore",
+    title: "Explore",
+    links: [
+      { label: "The Challenge", href: links.challenge3Day },
+      { label: "Secure the Car", href: links.secureTheCar },
+      { label: "Black Sheep", href: links.blackSheep },
+    ],
+  },
+  {
+    key: "solutions",
+    title: "Solutions",
+    links: [
+      { label: "Services", href: links.services },
+      { label: "1:1 Coaching", href: links.appointment },
+      { label: "Tax-Free Strategy", href: links.taxFree },
+    ],
+  },
+  {
+    key: "resources",
+    title: "Resources",
+    links: [
+      { label: "Digital Store", href: links.shop },
+      { label: "Affiliates", href: links.affiliate },
+      { label: "Newsletter", href: links.newsletter },
+    ],
+  },
+  {
+    key: "events",
+    title: "Events",
+    links: [{ label: "Events", href: links.events }],
+  },
 ];
 
 const challenges = [
@@ -203,7 +258,8 @@ export default function Homepage() {
         });
       }
 
-      // III. Services — the doctrine highlights word by word as you scroll.
+      // III. Doctrine — section pins and holds while the statement lights up
+      //      gold word by word, then releases.
       const s = q("[data-scene='services']")[0];
       if (s) {
         gsap.from(s.querySelectorAll(".s-fade"), {
@@ -215,16 +271,17 @@ export default function Homepage() {
           ...onEnter(s),
         });
         const words = s.querySelectorAll(".doc-word");
-        gsap.set(words, { opacity: 0.16 });
+        gsap.set(words, { color: DIM });
         gsap.to(words, {
-          opacity: 1,
+          color: GOLD,
           ease: "none",
-          stagger: 0.5,
+          stagger: 1,
           scrollTrigger: {
             trigger: s,
-            start: "top 75%",
-            end: "bottom 65%",
+            start: "top top",
+            end: "+=110%",
             scrub: true,
+            pin: true,
           },
         });
       }
@@ -264,18 +321,17 @@ export default function Homepage() {
           ...onEnter(n),
         });
         const cwords = n.querySelectorAll(".corr-word");
-        gsap.set(cwords, { opacity: 0.16 });
+        gsap.set(cwords, { color: DIM });
         gsap.to(cwords, {
-          opacity: 1,
+          color: GOLD,
           ease: "none",
-          stagger: 0.5,
+          stagger: 1,
           scrollTrigger: {
             trigger: n,
             start: "top top",
-            end: "+=90%",
+            end: "+=110%",
             scrub: true,
             pin: true,
-            anticipatePin: 1,
           },
         });
       }
@@ -360,7 +416,7 @@ export default function Homepage() {
           />
 
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 md:grid-cols-[0.85fr_1fr]">
-            <div className="relative mx-auto w-full max-w-xs" data-depth="-6">
+            <div className="relative mx-auto w-full max-w-xs">
               <div className="pointer-events-none absolute -inset-6 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.4) 0%, rgba(5,5,5,0) 70%)" }} />
               <Image
                 src="/amyr-hero-portrait.jpg"
@@ -386,8 +442,9 @@ export default function Homepage() {
                 minimize liabilities, and secure generational wealth through
                 private trusts and lawful strategies.&rdquo;
               </p>
-              <a href={links.appointment} {...ext} className="f-line press mt-9 inline-block rounded-full border border-gold/40 px-7 py-3 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10">
+              <a href={links.appointment} {...ext} className="f-line btn-lux mt-9">
                 Work With Amyr
+                <span aria-hidden>→</span>
               </a>
             </div>
           </div>
@@ -404,7 +461,7 @@ export default function Homepage() {
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,150,70,0.12), transparent)" }} />
 
           <div className="relative mx-auto w-full max-w-5xl px-6 text-center">
-            <div className="c-head" data-depth="-5">
+            <div className="c-head">
               <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">II · The Summons</p>
               <h2 className="mx-auto max-w-3xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
                 The <span className="text-gold-gradient">Master Your Rights</span> Challenge
@@ -421,7 +478,7 @@ export default function Homepage() {
                   <h3 className="mt-4 font-serif text-xl text-white">{c.title}</h3>
                   <p className="mt-1 text-sm font-medium text-gold-bright">{c.dates}</p>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">{c.blurb}</p>
-                  <a href={c.href} {...ext} className="press mt-6 inline-block self-start rounded-full bg-gold px-6 py-2.5 text-xs uppercase tracking-luxe text-black">Secure My Spot</a>
+                  <a href={c.href} {...ext} className="btn-lux btn-lux-sm mt-6 self-start">Secure My Spot</a>
                 </div>
               ))}
             </div>
@@ -451,8 +508,9 @@ export default function Homepage() {
                   </span>
                 ))}
             </h2>
-            <a href={links.services} {...ext} className="s-fade press mt-10 inline-block rounded-full border border-gold/40 px-7 py-3 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10">
+            <a href={links.services} {...ext} className="s-fade btn-lux mt-10">
               Explore Our Services
+              <span aria-hidden>→</span>
             </a>
           </div>
         </section>
@@ -508,8 +566,9 @@ export default function Homepage() {
                   </span>
                 ))}
             </h2>
-            <a href={links.newsletter} {...ext} className="n-line press mt-10 inline-block rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black">
+            <a href={links.newsletter} {...ext} className="n-line btn-lux mt-10">
               Join the Newsletter
+              <span aria-hidden>→</span>
             </a>
           </div>
         </section>
@@ -540,107 +599,131 @@ export default function Homepage() {
             <p className="fin-line mx-auto mt-5 max-w-lg text-sm text-white/50">
               Begin your path to mastery in private wealth and lawful strategy.
             </p>
-            <a href={links.challenge3Day} {...ext} className="fin-line press mt-10 inline-block rounded-full bg-gold px-9 py-3 text-xs uppercase tracking-luxe text-black">
+            <a href={links.challenge3Day} {...ext} className="fin-line btn-lux mt-10">
               Secure My Spot
+              <span aria-hidden>→</span>
             </a>
           </div>
         </section>
 
-        {/* Footer — centered colophon */}
-        <footer className="relative z-10 overflow-hidden border-t border-gold/15">
-          <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-px"
-            style={{ background: "linear-gradient(90deg, transparent, rgba(217,164,65,0.65), transparent)" }}
-          />
-          {/* Giant watermark wordmark — the signature. */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center overflow-hidden">
-            <span className="translate-y-[24%] select-none whitespace-nowrap font-serif text-[22vw] leading-none text-white/[0.022]">
-              Matisse
-            </span>
+        {/* Footer — the charter colophon */}
+        <footer className="relative z-10 overflow-hidden border-t border-white/8">
+          {/* Faint shield watermark + purple accent, top-right. */}
+          <div className="pointer-events-none absolute -right-6 -top-10 opacity-[0.06]">
+            <Image src="/logo-mark.png" alt="" width={520} height={347} className="h-[24rem] w-auto object-contain" />
           </div>
-          {/* Ambient floor glow. */}
           <div
-            className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[90vmin] -translate-x-1/2 rounded-full"
-            style={{ background: "radial-gradient(circle, rgba(120,70,160,0.2) 0%, rgba(5,5,5,0) 70%)" }}
+            className="pointer-events-none absolute right-0 top-0 h-72 w-2/3"
+            style={{ background: "radial-gradient(55% 100% at 82% 0%, rgba(120,70,160,0.2) 0%, rgba(5,5,5,0) 70%)" }}
           />
 
-          <div className="relative mx-auto max-w-4xl px-6 pt-24 text-center">
-            {/* Brand */}
-            <Image
-              src="/logo-mark.png"
-              alt="Matisse Academy"
-              width={300}
-              height={200}
-              className="mx-auto h-16 w-auto object-contain"
-            />
-            <p className="mt-6 font-serif text-3xl tracking-wide text-gold-gradient">
-              Matisse Academy
-            </p>
-            <p className="mt-3 font-serif text-base italic text-white/60">
-              &ldquo;Notice is the heart of equity.&rdquo;
-            </p>
-            <p className="mt-1 text-[0.62rem] uppercase tracking-[0.35em] text-gold/50">
-              Matthew 4:19 · KJV 1611
-            </p>
-
-            <a
-              href={links.challenge3Day}
-              {...ext}
-              className="press mt-10 inline-flex items-center gap-3 rounded-full bg-gold px-9 py-3.5 text-xs uppercase tracking-luxe text-black"
-            >
-              Secure My Spot
-              <span aria-hidden>→</span>
-            </a>
-
-            {/* Centered rule */}
-            <div className="mx-auto mt-16 h-px w-16 bg-gold/40" />
-
-            {/* Nav — centered serif menu */}
-            <nav className="mx-auto mt-12 flex max-w-3xl flex-wrap justify-center gap-x-8 gap-y-3">
-              {footerNav.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  {...ext}
-                  className="font-serif text-lg text-white/55 transition-colors duration-300 hover:text-gold-bright sm:text-xl"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
-
-            {/* Socials — centered icon buttons */}
-            <div className="mt-12 flex items-center justify-center gap-3">
-              {socialLinks.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  {...ext}
-                  aria-label={s.label}
-                  className="press flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white/60 transition-colors duration-300 hover:border-gold hover:bg-gold hover:text-black"
-                >
-                  <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden>
-                    {socialIcons[s.label]}
-                  </svg>
-                </a>
-              ))}
+          {/* Top band */}
+          <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-16">
+            <div className="flex flex-col items-start justify-between gap-10 md:flex-row md:items-end">
+              <div>
+                <p className="text-[0.7rem] uppercase tracking-[0.35em] text-gold/60">
+                  The Charter Awaits
+                </p>
+                <h2 className="mt-4 font-serif text-5xl leading-[1.02] text-white sm:text-6xl">
+                  Begin your <span className="text-gold-gradient">charter.</span>
+                </h2>
+                <p className="mt-5 text-sm text-white/45">
+                  Your legacy starts with a decision.
+                </p>
+              </div>
+              <a href={links.challenge3Day} {...ext} className="btn-lux shrink-0">
+                Secure My Spot
+                <span aria-hidden>→</span>
+              </a>
             </div>
           </div>
 
-          {/* Disclaimer + bottom bar */}
-          <div className="relative mt-20 border-t border-white/10">
-            <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 px-6 py-8 text-center">
-              <p className="max-w-2xl text-[0.7rem] leading-relaxed text-white/30">
-                <span className="uppercase tracking-luxe text-gold/45">Disclaimer — </span>
-                For informational purposes only. We are not BAR-card licensed
-                enrollees, nor is any content herein legal, tax, or financial advice.
-              </p>
-              <div className="flex flex-col items-center gap-1 text-[0.68rem] uppercase tracking-luxe text-white/35 sm:flex-row sm:gap-4">
-                <span>© {new Date().getFullYear()} Matisse Academy · Amyr Samah El</span>
-                <span className="hidden text-gold/30 sm:inline">·</span>
-                <span className="text-gold/40">All rights reserved</span>
+          {/* Divider with a centred chevron notch */}
+          <div className="relative mx-auto max-w-6xl px-6">
+            <div className="border-t border-gold/25" />
+            <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 text-gold/70">
+              <svg viewBox="0 0 24 24" className="h-5 w-5">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Link columns */}
+          <div className="relative mx-auto max-w-6xl px-6 py-16">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 md:grid-cols-5">
+              {footerCols.map((col, ci) => (
+                <div key={col.key} className={ci > 0 ? "md:border-l md:border-white/8 md:pl-8" : ""}>
+                  <div className="flex items-center gap-2.5">
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 text-gold-bright">{footerIcons[col.key]}</svg>
+                    <span className="text-[0.68rem] uppercase tracking-luxe text-gold/70">{col.title}</span>
+                  </div>
+                  <ul className="mt-5 space-y-3">
+                    {col.links.map((l) => (
+                      <li key={l.label}>
+                        <a href={l.href} {...ext} className="text-sm text-white/60 transition-colors hover:text-gold-bright">
+                          {l.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              {/* Connect */}
+              <div className="md:border-l md:border-white/8 md:pl-8">
+                <div className="flex items-center gap-2.5">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 text-gold-bright">{footerIcons.connect}</svg>
+                  <span className="text-[0.68rem] uppercase tracking-luxe text-gold/70">Connect</span>
+                </div>
+                <p className="mt-5 text-sm leading-relaxed text-white/50">
+                  Join a community of high achievers building generational impact.
+                </p>
+                <a href={links.appointment} {...ext} className="mt-4 inline-flex items-center gap-1.5 text-xs uppercase tracking-luxe text-[#a878e0] transition-colors hover:text-white">
+                  Contact Us <span aria-hidden>→</span>
+                </a>
               </div>
             </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="relative border-t border-white/8">
+            <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 md:grid-cols-3 md:items-center">
+              <div className="flex items-center gap-4">
+                <Image src="/logo-mark.png" alt="Matisse Academy" width={140} height={93} className="h-12 w-auto object-contain" />
+                <div>
+                  <p className="font-serif text-xl leading-none text-gold-gradient">Matisse Academy</p>
+                  <p className="mt-1.5 font-serif text-sm italic text-white/55">
+                    &ldquo;Notice is the heart of equity.&rdquo;
+                  </p>
+                  <p className="mt-1 text-[0.58rem] uppercase tracking-[0.3em] text-gold/45">Matthew 4:19</p>
+                </div>
+              </div>
+              <div className="text-center text-xs text-white/35">
+                <p>© {new Date().getFullYear()} Matisse Academy. All rights reserved.</p>
+                <p className="mt-2">
+                  <a href="https://matisseacademy.com" {...ext} className="transition-colors hover:text-white">Privacy Policy</a>
+                  <span className="mx-2 text-white/20">|</span>
+                  <a href="https://matisseacademy.com" {...ext} className="transition-colors hover:text-white">Terms of Service</a>
+                </p>
+              </div>
+              <div className="flex flex-col items-start gap-3 md:items-end">
+                <p className="text-[0.65rem] uppercase tracking-luxe text-gold/60">Follow Us</p>
+                <div className="flex items-center gap-3">
+                  {socialLinks.map((s) => (
+                    <a key={s.label} href={s.href} {...ext} aria-label={s.label} className="press flex h-10 w-10 items-center justify-center rounded-full border border-gold/45 text-gold-bright transition-colors hover:bg-gold hover:text-black">
+                      <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" aria-hidden>{socialIcons[s.label]}</svg>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Legal disclaimer strip */}
+          <div className="relative border-t border-white/5">
+            <p className="mx-auto max-w-4xl px-6 py-6 text-center text-[0.66rem] leading-relaxed text-white/25">
+              For informational purposes only. We are not BAR-card licensed
+              enrollees, nor is any content herein legal, tax, or financial advice.
+            </p>
           </div>
         </footer>
       </main>

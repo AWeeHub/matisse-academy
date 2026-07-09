@@ -55,6 +55,9 @@ export default function CinematicIntro() {
       // Prime the reveal targets (transform-only + opacity).
       gsap.set(reveals, { opacity: 0, y: intro.reveal.yFromPx });
       gsap.set(navLogo, { opacity: 0 });
+      // Scrims start clear so the logo reads cleanly at rest; they fade in as
+      // the hero copy reveals.
+      gsap.set(q(".intro-scrim"), { opacity: 0 });
 
       if (prefersReduced) {
         // No motion: present the finished state immediately, no dead scroll.
@@ -62,6 +65,7 @@ export default function CinematicIntro() {
         gsap.set(reveals, { opacity: 1, y: 0 });
         gsap.set(navLogo, { opacity: 1 });
         gsap.set(heroLogo, { opacity: 0 });
+        gsap.set(q(".intro-scrim"), { opacity: 1 });
         gsap.set(cue, { opacity: 0 });
         return;
       }
@@ -125,23 +129,32 @@ export default function CinematicIntro() {
         tl.to(stage, { scale: intro.scroll.stage.scaleTo, ease: "none" }, 0);
       }
 
-      // Fallback only: the flat hero logo recedes and dissolves in place.
+      // Fallback only: the flat hero logo is clear at rest, then grows larger
+      // and dissolves as you scroll, opening into the hero.
       if (heroLogo) {
         tl.to(
           heroLogo,
-          { scale: intro.scroll.logo.scaleTo, ease: "power1.out" },
+          { scale: intro.scroll.logo.scaleTo, ease: "power1.in" },
           0
         );
         tl.to(
           heroLogo,
           {
             opacity: 0,
-            ease: "power1.in",
+            ease: "power2.in",
             duration: intro.scroll.logo.fadeDuration,
           },
-          0
+          0.2
         );
       }
+
+      // Fade the 3D scrims in as the hero copy reveals (kept off at rest so
+      // the chamber + seal read clearly first).
+      tl.to(
+        q(".intro-scrim"),
+        { opacity: 1, ease: "none", duration: 0.5 },
+        intro.reveal.startAt - 0.1
+      );
 
       // Scroll cue fades out almost immediately.
       tl.to(
@@ -216,7 +229,7 @@ export default function CinematicIntro() {
           href={links.challenge3Day}
           target="_blank"
           rel="noopener noreferrer"
-          className="reveal-hidden press rounded-full border border-gold/40 px-5 py-2 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:bg-gold/10"
+          className="reveal-hidden btn-lux btn-lux-sm"
         >
           Secure My Spot
         </a>
@@ -238,14 +251,14 @@ export default function CinematicIntro() {
               {/* Legibility scrim so the hero copy reads over the scene:
                   a soft dark oval behind the text plus an edge vignette. */}
               <div
-                className="pointer-events-none absolute inset-0"
+                className="intro-scrim pointer-events-none absolute inset-0"
                 style={{
                   background:
                     "radial-gradient(60% 46% at 50% 44%, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.4) 55%, rgba(5,5,5,0) 100%)",
                 }}
               />
               <div
-                className="pointer-events-none absolute inset-0"
+                className="intro-scrim pointer-events-none absolute inset-0"
                 style={{
                   background:
                     "radial-gradient(130% 100% at 50% 60%, rgba(5,5,5,0) 40%, rgba(5,5,5,0.5) 74%, rgba(5,5,5,0.9) 100%)",
@@ -305,9 +318,10 @@ export default function CinematicIntro() {
               href={links.challenge3Day}
               target="_blank"
               rel="noopener noreferrer"
-              className="reveal-hidden press pointer-events-auto mt-10 rounded-full bg-gold px-8 py-3 text-xs uppercase tracking-luxe text-black"
+              className="reveal-hidden btn-lux pointer-events-auto mt-10"
             >
               Secure My Spot
+              <span aria-hidden>→</span>
             </a>
           </div>
 

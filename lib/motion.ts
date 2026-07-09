@@ -34,16 +34,16 @@ export const intro = {
     pinWrapVh: 240,
     /** GSAP scrub smoothing in seconds. */
     scrub: 1.1,
-    /** Hero logo dissolves in place: the camera pulls back (scale down) while
-     *  the logo fades out. No travel — it simply recedes and dissolves. */
+    /** Hero logo is clear at rest, then as you scroll it grows larger and
+     *  fades out, opening into the hero section behind it. */
     logo: {
-      scaleTo: 0.62,
+      scaleTo: 1.9,
       /** Fraction of the scroll over which the logo fades to zero. */
-      fadeDuration: 0.62,
+      fadeDuration: 0.7,
     },
-    /** Camera "pull back": the whole stage eases back as you scroll. */
+    /** Camera "push in": the whole stage eases forward slightly as you scroll. */
     stage: {
-      scaleTo: 0.9,
+      scaleTo: 1.06,
     },
     /** When the permanent nav logo fades in (scroll progress 0-1). */
     navFadeInAt: 0.42,

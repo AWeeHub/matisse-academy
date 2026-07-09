@@ -59,17 +59,19 @@ function Seal({ progress }: { progress: MutableRefObject<number> }) {
     const m = ref.current;
     if (!m) return;
     const t = state.clock.elapsedTime;
+    const p = progress.current;
     m.position.y = 1.1 + Math.sin(t * 0.6) * 0.12;
-    m.rotation.y = Math.sin(t * 0.3) * 0.12;
+    m.rotation.y = Math.sin(t * 0.3) * 0.1;
+    // Clear at rest, then grows larger as you scroll and fades away later so
+    // it reads clearly first before opening into the hero.
+    m.scale.setScalar(1 + p * 1.0);
     if (matRef.current) {
-      // Fade out over progress 0.22 -> 0.46.
-      const p = progress.current;
-      matRef.current.opacity = 1 - THREE.MathUtils.smoothstep(p, 0.22, 0.46);
+      matRef.current.opacity = 1 - THREE.MathUtils.smoothstep(p, 0.34, 0.72);
     }
   });
   return (
     <mesh ref={ref} position={[0, 1.1, -3]}>
-      <planeGeometry args={[5.4, 3.6]} />
+      <planeGeometry args={[6.6, 4.4]} />
       <meshBasicMaterial ref={matRef} map={tex} transparent toneMapped={false} />
     </mesh>
   );
@@ -145,7 +147,8 @@ function Rig({ progress }: { progress: MutableRefObject<number> }) {
   const { camera } = useThree();
   useFrame(() => {
     const p = progress.current;
-    const z = THREE.MathUtils.lerp(15, -1.5, p);
+    // Start close so the seal reads clearly, then push forward down the hall.
+    const z = THREE.MathUtils.lerp(11, -2, p);
     camera.position.set(0, 1.3, z);
     camera.lookAt(0, 1.2, -52);
   });
