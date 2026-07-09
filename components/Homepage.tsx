@@ -115,7 +115,7 @@ const challenges = [
     title: "Master Your Rights Challenge",
     start: "2026-07-13",
     end: "2026-07-15",
-    blurb: "A focused, live intensive to master your rights, fast.",
+    blurb: "A focused live intensive — master your rights, fast.",
     href: links.challenge3Day,
   },
   {
@@ -123,7 +123,7 @@ const challenges = [
     title: "Master Your Rights Challenge",
     start: "2026-09-15",
     end: "2026-09-19",
-    blurb: "The deep-dive format — equity, law, and private wealth in full.",
+    blurb: "The deep-dive format — equity, law, and wealth in full.",
     href: links.challenge5Day,
   },
 ];
