@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
-
-/** Lightweight YouTube embed: shows the poster + a gold play button, and only
- *  loads the YouTube iframe after the first click — so the heavy YT player
- *  never touches initial load. Pass the 11-char video id.
+/** Video poster with a gold play button.
  *
- *  PLACEHOLDER is the sentinel used until Alvin provides the real @amyrlaw
- *  links; it renders a styled "video coming" panel instead of an embed. */
+ *  NOTE: the @amyrlaw channel currently has embedding DISABLED (YouTube
+ *  Error 153 / "only available on YouTube"), so an inline iframe just shows an
+ *  error. Until Amyr enables "Allow embedding" (per video, YouTube Studio →
+ *  Content → Edit → Show more → Allow embedding) OR provides an mp4 to
+ *  self-host, clicking the poster opens the video on YouTube in a new tab — no
+ *  broken player. Once embedding is on, restore the click-to-load iframe.
+ *
+ *  PLACEHOLDER renders a styled "video coming" panel. */
 export const PLACEHOLDER = "__PLACEHOLDER__";
 
 export default function VideoEmbed({
@@ -19,11 +21,11 @@ export default function VideoEmbed({
   title?: string;
   poster?: string;
 }) {
-  const [playing, setPlaying] = useState(false);
   const isPlaceholder = !videoId || videoId === PLACEHOLDER;
 
   const thumb =
     poster || (!isPlaceholder ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : undefined);
+  const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
   return (
     <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gold/20 bg-white/[0.02] shadow-2xl">
@@ -47,20 +49,13 @@ export default function VideoEmbed({
             Video coming soon
           </p>
         </div>
-      ) : playing ? (
-        <iframe
-          className="absolute inset-0 h-full w-full"
-          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
-          title={title}
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          allowFullScreen
-        />
       ) : (
-        <button
-          type="button"
-          onClick={() => setPlaying(true)}
-          aria-label={`Play: ${title}`}
-          className="group absolute inset-0 h-full w-full"
+        <a
+          href={watchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Watch on YouTube: ${title}`}
+          className="group absolute inset-0 block h-full w-full"
         >
           {thumb && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -72,7 +67,7 @@ export default function VideoEmbed({
               onError={(e) => {
                 // Not every upload has a maxres poster — fall back to hqdefault.
                 const img = e.currentTarget;
-                if (!isPlaceholder && !img.src.includes("hqdefault")) {
+                if (!img.src.includes("hqdefault")) {
                   img.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
                 }
               }}
@@ -84,7 +79,10 @@ export default function VideoEmbed({
               <path d="M8 5v14l11-7L8 5z" fill="currentColor" />
             </svg>
           </span>
-        </button>
+          <span className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap text-[0.62rem] uppercase tracking-luxe text-white/70">
+            Watch on YouTube ↗
+          </span>
+        </a>
       )}
     </div>
   );
