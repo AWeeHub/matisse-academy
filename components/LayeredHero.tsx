@@ -42,10 +42,10 @@ const socials = [
 ];
 
 /**
- * Immersive-reveal hero. One cinematic image opens from a centred frame to
- * full-bleed (clip-path wipe + scale settle) as the page loads, while the
- * headline masks up line by line — the "pull you in" beat. Deliberately a
- * SINGLE clean image (no montage seams). Header, feature row + chrome kept.
+ * Immersive-reveal hero. Two grand panels start closed at centre, then slide
+ * apart like doors to reveal the deep scene behind (scale settling from an
+ * over-zoom) while the headline masks up line by line — the "part the columns,
+ * enter the hall" beat. Header, feature row + chrome kept.
  */
 export default function LayeredHero() {
   const root = useRef<HTMLDivElement>(null);
@@ -56,44 +56,29 @@ export default function LayeredHero() {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (reduced) {
-        gsap.set(q(".reveal-frame"), { clipPath: "inset(0% round 0px)" });
+        gsap.set(q(".panel-l"), { xPercent: -100 });
+        gsap.set(q(".panel-r"), { xPercent: 100 });
         gsap.set(q(".hero-img"), { scale: 1 });
         gsap.set(q(".mask-inner, .fade-in"), { yPercent: 0, opacity: 1, clearProps: "all" });
         return;
       }
 
-      const tl = gsap.timeline({ delay: 0.15 });
+      const tl = gsap.timeline({ delay: 0.2 });
 
-      // 1. The frame wipes open from a centred window to full-bleed, image
-      //    settling from an over-scale — the immersive reveal.
-      tl.fromTo(
-        q(".reveal-frame"),
-        { clipPath: "inset(30% 26% round 26px)" },
-        { clipPath: "inset(0% 0% round 0px)", duration: 1.5, ease: "power4.inOut" }
-      ).fromTo(
-        q(".hero-img"),
-        { scale: 1.35 },
-        { scale: 1, duration: 1.8, ease: "power3.out" },
-        0
-      );
+      // 1. The deep scene sits behind, over-zoomed, and settles.
+      tl.fromTo(q(".hero-img"), { scale: 1.28 }, { scale: 1, duration: 2.0, ease: "power3.out" }, 0);
 
-      // 2. Headline lines mask up out of their clip.
-      tl.fromTo(
-        q(".mask-inner"),
-        { yPercent: 115 },
-        { yPercent: 0, duration: 1.0, ease: "power4.out", stagger: 0.12 },
-        0.7
-      );
+      // 2. The two panels part — sliding off-screen to reveal the hall.
+      tl.fromTo(q(".panel-l"), { xPercent: 0 }, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, 0.15)
+        .fromTo(q(".panel-r"), { xPercent: 0 }, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, 0.15);
 
-      // 3. Supporting chrome fades in.
-      tl.fromTo(
-        q(".fade-in"),
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.08 },
-        1.1
-      );
+      // 3. Headline lines mask up as the doors open.
+      tl.fromTo(q(".mask-inner"), { yPercent: 115 }, { yPercent: 0, duration: 1.0, ease: "power4.out", stagger: 0.12 }, 0.95);
 
-      // Gentle scroll parallax on the settled image (single plane, no seams).
+      // 4. Supporting chrome fades in.
+      tl.fromTo(q(".fade-in"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.08 }, 1.3);
+
+      // Gentle scroll parallax on the settled scene.
       gsap.to(q(".hero-img"), {
         yPercent: 12,
         ease: "none",
@@ -107,14 +92,22 @@ export default function LayeredHero() {
   return (
     <div ref={root} className="relative bg-void">
       <section className="relative h-screen w-full overflow-hidden">
-        {/* ---------- IMMERSIVE IMAGE ---------- */}
-        <div className="reveal-frame absolute inset-0 overflow-hidden">
+        {/* ---------- DEEP SCENE (revealed behind the panels) ---------- */}
+        <div className="absolute inset-0 overflow-hidden">
           <div className="hero-img absolute inset-0 will-change-transform">
             <Image src="/hero/scales.jpg" alt="Scales of justice" fill priority sizes="100vw" className="object-cover object-center" />
           </div>
           {/* Grade: darken + push gold/ink so the photo reads on-brand. */}
           <div className="absolute inset-0" style={{ background: "radial-gradient(120% 100% at 68% 45%, rgba(5,5,5,0) 30%, rgba(10,6,16,0.55) 100%)" }} />
           <div className="absolute inset-0 mix-blend-color opacity-40" style={{ background: "linear-gradient(120deg, #3a2a60 0%, #b0782a 100%)" }} />
+        </div>
+
+        {/* ---------- PARTING PANELS (the doors that open on load) ---------- */}
+        <div className="panel-l pointer-events-none absolute inset-y-0 left-0 z-10 w-1/2 will-change-transform" style={{ background: "linear-gradient(100deg, #05040a 0%, #0d0916 82%, #17101f 100%)", borderRight: "1px solid rgba(217,164,65,0.5)", boxShadow: "8px 0 40px -8px rgba(0,0,0,0.7)" }}>
+          <div className="absolute inset-0 opacity-40" style={{ background: "repeating-linear-gradient(90deg, transparent 0 54px, rgba(217,164,65,0.05) 54px 56px)" }} />
+        </div>
+        <div className="panel-r pointer-events-none absolute inset-y-0 right-0 z-10 w-1/2 will-change-transform" style={{ background: "linear-gradient(260deg, #05040a 0%, #0d0916 82%, #17101f 100%)", borderLeft: "1px solid rgba(217,164,65,0.5)", boxShadow: "-8px 0 40px -8px rgba(0,0,0,0.7)" }}>
+          <div className="absolute inset-0 opacity-40" style={{ background: "repeating-linear-gradient(90deg, transparent 0 54px, rgba(217,164,65,0.05) 54px 56px)" }} />
         </div>
 
         {/* ---------- LEGIBILITY SCRIMS ---------- */}
