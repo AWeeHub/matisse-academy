@@ -8,6 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { intro } from "@/lib/motion";
 import { links } from "@/lib/links";
 import Homepage from "@/components/Homepage";
+import NavMenu from "@/components/NavMenu";
+import MobileNav from "@/components/MobileNav";
 
 const ChamberScene = dynamic(() => import("@/components/ChamberScene"), {
   ssr: false,
@@ -239,25 +241,22 @@ export default function CinematicIntro() {
             Matisse Academy
           </span>
         </div>
-        <nav className="reveal-hidden hidden items-center gap-9 text-xs uppercase tracking-luxe text-white/60 md:flex">
-          <a className="transition-colors hover:text-white" href="#challenge">
-            The Challenge
-          </a>
-          <a className="transition-colors hover:text-white" href="#services">
-            Services
-          </a>
-          <a className="transition-colors hover:text-white" href="#founder">
-            Founder
-          </a>
-        </nav>
-        <a
-          href={links.challenge3Day}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="reveal-hidden btn-lux btn-lux-sm"
-        >
-          Secure My Spot
-        </a>
+        <NavMenu />
+        <div className="flex items-center gap-3">
+          {/* Wrapper controls mobile visibility — btn-lux sets its own display
+              and would override a `hidden` placed directly on the anchor. */}
+          <span className="hidden md:inline-flex">
+            <a
+              href={links.challenge3Day}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="reveal-hidden btn-lux btn-lux-sm"
+            >
+              Secure My Spot
+            </a>
+          </span>
+          <MobileNav />
+        </div>
       </header>
 
       {/* The pinned intro stage. Height drives the scroll duration; the stage
