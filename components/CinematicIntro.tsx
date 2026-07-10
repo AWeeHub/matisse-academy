@@ -225,7 +225,7 @@ export default function CinematicIntro() {
   }, [use3D]);
 
   return (
-    <div ref={root} className="grain relative">
+    <div ref={root} className="intro-anim grain relative">
       {/* Persistent navigation. Contents fade in during the transition. */}
       <header className="site-header fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 md:px-12">
         <div className="nav-logo flex items-center gap-3">

@@ -112,8 +112,10 @@
     );
   }
 
-  /* Elements that fade in during the intro scroll reveal start hidden. */
-  .reveal-hidden {
+  /* Elements that fade in during the intro scroll reveal start hidden — but
+     only inside the animated intro (.intro-anim). Shared components that use
+     this class on other pages (e.g. the nav on /about) stay visible. */
+  .intro-anim .reveal-hidden {
     opacity: 0;
     will-change: opacity, transform;
   }
