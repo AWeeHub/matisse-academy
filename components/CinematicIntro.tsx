@@ -63,15 +63,6 @@ export default function CinematicIntro() {
   }, []);
 
   useLayoutEffect(() => {
-    let entranceTl: gsap.core.Timeline | null = null;
-    let started = false;
-    let fallbackId = 0;
-    let removeStart: (() => void) | undefined;
-
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
     const ctx = gsap.context((self) => {
       const q = self.selector!;
       const heroLogo = q(".hero-logo")[0] as HTMLElement;
@@ -80,17 +71,23 @@ export default function CinematicIntro() {
       const glow = q(".ambient-glow")[0] as HTMLElement;
       const cue = q(".scroll-cue")[0] as HTMLElement;
       const navLogo = q(".nav-logo")[0] as HTMLElement;
-      const heroCopy = q(".hero-copy")[0] as HTMLElement;
       const reveals = q(".reveal-hidden") as HTMLElement[];
 
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      // Prime the reveal targets (transform-only + opacity).
+      gsap.set(reveals, { opacity: 0, y: intro.reveal.yFromPx });
       gsap.set(navLogo, { opacity: 0 });
-      // Scrims start clear so the chamber reads at rest; they fade up with copy.
+      // Scrims start clear so the logo reads cleanly at rest; they fade in as
+      // the hero copy reveals.
       gsap.set(q(".intro-scrim"), { opacity: 0 });
 
       if (prefersReduced) {
         // No motion: present the finished state immediately, no dead scroll.
         gsap.set(".pin-wrap", { height: "100vh" });
-        gsap.set(reveals, { opacity: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(reveals, { opacity: 1, y: 0 });
         gsap.set(navLogo, { opacity: 1 });
         gsap.set(heroLogo, { opacity: 0 });
         gsap.set(q(".intro-scrim"), { opacity: 1 });
@@ -98,7 +95,37 @@ export default function CinematicIntro() {
         return;
       }
 
-      // Scroll-cue idle bounce (both modes).
+      // --- Idle loops. The DOM logo/glow only exist in the static fallback;
+      //     in 3D mode the chamber carries the visual, so guard them. ---
+      if (heroLogoInner) {
+        gsap.to(heroLogoInner, {
+          scale: intro.breathe.scaleTo,
+          duration: intro.breathe.durationSec,
+          ease: intro.breathe.ease,
+          repeat: -1,
+          yoyo: true,
+        });
+        gsap.to(heroLogoInner, {
+          yPercent: -(intro.float.yPx / 6),
+          duration: intro.float.durationSec,
+          ease: intro.float.ease,
+          repeat: -1,
+          yoyo: true,
+        });
+      }
+      if (glow) {
+        gsap.fromTo(
+          glow,
+          { opacity: intro.glow.opacityFrom },
+          {
+            opacity: intro.glow.opacityTo,
+            duration: intro.glow.durationSec,
+            ease: intro.glow.ease,
+            repeat: -1,
+            yoyo: true,
+          }
+        );
+      }
       gsap.to(cue, {
         y: intro.cue.bounceYPx,
         duration: intro.cue.durationSec,
@@ -107,80 +134,80 @@ export default function CinematicIntro() {
         yoyo: true,
       });
 
-      // Fallback-only idle loops — the DOM logo + glow live only there.
-      if (heroLogoInner) {
-        gsap.to(heroLogoInner, { scale: intro.breathe.scaleTo, duration: intro.breathe.durationSec, ease: intro.breathe.ease, repeat: -1, yoyo: true });
-        gsap.to(heroLogoInner, { yPercent: -(intro.float.yPx / 6), duration: intro.float.durationSec, ease: intro.float.ease, repeat: -1, yoyo: true });
-      }
-      if (glow) {
-        gsap.fromTo(glow, { opacity: intro.glow.opacityFrom }, { opacity: intro.glow.opacityTo, duration: intro.glow.durationSec, ease: intro.glow.ease, repeat: -1, yoyo: true });
-      }
-
-      // Scroll-driven master timeline (scrubbed, pinned). onUpdate feeds the
-      // chamber its 0-1 camera-journey progress.
+      // --- Scroll-driven master timeline (scrubbed, pinned) ---
+      // onUpdate feeds the WebGL chamber its 0-1 camera-journey progress.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".pin-wrap",
           start: "top top",
           end: "bottom bottom",
           scrub: intro.scroll.scrub,
-          onUpdate: (st) => {
-            progress.current = st.progress;
+          onUpdate: (self) => {
+            progress.current = self.progress;
           },
         },
       });
 
-      if (use3D) {
-        // --- 3D hero: the copy is present at rest (built in by the load
-        //     entrance below); scrolling dives it away as the camera flies
-        //     down the hall toward the light. ---
-        gsap.set(reveals, {
-          opacity: 0,
-          y: intro.entrance.copy.yFromPx,
-          filter: `blur(${intro.entrance.copy.blurPx}px)`,
-        });
-
-        entranceTl = gsap.timeline({ paused: true });
-        entranceTl
-          .to(q(".intro-scrim"), { opacity: 1, duration: intro.entrance.scrimDurationSec, ease: "power2.out" }, 0)
-          .to(reveals, { opacity: 1, y: 0, filter: "blur(0px)", ease: intro.entrance.copy.ease, stagger: intro.entrance.copy.staggerSec, duration: intro.entrance.copy.durationSec }, 0.12)
-          .to(navLogo, { opacity: 1, duration: 0.8, ease: "power2.out" }, 0.35);
-
-        // Normalize the scrubbed timeline to full length so the copy dives in
-        // the first fraction of scroll, then the camera keeps descending.
-        tl.to({}, { duration: 1 }, 0);
-        tl.to(heroCopy, { autoAlpha: 0, y: -46, ease: "power2.in", duration: intro.entrance.copyDiveDuration }, 0);
-        tl.to(cue, { opacity: 0, ease: "none", duration: intro.cue.hideAtProgress }, 0);
-      } else {
-        // --- Fallback (unchanged): copy hidden at rest, revealed on scroll as
-        //     the flat logo grows and dissolves. ---
-        gsap.set(reveals, { opacity: 0, y: intro.reveal.yFromPx });
-
+      // Fallback only: gently pull the flat stage back as you scroll. In 3D
+      // mode the camera does the moving, so leave the canvas untouched.
+      if (!use3D) {
         tl.to(stage, { scale: intro.scroll.stage.scaleTo, ease: "none" }, 0);
-        if (heroLogo) {
-          tl.to(heroLogo, { scale: intro.scroll.logo.scaleTo, ease: "power1.in" }, 0);
-          tl.to(heroLogo, { opacity: 0, ease: "power2.in", duration: intro.scroll.logo.fadeDuration }, 0.2);
-        }
-        tl.to(q(".intro-scrim"), { opacity: 1, ease: "none", duration: 0.5 }, intro.reveal.startAt - 0.1);
-        tl.to(cue, { opacity: 0, ease: "none" }, 0).to(cue, { opacity: 0, duration: intro.cue.hideAtProgress }, 0);
-        tl.to(reveals, { opacity: 1, y: 0, ease: intro.reveal.ease, stagger: intro.reveal.staggerSec, duration: intro.reveal.durationSec }, intro.reveal.startAt);
-        tl.to(navLogo, { opacity: 1, ease: "none" }, intro.scroll.navFadeInAt);
       }
-    }, root);
 
-    // Play the load entrance the moment the preloader curtain lifts (3D,
-    // non-reduced). Failsafe timer covers a missed signal.
-    if (use3D && !prefersReduced) {
-      const start = () => {
-        if (started) return;
-        started = true;
-        window.clearTimeout(fallbackId);
-        gsap.delayedCall(intro.entrance.startDelaySec, () => entranceTl?.play());
-      };
-      window.addEventListener("ma:intro-start", start, { once: true });
-      fallbackId = window.setTimeout(start, intro.entrance.fallbackMs);
-      removeStart = () => window.removeEventListener("ma:intro-start", start);
-    }
+      // Fallback only: the flat hero logo is clear at rest, then grows larger
+      // and dissolves as you scroll, opening into the hero.
+      if (heroLogo) {
+        tl.to(
+          heroLogo,
+          { scale: intro.scroll.logo.scaleTo, ease: "power1.in" },
+          0
+        );
+        tl.to(
+          heroLogo,
+          {
+            opacity: 0,
+            ease: "power2.in",
+            duration: intro.scroll.logo.fadeDuration,
+          },
+          0.2
+        );
+      }
+
+      // Fade the 3D scrims in as the hero copy reveals (kept off at rest so
+      // the chamber + seal read clearly first).
+      tl.to(
+        q(".intro-scrim"),
+        { opacity: 1, ease: "none", duration: 0.5 },
+        intro.reveal.startAt - 0.1
+      );
+
+      // Scroll cue fades out almost immediately.
+      tl.to(
+        cue,
+        { opacity: 0, ease: "none" },
+        0
+      ).to(
+        cue,
+        { opacity: 0, duration: intro.cue.hideAtProgress },
+        0
+      );
+
+      // Progressive reveal of the homepage layers.
+      tl.to(
+        reveals,
+        {
+          opacity: 1,
+          y: 0,
+          ease: intro.reveal.ease,
+          stagger: intro.reveal.staggerSec,
+          duration: intro.reveal.durationSec,
+        },
+        intro.reveal.startAt
+      );
+
+      // Permanent nav logo fades in as the hero logo dissolves.
+      tl.to(navLogo, { opacity: 1, ease: "none" }, intro.scroll.navFadeInAt);
+    }, root);
 
     // Front-load layout settling so the async WebGL/texture init doesn't
     // trigger a late refresh that nudges the scroll position.
@@ -191,8 +218,6 @@ export default function CinematicIntro() {
     return () => {
       window.removeEventListener("load", onLoad);
       clearTimeout(t);
-      window.clearTimeout(fallbackId);
-      removeStart?.();
       ctx.revert();
     };
   }, [use3D]);
@@ -254,7 +279,7 @@ export default function CinematicIntro() {
                 className="intro-scrim pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(66% 52% at 50% 46%, rgba(5,5,5,0.84) 0%, rgba(5,5,5,0.52) 58%, rgba(5,5,5,0) 100%)",
+                    "radial-gradient(60% 46% at 50% 44%, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.4) 55%, rgba(5,5,5,0) 100%)",
                 }}
               />
               <div
@@ -298,8 +323,8 @@ export default function CinematicIntro() {
             </>
           )}
 
-          {/* Homepage-hero copy — built in on load, dives away on scroll. */}
-          <div className="hero-copy pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center">
+          {/* Homepage-hero copy — revealed as the logo transitions. */}
+          <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center">
             <p className="reveal-hidden mb-5 text-xs uppercase tracking-luxe text-gold/80">
               Matisse Academy
             </p>

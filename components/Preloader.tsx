@@ -25,8 +25,6 @@ export default function Preloader() {
       released = true;
       document.body.style.overflow = "";
       setDone(true);
-      // Cue the hero to perform its entrance now that the curtain is lifting.
-      window.dispatchEvent(new Event("ma:intro-start"));
     };
 
     if (reduced) {

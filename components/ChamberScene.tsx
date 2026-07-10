@@ -5,18 +5,6 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
-import { intro } from "@/lib/motion";
-
-const CH = intro.chamber;
-
-/** Shared cursor + entrance state, mutated per-frame (never triggers React). */
-type Vec2 = { x: number; y: number };
-type HeroState = {
-  pointer: Vec2; // eased drift actually applied
-  target: Vec2; // raw cursor target
-  began: boolean; // has the entrance been cued (curtain lifted)?
-  startAt: number; // clock time the entrance began (-1 = not yet)
-};
 
 const PER_SIDE = 9; // columns per side
 const SPACING = 4.2; // z-gap between columns
@@ -61,16 +49,9 @@ function Columns() {
   );
 }
 
-/** The gold seal, floating mid-hall as a lit billboard. Resolves up from black
- *  during the entrance, counter-drifts with the cursor for depth, then
- *  dissolves as the camera advances so it never collides with the hero copy. */
-function Seal({
-  progress,
-  hero,
-}: {
-  progress: MutableRefObject<number>;
-  hero: MutableRefObject<HeroState>;
-}) {
+/** The gold seal, floating mid-hall as a lit billboard. Dissolves as the
+ *  camera advances so it never collides with the revealed hero copy. */
+function Seal({ progress }: { progress: MutableRefObject<number> }) {
   const tex = useTexture("/logo-3d-clean.png");
   const ref = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.MeshBasicMaterial>(null);
@@ -79,26 +60,13 @@ function Seal({
     if (!m) return;
     const t = state.clock.elapsedTime;
     const p = progress.current;
-    const h = hero.current;
-    // How far into the load-entrance we are (0 before the curtain lifts).
-    const enter =
-      h.began && h.startAt >= 0
-        ? THREE.MathUtils.smoothstep((t - h.startAt) / CH.entranceSec, 0, 1)
-        : 0;
-    // Cursor parallax fades out as you dive so it never fights the descent.
-    const rest = 1 - THREE.MathUtils.smoothstep(p, 0, 0.5);
     m.position.y = 1.1 + Math.sin(t * 0.6) * 0.12;
-    m.position.x = -h.pointer.x * CH.sealSwayX * rest;
-    m.rotation.y = Math.sin(t * 0.3) * 0.1 + h.pointer.x * 0.05 * rest;
-    // A small emblem behind the headline at rest; grows + dissolves as you
-    // scroll so it never fights the copy for the centre.
-    m.scale.setScalar((0.62 + enter * 0.06) * (1 + p * 1.15));
+    m.rotation.y = Math.sin(t * 0.3) * 0.1;
+    // Clear at rest, then grows larger as you scroll and fades away later so
+    // it reads clearly first before opening into the hero.
+    m.scale.setScalar(1 + p * 1.0);
     if (matRef.current) {
-      const dissolve = 1 - THREE.MathUtils.smoothstep(p, 0.34, 0.72);
-      // Kept faint at rest so it reads as a gold ghost behind the text, then
-      // blooms brighter only as the copy dives away.
-      const restCap = 0.4 + THREE.MathUtils.smoothstep(p, 0.1, 0.4) * 0.6;
-      matRef.current.opacity = enter * dissolve * restCap;
+      matRef.current.opacity = 1 - THREE.MathUtils.smoothstep(p, 0.34, 0.72);
     }
   });
   return (
@@ -173,47 +141,16 @@ function EndLight() {
   );
 }
 
-/** The camera. Three moves compose on one frame:
- *   1. Entrance — an autoplay dolly-in when the curtain lifts (the "wow").
- *   2. Cursor parallax — the whole rig drifts toward the pointer; near columns
- *      shift more than the far light, so the hall gains real layered depth.
- *   3. Scroll dive — flies forward down the hall toward the light on scroll.
- *  Parallax eases out as you dive so it never fights the descent. */
-function Rig({
-  progress,
-  hero,
-}: {
-  progress: MutableRefObject<number>;
-  hero: MutableRefObject<HeroState>;
-}) {
+/** Scroll-driven camera fly-forward down the hall toward the light. Stops
+ *  short of the light so the columns keep framing the shot. */
+function Rig({ progress }: { progress: MutableRefObject<number> }) {
   const { camera } = useThree();
-  useFrame((state, delta) => {
+  useFrame(() => {
     const p = progress.current;
-    const h = hero.current;
-    const t = state.clock.elapsedTime;
-
-    // Ease the applied drift toward the raw cursor target (frame-rate aware).
-    const k = 1 - Math.pow(1 - CH.pointerEase, delta * 60);
-    h.pointer.x += (h.target.x - h.pointer.x) * k;
-    h.pointer.y += (h.target.y - h.pointer.y) * k;
-
-    // Entrance dolly: held far behind the curtain, then eases to rest depth.
-    if (h.began && h.startAt < 0) h.startAt = t;
-    const enter =
-      h.began && h.startAt >= 0
-        ? THREE.MathUtils.smoothstep((t - h.startAt) / CH.entranceSec, 0, 1)
-        : 0;
-    const startZ = THREE.MathUtils.lerp(CH.dollyFromZ, CH.restZ, enter);
-    const z = THREE.MathUtils.lerp(startZ, CH.diveZ, p);
-
-    // Parallax sway, present at rest, gone by the time you've dived in.
-    const sway = (1 - THREE.MathUtils.smoothstep(p, 0, 0.5)) * enter;
-    camera.position.set(
-      h.pointer.x * CH.swayX * sway,
-      1.3 + h.pointer.y * CH.swayY * sway,
-      z
-    );
-    camera.lookAt(0, 1.2 + h.pointer.y * 0.16 * sway, -52);
+    // Start close so the seal reads clearly, then push forward down the hall.
+    const z = THREE.MathUtils.lerp(11, -2, p);
+    camera.position.set(0, 1.3, z);
+    camera.lookAt(0, 1.2, -52);
   });
   return null;
 }
@@ -223,37 +160,6 @@ export default function ChamberScene({
 }: {
   progress: MutableRefObject<number>;
 }) {
-  // Cursor + entrance state, mutated per-frame without re-rendering React.
-  const hero = useRef<HeroState>({
-    pointer: { x: 0, y: 0 },
-    target: { x: 0, y: 0 },
-    began: false,
-    startAt: -1,
-  });
-
-  // Cue the entrance when the preloader curtain lifts (with a failsafe in
-  // case the signal is missed), and track the cursor for parallax.
-  useEffect(() => {
-    const begin = () => {
-      hero.current.began = true;
-    };
-    window.addEventListener("ma:intro-start", begin, { once: true });
-    const fb = window.setTimeout(begin, intro.entrance.fallbackMs);
-
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const onMove = (e: PointerEvent) => {
-      hero.current.target.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      hero.current.target.y = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    if (fine) window.addEventListener("pointermove", onMove, { passive: true });
-
-    return () => {
-      window.removeEventListener("ma:intro-start", begin);
-      window.clearTimeout(fb);
-      if (fine) window.removeEventListener("pointermove", onMove);
-    };
-  }, []);
-
   return (
     <Canvas
       dpr={[1, 2]}
@@ -275,13 +181,13 @@ export default function ChamberScene({
       />
       <Columns />
       <EndLight />
-      <Seal progress={progress} hero={hero} />
+      <Seal progress={progress} />
       <Dust />
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -7.4, -14]}>
         <planeGeometry args={[40, 90]} />
         <meshStandardMaterial color="#0c0912" roughness={0.35} metalness={0.5} />
       </mesh>
-      <Rig progress={progress} hero={hero} />
+      <Rig progress={progress} />
       <EffectComposer>
         <Bloom
           intensity={1.05}
