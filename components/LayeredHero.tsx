@@ -182,13 +182,6 @@ export default function LayeredHero() {
           </div>
         </div>
       </section>
-
-      {/* Spacer so scroll parallax has room in the preview. */}
-      <section className="flex h-screen items-center justify-center">
-        <p className="px-6 text-center font-serif text-2xl italic text-white/30">
-          (Immersive-reveal hero preview — 3D slider section comes next.)
-        </p>
-      </section>
     </div>
   );
 }
