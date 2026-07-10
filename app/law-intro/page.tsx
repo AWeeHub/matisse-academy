@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 // Preview-only route to judge the LAW re-grade of the chamber intro. Does NOT
 // touch the live homepage (app/page.tsx). A slider stands in for scroll so the
@@ -14,7 +14,22 @@ const ChamberSceneLaw = dynamic(
 
 export default function LawIntroPreview() {
   const progress = useRef(0);
-  const [, force] = useState(0);
+
+  // Auto-fly the hall on a slow ease-in-out ping-pong so the space can be felt
+  // without dragging anything (preview only; the real intro is scroll-driven).
+  useEffect(() => {
+    let raf = 0;
+    const PERIOD = 16000; // ms for a full down-and-back
+    const start = performance.now();
+    const loop = (t: number) => {
+      const phase = ((t - start) % PERIOD) / PERIOD; // 0..1
+      const tri = 1 - Math.abs(phase * 2 - 1); // 0→1→0
+      progress.current = tri * tri * (3 - 2 * tri); // smoothstep
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   return (
     <main className="relative h-screen w-full overflow-hidden bg-[#050505] text-white">
@@ -52,25 +67,10 @@ export default function LawIntroPreview() {
         </p>
       </div>
 
-      {/* Preview label + camera-progress slider (stands in for scroll). */}
-      <div className="absolute inset-x-0 bottom-0 z-30 flex flex-col items-center gap-3 px-6 pb-8">
+      {/* Preview label — camera auto-flies the hall, no interaction needed. */}
+      <div className="absolute inset-x-0 bottom-0 z-30 flex justify-center px-6 pb-8">
         <span className="rounded-full border border-gold/30 px-3 py-1 text-[0.6rem] uppercase tracking-[0.3em] text-gold/70">
           Law-grade preview · not live
-        </span>
-        <input
-          type="range"
-          min={0}
-          max={100}
-          defaultValue={0}
-          onChange={(e) => {
-            progress.current = Number(e.target.value) / 100;
-            force((n) => n + 1);
-          }}
-          className="w-full max-w-md accent-[#d9a441]"
-          aria-label="Camera fly-forward"
-        />
-        <span className="text-[0.6rem] uppercase tracking-[0.25em] text-white/40">
-          Drag to fly down the hall
         </span>
       </div>
     </main>
