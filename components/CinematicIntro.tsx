@@ -69,7 +69,8 @@ export default function CinematicIntro() {
       const heroLogoInner = q(".hero-logo-inner")[0] as HTMLElement;
       const stage = q(".stage")[0] as HTMLElement;
       const glow = q(".ambient-glow")[0] as HTMLElement;
-      const cue = q(".scroll-cue")[0] as HTMLElement;
+      const enterFade = q(".enter-fade") as HTMLElement[];
+      const spark = q(".enter-spark")[0] as HTMLElement;
       const navLogo = q(".nav-logo")[0] as HTMLElement;
       const reveals = q(".reveal-hidden") as HTMLElement[];
 
@@ -91,7 +92,7 @@ export default function CinematicIntro() {
         gsap.set(navLogo, { opacity: 1 });
         gsap.set(heroLogo, { opacity: 0 });
         gsap.set(q(".intro-scrim"), { opacity: 1 });
-        gsap.set(cue, { opacity: 0 });
+        gsap.set(enterFade, { opacity: 0 });
         return;
       }
 
@@ -126,13 +127,21 @@ export default function CinematicIntro() {
           }
         );
       }
-      gsap.to(cue, {
-        y: intro.cue.bounceYPx,
-        duration: intro.cue.durationSec,
-        ease: intro.cue.ease,
-        repeat: -1,
-        yoyo: true,
-      });
+      // The tagline + entrance invitation resolve in gently, as if arriving;
+      // then a light travels down the invitation line — a refined "enter" beat
+      // that reads as an invitation across a threshold, not a scroll prompt.
+      gsap.fromTo(
+        enterFade,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 1.4, ease: "power2.out", stagger: 0.18, delay: 0.5 }
+      );
+      if (spark) {
+        gsap.fromTo(
+          spark,
+          { yPercent: -120 },
+          { yPercent: 420, duration: 1.9, ease: "power1.inOut", repeat: -1, repeatDelay: 0.7 }
+        );
+      }
 
       // --- Scroll-driven master timeline (scrubbed, pinned) ---
       // onUpdate feeds the WebGL chamber its 0-1 camera-journey progress.
@@ -181,16 +190,9 @@ export default function CinematicIntro() {
         intro.reveal.startAt - 0.1
       );
 
-      // Scroll cue fades out almost immediately.
-      tl.to(
-        cue,
-        { opacity: 0, ease: "none" },
-        0
-      ).to(
-        cue,
-        { opacity: 0, duration: intro.cue.hideAtProgress },
-        0
-      );
+      // The tagline + invitation dissolve as you cross the threshold in —
+      // gone by the time the story's opening line reveals.
+      tl.to(enterFade, { opacity: 0, ease: "power1.in", duration: intro.reveal.startAt }, 0);
 
       // Progressive reveal of the homepage layers.
       tl.to(
@@ -350,11 +352,21 @@ export default function CinematicIntro() {
             </a>
           </div>
 
-          {/* Scroll affordance. */}
-          <div className="scroll-cue absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2 text-white/50">
-            <span className="text-xl leading-none">↓</span>
-            <span className="text-[0.65rem] uppercase tracking-luxe">
-              Scroll to Begin
+          {/* Emotional tagline — one restrained line, present at rest, below
+              the seal. The story's payoff ("Notice is the heart of equity")
+              waits just past the threshold. */}
+          <p className="enter-fade pointer-events-none absolute left-1/2 top-[70%] z-30 w-full max-w-lg -translate-x-1/2 px-6 text-center font-serif text-xl italic leading-snug text-white/75 sm:text-2xl">
+            Where notice becomes mastery.
+          </p>
+
+          {/* Refined entrance invitation — a light travels down the line, an
+              invitation across the threshold rather than a scroll prompt. */}
+          <div className="enter-fade absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-3.5 text-white/55">
+            <span className="text-[0.62rem] uppercase tracking-[0.4em] text-gold/75">
+              Enter the Academy
+            </span>
+            <span className="relative block h-11 w-px overflow-hidden bg-white/15">
+              <span className="enter-spark absolute inset-x-0 top-0 block h-4 w-px bg-gold-bright shadow-[0_0_10px_rgba(243,205,122,0.9)]" />
             </span>
           </div>
         </div>
