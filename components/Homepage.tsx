@@ -428,22 +428,6 @@ export default function Homepage() {
         });
       }
 
-      // Interlude — The Tenet: the founding principle rises in through a soft
-      //      blur. An unnumbered light breath between the record and the
-      //      doctrine; not tracked by the chapter rail.
-      const tenet = q(".tenet")[0];
-      if (tenet) {
-        gsap.from(tenet.querySelectorAll(".tn-line"), {
-          y: 26,
-          opacity: 0,
-          filter: "blur(6px)",
-          duration: 1,
-          ease: "power3.out",
-          stagger: 0.12,
-          ...onEnter(tenet),
-        });
-      }
-
       // IV. Doctrine — section pins and holds while the statement lights up
       //      gold word by word, then releases.
       const s = q("[data-scene='services']")[0];
@@ -772,44 +756,6 @@ export default function Homepage() {
                 </figure>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Interlude — The Tenet. A light breath between the record and the
-            doctrine: the founding principle set as a typographic centrepiece
-            (drop-cap + oversized pull-quote). Deliberately unnumbered — a
-            pause, not a charter article — so the rail and I–VII stay intact.
-            This is the site's one light section, breaking the all-dark grade. */}
-        <section
-          aria-label="The founding principle"
-          className="tenet relative flex min-h-screen items-center overflow-hidden py-32"
-          style={{ background: "linear-gradient(180deg, #f6efdf 0%, #efe4ca 52%, #e7d9ba 100%)" }}
-        >
-          {/* Seam blends: emerge from the void above, sink back into it below. */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-40" style={{ background: "linear-gradient(180deg, #050505 0%, rgba(5,5,5,0) 100%)" }} />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40" style={{ background: "linear-gradient(0deg, #050505 0%, rgba(5,5,5,0) 100%)" }} />
-          {/* Faint gold aura + centred shield watermark, for cohesion with the dark. */}
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.1) 0%, rgba(176,120,42,0) 68%)" }} />
-          <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.04]">
-            <Image src="/logo-mark.png" alt="" width={560} height={373} className="h-[26rem] w-auto object-contain" />
-          </div>
-
-          <div className="relative mx-auto max-w-3xl px-6">
-            <p className="tn-line mb-8 text-[0.7rem] uppercase tracking-luxe" style={{ color: "#9a6a1e" }}>
-              The Tenet
-            </p>
-            <blockquote
-              className="tn-line drop-cap font-serif text-[1.75rem] leading-[1.34] sm:text-[2.6rem] sm:leading-[1.3]"
-              style={{ color: "#241a12" }}
-            >
-              Notice is the heart of equity. Before there is standing, there is
-              knowledge; before there is protection, there is understanding — and
-              mastery begins the moment you choose to see.
-            </blockquote>
-            <div className="tn-line mt-10 h-px max-w-[7rem]" style={{ background: "linear-gradient(90deg, rgba(154,106,30,0.6), transparent)" }} />
-            <p className="tn-line mt-6 text-xs uppercase tracking-[0.3em]" style={{ color: "#7c6a44" }}>
-              The founding principle · Matthew 4:19
-            </p>
           </div>
         </section>
 

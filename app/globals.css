@@ -130,29 +130,6 @@
     transform: none;
   }
 
-  /* Editorial drop-cap — the typographic centrepiece of the light interlude.
-     A deep-gold gradient initial, sunk into the parchment. The gradient runs
-     darker than the site's gold-bright so it reads with weight on a light bg. */
-  .drop-cap::first-letter {
-    float: left;
-    font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: 5.2rem;
-    line-height: 0.68;
-    padding-right: 0.1em;
-    margin-top: 0.04em;
-    background: linear-gradient(180deg, #c8912f 0%, #915f18 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  @media (min-width: 640px) {
-    .drop-cap::first-letter {
-      font-size: 7rem;
-      line-height: 0.66;
-    }
-  }
-
   /* Premium CTA — brushed metallic-gold pill. Reusable site-wide. */
   .btn-lux {
     --lux-ease: cubic-bezier(0.22, 1, 0.36, 1);
