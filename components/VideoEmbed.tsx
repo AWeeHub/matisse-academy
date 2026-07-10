@@ -69,6 +69,13 @@ export default function VideoEmbed({
               alt={title}
               className="h-full w-full object-cover"
               loading="lazy"
+              onError={(e) => {
+                // Not every upload has a maxres poster — fall back to hqdefault.
+                const img = e.currentTarget;
+                if (!isPlaceholder && !img.src.includes("hqdefault")) {
+                  img.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+                }
+              }}
             />
           )}
           <span className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/20" />

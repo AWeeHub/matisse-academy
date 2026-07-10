@@ -2,14 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import NavMenu from "@/components/NavMenu";
 import MobileNav from "@/components/MobileNav";
-import VideoEmbed, { PLACEHOLDER } from "@/components/VideoEmbed";
+import VideoEmbed from "@/components/VideoEmbed";
 import { links } from "@/lib/links";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
-// Swap this for Amyr's real @amyrlaw video id (the 11 chars after `v=` or
-// `youtu.be/`) once provided; until then a styled placeholder renders.
-const FOUNDER_VIDEO_ID = PLACEHOLDER;
+// @amyrlaw: "What it looks like finding purpose through exclusive equity" —
+// a story-driven clip that fits the founder page.
+const FOUNDER_VIDEO_ID = "CrPE8cDMmfU";
 
 const focus = [
   "Private Trusts",
@@ -104,11 +104,12 @@ export default function AboutPage() {
               </p>
               <div className="rule-luxe my-7 max-w-[8rem]" />
               <p className="max-w-lg text-base leading-relaxed text-white/65">
-                Amyr Samah El built his practice around a single conviction: the
-                private side of law and finance — trusts, notice, and equity — is
-                the real path to protecting what you build. His work brings the
-                lawful strategies once reserved for the few within reach of
-                ordinary families.
+                Known as the <span className="text-white/85">#1 Government
+                Activist in Law</span>, Amyr Samah El has spent over seven years
+                mastering Exclusive Equity Jurisprudence — the lawful art of
+                resolving debts and obligations through remedy rather than
+                conflict. His conviction is simple: the private side of law and
+                finance is the real path to protecting what you build.
               </p>
               <div className="mt-8">
                 <p className="mb-3 text-[0.65rem] uppercase tracking-luxe text-gold/60">
@@ -129,6 +130,52 @@ export default function AboutPage() {
                 Work With Amyr
                 <span aria-hidden>→</span>
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* The Journey */}
+        <section className="relative border-t border-white/5 px-6 py-24">
+          <div className="mx-auto max-w-3xl">
+            <p className="mb-8 text-center text-xs uppercase tracking-luxe text-gold/70">
+              The Journey
+            </p>
+            <div className="space-y-6 text-base leading-relaxed text-white/65">
+              <p>
+                Amyr&rsquo;s path began not in a classroom, but in a courtroom of
+                his own. Facing his own warrants and traffic matters, he refused
+                to accept that the system was closed to him — and started a
+                lifelong study of Exclusive Equity Jurisprudence, the private
+                body of law built on notice, remedy, and standing.
+              </p>
+              <p>
+                In the years since, he has settled and closed close to a thousand
+                matters of debt and obligation through lawful remedy — work that
+                has earned recognition across an unusually broad clientele:
+                everyday consumers, bankers and lawyers, up-and-coming
+                entertainers, top executives, and professional athletes alike.
+              </p>
+              <p>
+                His focus spans traffic court, civil debt and obligation, and
+                criminal misdemeanors — always with the same aim: to move a
+                matter from conflict to resolution, privately and lawfully.
+              </p>
+            </div>
+            <div className="mt-12 grid grid-cols-3 gap-6 text-center">
+              {[
+                { v: "7+", l: "Years in equity" },
+                { v: "~1,000", l: "Matters resolved" },
+                { v: "#1", l: "Government Activist in Law" },
+              ].map((s) => (
+                <div key={s.l}>
+                  <div className="font-serif text-3xl text-gold-gradient sm:text-4xl">
+                    {s.v}
+                  </div>
+                  <div className="mt-2 text-[0.62rem] uppercase tracking-luxe text-white/45">
+                    {s.l}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -162,6 +209,32 @@ export default function AboutPage() {
               </h2>
             </div>
             <VideoEmbed videoId={FOUNDER_VIDEO_ID} title="Amyr Samah El — Matisse Academy" />
+          </div>
+        </section>
+
+        {/* Matisse Academy — the mission */}
+        <section className="relative border-t border-white/5 px-6 py-24">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="mb-6 text-xs uppercase tracking-luxe text-gold/70">
+              Matisse Academy
+            </p>
+            <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.14] text-white sm:text-4xl">
+              A private institution for equitable justice.
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60">
+              Matisse Academy exists to champion equitable justice, safeguard the
+              rights of the American people, and foster a culture defined by
+              integrity and accountability. It brings the lawful strategies once
+              reserved for the few — trusts, notice, and private process — within
+              reach of ordinary families through education, mentorship, and live
+              instruction.
+            </p>
+            <p className="mx-auto mt-6 font-serif text-lg italic text-white/70">
+              &ldquo;Notice is the heart of equity.&rdquo;
+            </p>
+            <p className="mt-2 text-[0.65rem] uppercase tracking-[0.3em] text-gold/60">
+              Matthew 4:19 · KJV 1611
+            </p>
           </div>
         </section>
 

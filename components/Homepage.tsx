@@ -8,11 +8,11 @@ import Atmosphere from "@/components/Atmosphere";
 import Particles from "@/components/Particles";
 import ChapterRail from "@/components/ChapterRail";
 import { links, socials } from "@/lib/links";
-import VideoEmbed, { PLACEHOLDER } from "@/components/VideoEmbed";
+import VideoEmbed from "@/components/VideoEmbed";
 
-// Swap for the real @amyrlaw YouTube video id once provided; renders a styled
-// placeholder until then.
-const HOME_VIDEO_ID = PLACEHOLDER;
+// @amyrlaw: "The Hidden Side of Court They Don't Teach You About" — an
+// educational hook that lands well on first impression.
+const HOME_VIDEO_ID = "xPz9yqCgM-w";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -35,7 +35,7 @@ export const MENU: NavEntry[] = [
       { label: "The Dispatch", desc: "Newsletter & private notices", href: links.newsletter },
     ],
   },
-  { label: "Founder", href: "/about" },
+  { label: "About", href: "/about" },
 ];
 
 /** Internal = on-page anchor (#id) or same-origin route (/path). Everything
