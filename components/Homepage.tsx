@@ -8,11 +8,6 @@ import Atmosphere from "@/components/Atmosphere";
 import Particles from "@/components/Particles";
 import ChapterRail from "@/components/ChapterRail";
 import { links, socials } from "@/lib/links";
-import VideoEmbed from "@/components/VideoEmbed";
-
-// @amyrlaw: "The Hidden Side of Court They Don't Teach You About" — an
-// educational hook that lands well on first impression.
-const HOME_VIDEO_ID = "xPz9yqCgM-w";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -560,90 +555,7 @@ export default function Homepage() {
       <ChapterRail />
 
       <main className="relative z-10">
-        {/* I. The Founder */}
-        <section
-          data-scene="founder"
-          id="founder"
-          className="scene relative flex min-h-screen items-center overflow-hidden py-28"
-        >
-          <ChapterLine />
-          {/* far plane */}
-          <div
-            data-depth="6"
-            data-tilt="0.2"
-            className="pointer-events-none absolute -left-20 top-10 h-[70vmin] w-[70vmin] rounded-full"
-            style={{ background: "radial-gradient(circle, rgba(120,70,160,0.28) 0%, rgba(5,5,5,0) 70%)" }}
-          />
-          {/* mid plane */}
-          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
-          <div
-            data-sweep
-            className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen"
-            style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,70,0.10), transparent)" }}
-          />
-          {/* near plane — foreground column edges that pass in front, fastest & tilt most */}
-          <div data-depth="40" data-tilt="0.75" className="pointer-events-none absolute inset-y-0 left-0 w-[16vw] max-w-[180px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0) 100%)" }} />
-          <div data-depth="44" data-tilt="0.85" className="pointer-events-none absolute inset-y-0 right-0 w-[16vw] max-w-[180px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0) 100%)" }} />
-
-          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 md:grid-cols-[0.85fr_1fr]">
-            <div className="relative mx-auto w-full max-w-xs" data-tilt="0.3">
-              <div className="pointer-events-none absolute -inset-6 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.4) 0%, rgba(5,5,5,0) 70%)" }} />
-              <Image
-                src="/amyr-suit-portrait.jpg"
-                alt="Amyr Samah El, founder of Matisse Academy"
-                width={786}
-                height={806}
-                className="portrait relative aspect-[4/5] rounded-2xl border border-white/10 object-cover object-top shadow-2xl"
-              />
-            </div>
-            <div>
-              <p className="f-line mb-5 text-xs uppercase tracking-luxe text-gold/70">
-                I · The Founder
-              </p>
-              <h2 className="f-line font-serif text-4xl leading-[1.05] text-white sm:text-5xl">
-                Amyr Samah El
-              </h2>
-              <p className="f-line mt-4 text-xs uppercase tracking-[0.25em] text-gold-gradient">
-                Private Trust &amp; Wealth Protection Strategist
-              </p>
-              <div className="f-line rule-luxe my-7 max-w-[8rem]" />
-              <p className="f-line max-w-lg text-base leading-relaxed text-white/60">
-                Amyr Samah El brings the private side of law and finance —
-                trusts, notice, and equity — within reach of ordinary families,
-                teaching the lawful strategies once reserved for the few.
-              </p>
-
-              <a href="/about" className="f-line btn-lux mt-9">
-                Meet Amyr
-                <span aria-hidden>→</span>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Watch — a video moment to build trust early. */}
-        <section className="relative overflow-hidden border-t border-white/5 px-6 py-28">
-          <div
-            className="pointer-events-none absolute left-1/2 top-0 h-[60vmin] w-[90vmin] -translate-x-1/2 rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(176,120,42,0.16) 0%, rgba(5,5,5,0) 68%)",
-            }}
-          />
-          <div className="relative mx-auto max-w-5xl">
-            <div className="mb-10 text-center">
-              <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
-                Watch
-              </p>
-              <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.08] text-white sm:text-5xl">
-                See the doctrine <span className="text-gold-gradient">in motion.</span>
-              </h2>
-            </div>
-            <VideoEmbed videoId={HOME_VIDEO_ID} title="Matisse Academy" />
-          </div>
-        </section>
-
-        {/* II. The Summons */}
+        {/* I. The Summons */}
         <section
           data-scene="challenge"
           id="challenge"
@@ -659,7 +571,7 @@ export default function Homepage() {
 
           <div className="relative mx-auto w-full max-w-5xl px-6 text-center">
             <div className="c-head">
-              <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">II · The Summons</p>
+              <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">I · The Summons</p>
               <h2 className="mx-auto max-w-3xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
                 The <span className="text-gold-gradient">Master Your Rights</span> Challenge
               </h2>
@@ -711,7 +623,7 @@ export default function Homepage() {
 
           <div className="relative mx-auto w-full max-w-6xl px-6">
             <div className="t-head text-center">
-              <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">III · The Testimony</p>
+              <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">II · The Testimony</p>
               <h2 className="mx-auto max-w-3xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
                 Proof, not <span className="text-gold-gradient">promises.</span>
               </h2>
@@ -779,7 +691,7 @@ export default function Homepage() {
 
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
-              <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">IV · The Doctrine</p>
+              <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">III · The Doctrine</p>
               <h2 className="max-w-xl font-serif text-3xl leading-[1.16] text-white sm:text-5xl">
                 {"Mastery in equity, law, commerce, and private wealth — taught as one discipline."
                   .split(" ")
@@ -825,7 +737,7 @@ export default function Homepage() {
 
           <div className="relative mx-auto max-w-6xl px-6" style={{ perspective: "1200px" }}>
             <div className="a-head mb-14 text-center">
-              <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">V · The Charter</p>
+              <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">IV · The Charter</p>
               <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.12] text-white sm:text-4xl">
                 Six articles, one path to private mastery.
               </h2>
@@ -857,7 +769,7 @@ export default function Homepage() {
 
           <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1fr_0.82fr]">
             <div>
-              <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">VI · The Correspondence</p>
+              <p className="n-line mb-6 text-xs uppercase tracking-luxe text-gold/70">V · The Correspondence</p>
               <h2 className="max-w-xl font-serif text-4xl leading-[1.08] text-white sm:text-6xl">
                 Equity, law, and private wealth —{" "}
                 <span className="text-gold-gradient">straight to your inbox.</span>
@@ -912,7 +824,7 @@ export default function Homepage() {
               />
             </div>
             <p className="fin-line mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
-              VII · The Seal — Matthew 4:19 · KJV 1611
+              VI · The Seal — Matthew 4:19 · KJV 1611
             </p>
             <h2 className="fin-line mx-auto max-w-2xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
               The record is open. Add <span className="text-gold-gradient">your name.</span>

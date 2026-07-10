@@ -9,13 +9,12 @@ import { useEffect, useState } from "react";
  * hidden for reduced-motion-agnostic small screens.
  */
 const chapters = [
-  { n: "I", label: "The Founder", scene: "founder" },
-  { n: "II", label: "The Summons", scene: "challenge" },
-  { n: "III", label: "The Testimony", scene: "testimony" },
-  { n: "IV", label: "The Doctrine", scene: "services" },
-  { n: "V", label: "The Charter", scene: "articles" },
-  { n: "VI", label: "The Correspondence", scene: "newsletter" },
-  { n: "VII", label: "The Seal", scene: "final" },
+  { n: "I", label: "The Summons", scene: "challenge" },
+  { n: "II", label: "The Testimony", scene: "testimony" },
+  { n: "III", label: "The Doctrine", scene: "services" },
+  { n: "IV", label: "The Charter", scene: "articles" },
+  { n: "V", label: "The Correspondence", scene: "newsletter" },
+  { n: "VI", label: "The Seal", scene: "final" },
 ];
 
 export default function ChapterRail() {

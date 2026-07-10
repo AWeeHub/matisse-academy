@@ -9,6 +9,7 @@ export type NavEntry =
 // drawer). Groups mirror the footer's information architecture so the two
 // never drift. On-page anchors use "#id"; funnel destinations open externally.
 export const MENU: NavEntry[] = [
+  { label: "Home", href: "/" },
   {
     label: "Solutions",
     items: [
