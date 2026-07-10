@@ -65,6 +65,38 @@ export const intro = {
     /** Fade the cue out once this much scroll progress is reached. */
     hideAtProgress: 0.08,
   },
+  /** Autoplay "the hero performs on load" beat (3D mode). Fires when the
+   *  preloader curtain lifts (event `ma:intro-start`), so the cinematic build
+   *  isn't wasted behind the loader. */
+  entrance: {
+    /** Beat after the curtain clears before the copy builds in. */
+    startDelaySec: 0.2,
+    /** Run anyway if the preloader signal never arrives (ms). Sits just past
+     *  the preloader's own 4200ms failsafe. */
+    fallbackMs: 4600,
+    copy: {
+      yFromPx: 34,
+      blurPx: 10,
+      durationSec: 1.15,
+      staggerSec: 0.14,
+      ease: "power3.out",
+    },
+    scrimDurationSec: 1.2,
+    /** Scroll fraction over which the hero copy dives away as you descend. */
+    copyDiveDuration: 0.42,
+  },
+  /** WebGL chamber: the camera dolly-in + cursor-reactive parallax. World
+   *  units, so they live beside the DOM motion rather than in the component. */
+  chamber: {
+    entranceSec: 2.6, // duration of the camera push-in
+    dollyFromZ: 15.5, // camera z held behind the curtain
+    restZ: 11, // camera z once the push-in settles
+    diveZ: -2, // camera z at full scroll (deep down the hall)
+    swayX: 0.9, // cursor parallax — camera drift (world units)
+    swayY: 0.5,
+    sealSwayX: 0.32, // seal counter-drifts for extra depth separation
+    pointerEase: 0.06, // how quickly the drift chases the cursor
+  },
 } as const;
 
 export const easings = {
