@@ -35,10 +35,12 @@ export const MENU: NavEntry[] = [
       { label: "The Dispatch", desc: "Newsletter & private notices", href: links.newsletter },
     ],
   },
-  { label: "Founder", href: "#founder" },
+  { label: "Founder", href: "/about" },
 ];
 
-/** Is this an on-page anchor rather than an external funnel link? */
-export const isAnchor = (href: string) => href.startsWith("#");
+/** Internal = on-page anchor (#id) or same-origin route (/path). Everything
+ *  else is an external funnel link that should open in a new tab. */
+export const isInternal = (href: string) =>
+  href.startsWith("#") || href.startsWith("/");
 
 export const extLink = { target: "_blank", rel: "noopener noreferrer" } as const;

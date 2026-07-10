@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { links } from "@/lib/links";
-import { MENU, isAnchor, extLink as ext } from "@/lib/nav";
+import { MENU, isInternal, extLink as ext } from "@/lib/nav";
 
 /** Mobile navigation: a hamburger trigger (shown below md) that opens a
  *  full-height drawer. Dropdown groups become tap-to-expand accordions so the
@@ -127,7 +127,7 @@ export default function MobileNav() {
                         <li key={it.label}>
                           <a
                             href={it.href}
-                            {...(isAnchor(it.href) ? {} : ext)}
+                            {...(isInternal(it.href) ? {} : ext)}
                             onClick={close}
                             className="block rounded-lg px-3 py-2.5 transition-colors active:bg-white/[0.06]"
                           >
@@ -148,7 +148,7 @@ export default function MobileNav() {
               <a
                 key={entry.label}
                 href={entry.href}
-                {...(isAnchor(entry.href) ? {} : ext)}
+                {...(isInternal(entry.href) ? {} : ext)}
                 onClick={close}
                 className="block border-b border-white/8 px-2 py-4 font-serif text-lg text-white"
               >

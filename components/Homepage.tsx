@@ -8,6 +8,11 @@ import Atmosphere from "@/components/Atmosphere";
 import Particles from "@/components/Particles";
 import ChapterRail from "@/components/ChapterRail";
 import { links, socials } from "@/lib/links";
+import VideoEmbed, { PLACEHOLDER } from "@/components/VideoEmbed";
+
+// Swap for the real @amyrlaw YouTube video id once provided; renders a styled
+// placeholder until then.
+const HOME_VIDEO_ID = PLACEHOLDER;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -195,16 +200,6 @@ function ChapterLine() {
     />
   );
 }
-
-// Founder areas of focus — derived from the academy's offerings (scene I).
-// Factual to the brand; the bio prose below is a draft — verify with Amyr.
-const founderFocus = [
-  "Private Trusts",
-  "Asset Protection",
-  "Tax-Free Strategy",
-  "Lawful Process",
-  "Generational Wealth",
-];
 
 // The four domains of the Doctrine — right-column index in scene IV.
 const domains = [
@@ -613,40 +608,38 @@ export default function Homepage() {
               </p>
               <div className="f-line rule-luxe my-7 max-w-[8rem]" />
               <p className="f-line max-w-lg text-base leading-relaxed text-white/60">
-                Amyr Samah El built his practice around a single conviction: the
-                private side of law and finance — trusts, notice, and equity — is
-                the real path to protecting what you build. His work brings the
-                lawful strategies once reserved for the few within reach of
-                ordinary families.
+                Amyr Samah El brings the private side of law and finance —
+                trusts, notice, and equity — within reach of ordinary families,
+                teaching the lawful strategies once reserved for the few.
               </p>
-              <blockquote className="f-line mt-7 max-w-lg border-l-2 border-gold/40 pl-5 font-serif text-lg italic leading-relaxed text-white/75">
-                &ldquo;I guide individuals and families to protect their assets,
-                minimize liabilities, and secure generational wealth through
-                private trusts and lawful strategies.&rdquo;
-              </blockquote>
 
-              {/* Areas of focus */}
-              <div className="f-line mt-8">
-                <p className="mb-3 text-[0.65rem] uppercase tracking-luxe text-gold/60">
-                  Areas of Focus
-                </p>
-                <ul className="flex flex-wrap gap-2.5">
-                  {founderFocus.map((f) => (
-                    <li
-                      key={f}
-                      className="rounded-full border border-gold/25 px-3.5 py-1.5 text-[0.68rem] uppercase tracking-[0.15em] text-white/60"
-                    >
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <a href={links.appointment} {...ext} className="f-line btn-lux mt-9">
-                Work With Amyr
+              <a href="/about" className="f-line btn-lux mt-9">
+                Meet Amyr
                 <span aria-hidden>→</span>
               </a>
             </div>
+          </div>
+        </section>
+
+        {/* Watch — a video moment to build trust early. */}
+        <section className="relative overflow-hidden border-t border-white/5 px-6 py-28">
+          <div
+            className="pointer-events-none absolute left-1/2 top-0 h-[60vmin] w-[90vmin] -translate-x-1/2 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(176,120,42,0.16) 0%, rgba(5,5,5,0) 68%)",
+            }}
+          />
+          <div className="relative mx-auto max-w-5xl">
+            <div className="mb-10 text-center">
+              <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
+                Watch
+              </p>
+              <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.08] text-white sm:text-5xl">
+                See the doctrine <span className="text-gold-gradient">in motion.</span>
+              </h2>
+            </div>
+            <VideoEmbed videoId={HOME_VIDEO_ID} title="Matisse Academy" />
           </div>
         </section>
 

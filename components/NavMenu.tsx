@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MENU, isAnchor, extLink as ext } from "@/lib/nav";
+import { MENU, isInternal, extLink as ext } from "@/lib/nav";
 
 export default function NavMenu() {
   const [open, setOpen] = useState<number | null>(null);
@@ -93,7 +93,7 @@ export default function NavMenu() {
                   <a
                     key={it.label}
                     href={it.href}
-                    {...(isAnchor(it.href) ? {} : ext)}
+                    {...(isInternal(it.href) ? {} : ext)}
                     onClick={() => setOpen(null)}
                     className="group/item block rounded-xl px-3.5 py-3 transition-colors hover:bg-white/[0.05]"
                   >
@@ -120,7 +120,7 @@ export default function NavMenu() {
           <a
             key={entry.label}
             href={entry.href}
-            {...(isAnchor(entry.href) ? {} : ext)}
+            {...(isInternal(entry.href) ? {} : ext)}
             className="px-3 py-2 text-xs uppercase tracking-luxe text-white/60 transition-colors hover:text-white"
           >
             {entry.label}
