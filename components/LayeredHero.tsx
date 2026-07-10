@@ -63,20 +63,26 @@ export default function LayeredHero() {
         return;
       }
 
+      // Hide the chrome + headline until the doors have opened.
+      gsap.set(q(".fade-in"), { opacity: 0 });
+      gsap.set(q(".mask-inner"), { yPercent: 115 });
+
       const tl = gsap.timeline({ delay: 0.2 });
 
-      // 1. The deep scene sits behind, over-zoomed, and settles.
-      tl.fromTo(q(".hero-img"), { scale: 1.28 }, { scale: 1, duration: 2.0, ease: "power3.out" }, 0);
+      // 1. Logo intro: the assembled Matisse mark resolves in, then holds a beat.
+      tl.from(q(".intro-logo"), { opacity: 0, scale: 0.92, filter: "blur(10px)", duration: 1.0, ease: "power3.out" }, 0);
 
-      // 2. The two panels part — sliding off-screen to reveal the hall.
-      tl.fromTo(q(".panel-l"), { xPercent: 0 }, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, 0.15)
-        .fromTo(q(".panel-r"), { xPercent: 0 }, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, 0.15);
+      // 2. The doors part — each half carries its slice of the logo away, so the
+      //    mark "cuts in half" — revealing the deep scene (settling from a zoom).
+      tl.fromTo(q(".hero-img"), { scale: 1.28 }, { scale: 1, duration: 2.2, ease: "power3.out" }, 1.15);
+      tl.fromTo(q(".panel-l"), { xPercent: 0 }, { xPercent: -100, duration: 1.6, ease: "power4.inOut" }, 1.15)
+        .fromTo(q(".panel-r"), { xPercent: 0 }, { xPercent: 100, duration: 1.6, ease: "power4.inOut" }, 1.15);
 
       // 3. Headline lines mask up as the doors open.
-      tl.fromTo(q(".mask-inner"), { yPercent: 115 }, { yPercent: 0, duration: 1.0, ease: "power4.out", stagger: 0.12 }, 0.95);
+      tl.to(q(".mask-inner"), { yPercent: 0, duration: 1.0, ease: "power4.out", stagger: 0.12 }, 1.95);
 
       // 4. Supporting chrome fades in.
-      tl.fromTo(q(".fade-in"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.08 }, 1.3);
+      tl.to(q(".fade-in"), { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.08 }, 2.25);
 
       // Gentle scroll parallax on the settled scene.
       gsap.to(q(".hero-img"), {
@@ -102,12 +108,26 @@ export default function LayeredHero() {
           <div className="absolute inset-0 mix-blend-color opacity-40" style={{ background: "linear-gradient(120deg, #3a2a60 0%, #b0782a 100%)" }} />
         </div>
 
-        {/* ---------- PARTING PANELS (the doors that open on load) ---------- */}
-        <div className="panel-l pointer-events-none absolute inset-y-0 left-0 z-10 w-1/2 will-change-transform" style={{ background: "linear-gradient(100deg, #05040a 0%, #0d0916 82%, #17101f 100%)", borderRight: "1px solid rgba(217,164,65,0.5)", boxShadow: "8px 0 40px -8px rgba(0,0,0,0.7)" }}>
-          <div className="absolute inset-0 opacity-40" style={{ background: "repeating-linear-gradient(90deg, transparent 0 54px, rgba(217,164,65,0.05) 54px 56px)" }} />
+        {/* ---------- PARTING CURTAINS (the logo-intro doors that open on load) ----------
+            Two full-screen curtains, each clipped to its half of the screen at
+            exactly 50%, each with the SAME flex-centred logo — so the halves
+            form one clean mark. When the curtains slide apart the logo visibly
+            cuts in half. */}
+        <div className="panel-l absolute inset-0 z-10 will-change-transform" style={{ clipPath: "inset(0 50% 0 0)" }}>
+          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, #0e0a18 0%, #07050e 60%, #05040a 100%)" }} />
+          <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "repeating-linear-gradient(90deg, transparent 0 54px, rgba(217,164,65,0.05) 54px 56px)" }} />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image src="/logo-3d-clean.png" alt="Matisse Academy" width={724} height={877} priority className="intro-logo h-[46vh] max-h-[540px] w-auto object-contain drop-shadow-[0_0_60px_rgba(120,70,160,0.4)]" />
+          </div>
+          <div className="absolute inset-y-0 right-0 w-px" style={{ background: "rgba(217,164,65,0.55)", boxShadow: "0 0 14px rgba(217,164,65,0.4)" }} />
         </div>
-        <div className="panel-r pointer-events-none absolute inset-y-0 right-0 z-10 w-1/2 will-change-transform" style={{ background: "linear-gradient(260deg, #05040a 0%, #0d0916 82%, #17101f 100%)", borderLeft: "1px solid rgba(217,164,65,0.5)", boxShadow: "-8px 0 40px -8px rgba(0,0,0,0.7)" }}>
-          <div className="absolute inset-0 opacity-40" style={{ background: "repeating-linear-gradient(90deg, transparent 0 54px, rgba(217,164,65,0.05) 54px 56px)" }} />
+        <div className="panel-r absolute inset-0 z-10 will-change-transform" style={{ clipPath: "inset(0 0 0 50%)" }}>
+          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, #0e0a18 0%, #07050e 60%, #05040a 100%)" }} />
+          <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "repeating-linear-gradient(90deg, transparent 0 54px, rgba(217,164,65,0.05) 54px 56px)" }} />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image src="/logo-3d-clean.png" alt="" aria-hidden width={724} height={877} priority className="intro-logo h-[46vh] max-h-[540px] w-auto object-contain drop-shadow-[0_0_60px_rgba(120,70,160,0.4)]" />
+          </div>
+          <div className="absolute inset-y-0 left-0 w-px" style={{ background: "rgba(217,164,65,0.55)", boxShadow: "0 0 14px rgba(217,164,65,0.4)" }} />
         </div>
 
         {/* ---------- LEGIBILITY SCRIMS ---------- */}
