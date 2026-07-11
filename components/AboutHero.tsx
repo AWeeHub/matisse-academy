@@ -25,45 +25,6 @@ export default function AboutHero({
   const scrimRef = useRef<HTMLDivElement>(null);
   const amyrRef = useRef<HTMLImageElement>(null);
 
-  // Scroll-driven parallax only (no cursor follow — the scene stays steady when
-  // the mouse moves). Each plane is offset by its own depth factor relative to
-  // how far the hero has scrolled past the viewport top.
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const stage = stageRef.current;
-        if (!stage) return;
-        const y = Math.max(0, -stage.getBoundingClientRect().top);
-        if (bgRef.current)
-          bgRef.current.style.transform = `translate3d(0, ${y * 0.16}px, 0) scale(1.14)`;
-        if (glowRef.current)
-          glowRef.current.style.transform = `translate3d(0, ${y * 0.32}px, 0)`;
-        if (amyrRef.current)
-          amyrRef.current.style.transform = `translate3d(0, ${y * 0.26}px, 0)`;
-        if (canvasRef.current)
-          canvasRef.current.style.transform = `translate3d(0, ${y * 0.5}px, 0)`;
-        if (contentRef.current) {
-          contentRef.current.style.transform = `translate3d(0, ${y * 0.42}px, 0)`;
-          contentRef.current.style.opacity = String(Math.max(0, 1 - y / 520));
-        }
-        if (scrimRef.current)
-          scrimRef.current.style.opacity = String(Math.min(1, 0.35 + y / 900));
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
   // Gold dust particle field — its own drifting plane over the key art.
   useEffect(() => {
     const canvas = canvasRef.current;
