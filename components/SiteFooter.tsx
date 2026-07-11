@@ -129,8 +129,8 @@ export default function SiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 flex flex-col gap-4 border-t border-white/8 pt-6 text-[0.62rem] text-white/35 md:flex-row md:items-center md:justify-between">
-          <p className="flex max-w-xl items-start gap-2 leading-relaxed text-white/30">
+        <div className="mt-14 flex flex-col gap-4 border-t border-white/8 pt-6 text-[0.62rem] text-white/55 md:flex-row md:items-center md:justify-between">
+          <p className="flex max-w-xl items-start gap-2 leading-relaxed text-white/50">
             <svg viewBox="0 0 24 24" className="mt-px h-3.5 w-3.5 shrink-0 text-gold/40" aria-hidden>
               <path
                 d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3Z"
