@@ -24,62 +24,39 @@ export default function AboutHero({
   const contentRef = useRef<HTMLDivElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
 
-  // Combined scroll + pointer parallax. A single rAF loop reads how far the
-  // hero has scrolled past the viewport top AND eases toward the cursor, then
-  // offsets each plane by its own depth factor — so layers separate both as you
-  // scroll and as you move the mouse (the front planes travel furthest).
+  // Scroll-driven parallax only (no cursor follow — the scene stays steady when
+  // the mouse moves). Each plane is offset by its own depth factor relative to
+  // how far the hero has scrolled past the viewport top.
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
 
-    // Pointer target (-1..1) and eased current, so motion glides, never snaps.
-    let tx = 0, ty = 0, cx = 0, cy = 0;
-    let inView = true;
-
-    const onPointer = (e: PointerEvent) => {
-      tx = (e.clientX / window.innerWidth) * 2 - 1;
-      ty = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    const onLeave = () => { tx = 0; ty = 0; };
-
-    const stage = stageRef.current;
-    const io = stage
-      ? new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0 })
-      : null;
-    if (stage && io) io.observe(stage);
-
     let raf = 0;
-    const tick = () => {
-      raf = requestAnimationFrame(tick);
-      // Ease pointer toward target.
-      cx += (tx - cx) * 0.06;
-      cy += (ty - cy) * 0.06;
-      if (!stage) return;
-      const y = Math.max(0, -stage.getBoundingClientRect().top);
-      // Skip DOM writes when the hero is fully offscreen below.
-      if (!inView && y > window.innerHeight) return;
-
-      if (bgRef.current)
-        bgRef.current.style.transform = `translate3d(${cx * -14}px, ${y * 0.18 + cy * -10}px, 0) scale(1.18)`;
-      if (glowRef.current)
-        glowRef.current.style.transform = `translate3d(${cx * -26}px, ${y * 0.32 + cy * -18}px, 0)`;
-      if (canvasRef.current)
-        canvasRef.current.style.transform = `translate3d(${cx * 24}px, ${y * 0.5 + cy * 16}px, 0)`;
-      if (contentRef.current) {
-        contentRef.current.style.transform = `translate3d(${cx * 9}px, ${y * 0.42 + cy * 7}px, 0)`;
-        contentRef.current.style.opacity = String(Math.max(0, 1 - y / 520));
-      }
-      if (scrimRef.current)
-        scrimRef.current.style.opacity = String(Math.min(1, 0.35 + y / 900));
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const stage = stageRef.current;
+        if (!stage) return;
+        const y = Math.max(0, -stage.getBoundingClientRect().top);
+        if (bgRef.current)
+          bgRef.current.style.transform = `translate3d(0, ${y * 0.18}px, 0) scale(1.18)`;
+        if (glowRef.current)
+          glowRef.current.style.transform = `translate3d(0, ${y * 0.32}px, 0)`;
+        if (canvasRef.current)
+          canvasRef.current.style.transform = `translate3d(0, ${y * 0.5}px, 0)`;
+        if (contentRef.current) {
+          contentRef.current.style.transform = `translate3d(0, ${y * 0.42}px, 0)`;
+          contentRef.current.style.opacity = String(Math.max(0, 1 - y / 520));
+        }
+        if (scrimRef.current)
+          scrimRef.current.style.opacity = String(Math.min(1, 0.35 + y / 900));
+      });
     };
-    tick();
-
-    window.addEventListener("pointermove", onPointer, { passive: true });
-    window.addEventListener("pointerout", onLeave, { passive: true });
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("pointermove", onPointer);
-      window.removeEventListener("pointerout", onLeave);
-      io?.disconnect();
+      window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
