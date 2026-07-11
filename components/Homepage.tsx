@@ -515,8 +515,6 @@ export default function Homepage() {
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-28"
         >
           <ChapterLine />
-          <div data-depth="6" data-tilt="0.2" className="pointer-events-none absolute left-1/2 top-0 h-[55vmin] w-[85vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.3) 0%, rgba(5,5,5,0) 68%)" }} />
-          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,150,70,0.12), transparent)" }} />
           {/* near foreground edges */}
           <div data-depth="42" data-tilt="0.8" className="pointer-events-none absolute inset-y-0 left-0 w-[14vw] max-w-[160px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.8) 0%, rgba(5,5,5,0) 100%)" }} />
@@ -568,8 +566,6 @@ export default function Homepage() {
         >
           <ChapterLine />
           {/* far / mid / near parallax planes, matching the depth system */}
-          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-1/2 top-1/3 h-[70vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(176,120,42,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
-          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(200,150,70,0.10), transparent)" }} />
           <div data-depth="40" data-tilt="0.75" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.78) 0%, rgba(5,5,5,0) 100%)" }} />
           <div data-depth="42" data-tilt="0.8" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.78) 0%, rgba(5,5,5,0) 100%)" }} />
@@ -700,7 +696,6 @@ export default function Homepage() {
         >
           <ChapterLine />
           <div data-depth="6" data-tilt="0.2" className="pointer-events-none absolute left-1/2 top-0 h-[70vmin] w-[95vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,60,150,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
-          <div className="hall-lines pointer-events-none absolute inset-0" data-depth="16" data-tilt="0.4" />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,80,0.10), transparent)" }} />
 
           <div className="relative mx-auto max-w-6xl px-6" style={{ perspective: "1200px" }}>
@@ -733,7 +728,6 @@ export default function Homepage() {
           className="scene relative flex min-h-screen items-center overflow-hidden py-24"
         >
           <ChapterLine />
-          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute right-0 top-1/2 h-[60vmin] w-[80vmin] -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(180,132,52,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
 
           <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1fr_0.82fr]">
             <div>
