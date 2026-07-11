@@ -245,7 +245,11 @@ export default function AboutPage() {
                   key={d.name}
                   delay={i * 80}
                   className={`group flex items-start gap-5 py-9 ${
-                    i > 1 ? "border-t border-white/10" : ""
+                    i === 0
+                      ? ""
+                      : i === 1
+                        ? "border-t border-white/10 sm:border-t-0"
+                        : "border-t border-white/10"
                   }`}
                 >
                   <span className="w-9 shrink-0 font-serif text-3xl leading-none text-gold-gradient">
