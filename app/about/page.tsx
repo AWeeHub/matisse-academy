@@ -41,12 +41,31 @@ const journey = [
 ];
 
 const domains = [
-  { name: "Equity", desc: "The law of fairness, notice, and remedy." },
-  { name: "Law", desc: "Lawful process, private standing, and rights." },
-  { name: "Commerce", desc: "Contracts, instruments, and value in motion." },
-  { name: "Private Wealth", desc: "Trusts, protection, and generational holding." },
+  {
+    n: "01",
+    name: "Equity",
+    desc: "The lens of fairness, rights, and remedy.",
+    paths: ["M12 3 5 6v5c0 4.6 3 7.6 7 9 4-1.4 7-4.4 7-9V6l-7-3Z", "M12 9v5", "M9.5 11.5 12 14l2.5-2.5"],
+  },
+  {
+    n: "02",
+    name: "Law",
+    desc: "Lawful power, protection, and strategy.",
+    paths: ["M12 3v18", "M6 20h12", "M5 8h14", "M5 8 2.5 14a3 3 0 0 0 5 0L5 8Z", "M19 8l-2.5 6a3 3 0 0 0 5 0L19 8Z", "m5 8 7-2 7 2"],
+  },
+  {
+    n: "03",
+    name: "Commerce",
+    desc: "Contracts, systems, and value in motion.",
+    paths: ["M3 21h18", "M4 10h16", "M12 3 4 8h16l-8-5Z", "M6 10v8", "M10 10v8", "M14 10v8", "M18 10v8"],
+  },
+  {
+    n: "04",
+    name: "Private Wealth",
+    desc: "Trusts, protection, and generational legacy.",
+    paths: ["M4 19h16", "M4 8l4 4 4-7 4 7 4-4-2 11H6L4 8Z"],
+  },
 ];
-const romans = ["I", "II", "III", "IV"];
 
 // Footer link groups — mirror the site's information architecture.
 const footerCols = [
@@ -146,7 +165,7 @@ export default function AboutPage() {
           <div className="mx-auto max-w-3xl">
             <Reveal>
               <p className="text-xs uppercase tracking-luxe text-gold/70">
-                The Journey
+                <span className="text-gold-bright">I</span> · The Journey
               </p>
               <h2 className="mt-3 max-w-xl font-serif text-3xl leading-[1.12] text-white sm:text-4xl">
                 From his own courtroom to a private practice.
@@ -174,14 +193,15 @@ export default function AboutPage() {
         </section>
 
         {/* Video */}
-        <section className="relative border-t border-white/5 px-6 py-24">
+        <section className="relative border-t border-white/5 px-6 py-28">
           <div className="mx-auto max-w-4xl">
-            <Reveal className="mb-10 text-center">
+            <Reveal className="mb-12 text-center">
               <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
-                Hear From Amyr
+                <span className="text-gold-bright">II</span> · The Doctrine
               </p>
               <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.12] text-white sm:text-4xl">
-                The doctrine, in his own voice.
+                The doctrine, in{" "}
+                <span className="text-gold-gradient">his own voice.</span>
               </h2>
             </Reveal>
             <Reveal delay={90}>
@@ -190,28 +210,44 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Matisse Academy — the mission */}
-        <section className="relative border-t border-white/5 px-6 py-24">
-          <Reveal className="mx-auto max-w-3xl text-center">
+        {/* Matisse Academy — the mission (manifesto) */}
+        <section className="relative overflow-hidden border-t border-white/5 px-6 py-28">
+          {/* Faint architecture texture + warm glow. */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.12]"
+            style={{
+              backgroundImage: "url('/bg-library.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-void via-void/75 to-void" />
+          <div
+            className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-[75%] -translate-x-1/2 -translate-y-1/2"
+            style={{
+              background:
+                "radial-gradient(50% 60% at 50% 50%, rgba(176,120,42,0.12) 0%, rgba(5,5,5,0) 70%)",
+            }}
+          />
+          <Reveal className="relative z-10 mx-auto max-w-3xl text-center">
             <p className="mb-6 text-xs uppercase tracking-luxe text-gold/70">
-              Matisse Academy
+              <span className="text-gold-bright">III</span> · Our Mission
             </p>
-            <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.14] text-white sm:text-4xl">
-              A private institution for equitable justice.
+            <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.14] text-white sm:text-[2.6rem]">
+              A private institution for{" "}
+              <span className="text-gold-gradient">equitable justice.</span>
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60">
-              Matisse Academy exists to champion equitable justice, safeguard the
-              rights of the American people, and foster a culture defined by
-              integrity and accountability. It brings the lawful strategies once
-              reserved for the few — trusts, notice, and private process — within
-              reach of ordinary families through education, mentorship, and live
-              instruction.
+              Matisse Academy exists to develop principled, strategic approaches
+              to equity, law &amp; generational wealth. We equip individuals,
+              families, and organizations with the knowledge and structures to
+              protect what they build — and empower what lasts.
             </p>
-            <p className="mx-auto mt-6 font-serif text-lg italic text-white/70">
+            <p className="mx-auto mt-8 font-serif text-lg italic text-white/70">
               &ldquo;Notice is the heart of equity.&rdquo;
             </p>
             <p className="mt-2 text-[0.65rem] uppercase tracking-[0.3em] text-gold/60">
-              Matthew 4:19 · KJV 1611
+              Matthew 4:19
             </p>
           </Reveal>
         </section>
@@ -219,36 +255,52 @@ export default function AboutPage() {
         {/* The four domains */}
         <section className="relative border-t border-white/5 px-6 py-24">
           <div className="mx-auto max-w-5xl">
-            <Reveal className="mb-12 text-center">
+            <Reveal className="mb-14 text-center">
               <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
-                The Doctrine
+                <span className="text-gold-bright">IV</span> · Our Domains
               </p>
               <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.12] text-white sm:text-4xl">
                 Four domains, taught as one discipline.
               </h2>
             </Reveal>
-            <ul className="mx-auto max-w-3xl">
+            <div className="mx-auto grid max-w-4xl gap-x-14 gap-y-12 sm:grid-cols-2">
               {domains.map((d, i) => (
                 <Reveal
-                  as="li"
+                  as="div"
                   key={d.name}
                   delay={i * 80}
-                  className="group flex items-baseline gap-5 border-b border-white/8 py-5 transition-colors hover:border-gold/25"
+                  className="group flex items-start gap-5"
                 >
-                  <span className="font-serif text-2xl leading-none text-gold-gradient">
-                    {romans[i]}
+                  <span className="w-9 shrink-0 font-serif text-3xl leading-none text-gold-gradient">
+                    {d.n}
+                  </span>
+                  <span className="shrink-0 text-gold-bright transition-transform duration-300 group-hover:scale-110">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-7 w-7"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      {d.paths.map((p, j) => (
+                        <path key={j} d={p} />
+                      ))}
+                    </svg>
                   </span>
                   <div>
                     <div className="font-serif text-xl text-white transition-colors group-hover:text-gold-bright">
                       {d.name}
                     </div>
-                    <div className="mt-1 text-sm leading-relaxed text-white/50">
+                    <div className="mt-1.5 text-sm leading-relaxed text-white/50">
                       {d.desc}
                     </div>
                   </div>
                 </Reveal>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
 
@@ -262,24 +314,28 @@ export default function AboutPage() {
             }}
           />
           <Reveal className="relative mx-auto max-w-2xl">
+            <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">
+              <span className="text-gold-bright">V</span> · Your Next Chapter
+            </p>
             <h2 className="font-serif text-4xl leading-[1.05] text-white sm:text-5xl">
               Begin your <span className="text-gold-gradient">charter.</span>
             </h2>
-            <p className="mx-auto mt-5 max-w-lg text-sm text-white/50">
-              Work directly with Amyr, or start with the Master Your Rights
-              Challenge.
+            <p className="mx-auto mt-5 max-w-lg text-sm text-white/55">
+              Walk in clarity. Act in equity. Leave a legacy.
             </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
               <a href={links.challenge3Day} {...ext} className="btn-lux">
                 Secure My Spot
                 <span aria-hidden>→</span>
               </a>
-              <Link
-                href="/"
-                className="text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:text-white"
+              <a
+                href={links.appointment}
+                {...ext}
+                className="group inline-flex items-center gap-2 text-xs uppercase tracking-luxe text-gold-bright transition-colors hover:text-white"
               >
-                ← Back to home
-              </Link>
+                <span aria-hidden className="text-[0.65rem]">▶</span>
+                Book a Call
+              </a>
             </div>
           </Reveal>
         </section>

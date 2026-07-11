@@ -49,8 +49,8 @@ export default function VideoEmbed({
         />
       )}
       <span className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/20" />
-      <span className="absolute left-1/2 top-1/2 flex h-[70px] w-[70px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gold/50 bg-black/40 text-gold-bright backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
-        <svg viewBox="0 0 24 24" className="ml-1 h-7 w-7" aria-hidden>
+      <span className="absolute left-1/2 top-1/2 flex h-[76px] w-[76px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gold/50 bg-black/40 text-gold-bright shadow-[0_0_30px_-4px_rgba(243,205,122,0.5)] backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-gold group-hover:shadow-[0_0_48px_-2px_rgba(243,205,122,0.8)]">
+        <svg viewBox="0 0 24 24" className="ml-1 h-8 w-8" aria-hidden>
           <path d="M8 5v14l11-7L8 5z" fill="currentColor" />
         </svg>
       </span>
@@ -114,15 +114,10 @@ export default function VideoEmbed({
           href={watchUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute bottom-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/50 px-3 py-1.5 text-[0.6rem] uppercase tracking-luxe text-white/75 backdrop-blur-sm transition-colors hover:border-gold/50 hover:text-white"
+          className="absolute bottom-4 right-4 z-10 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-black/55 px-4 py-2 text-[0.6rem] uppercase tracking-luxe text-gold-bright backdrop-blur-sm transition-colors hover:border-gold hover:bg-gold/10"
         >
-          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden>
-            <path
-              d="M23 12s0-3.5-.44-5.06a2.62 2.62 0 0 0-1.85-1.85C19.14 4.65 12 4.65 12 4.65s-7.14 0-8.71.44A2.62 2.62 0 0 0 1.44 6.94C1 8.5 1 12 1 12s0 3.5.44 5.06a2.62 2.62 0 0 0 1.85 1.85c1.57.44 8.71.44 8.71.44s7.14 0 8.71-.44a2.62 2.62 0 0 0 1.85-1.85C23 15.5 23 12 23 12zM9.75 15.3V8.7L15.5 12l-5.75 3.3z"
-              fill="currentColor"
-            />
-          </svg>
-          YouTube ↗
+          <span className="text-[0.55rem]" aria-hidden>▶</span>
+          Watch Video
         </a>
       )}
     </div>
