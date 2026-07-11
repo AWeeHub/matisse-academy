@@ -191,8 +191,10 @@ export default function AboutPage() {
               <span className="text-gold-bright">III</span> · Our Mission
             </p>
             <h2 className="mx-auto max-w-2xl font-serif text-3xl leading-[1.14] text-white sm:text-[2.6rem]">
-              A private institution for{" "}
-              <span className="text-gold-gradient">equitable justice.</span>
+              A private institution
+              <span className="block">
+                for <span className="text-gold-gradient">equitable justice.</span>
+              </span>
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60">
               Matisse Academy exists to develop principled, strategic approaches
