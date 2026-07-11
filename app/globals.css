@@ -260,7 +260,33 @@
     --lux-angle: 360deg;
   }
 }
+
+/* Slow diagonal light sweep across the About hero — a breathing golden glint. */
+.hero-sweep {
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(231, 196, 119, 0.06) 46%,
+    rgba(231, 196, 119, 0.12) 50%,
+    rgba(231, 196, 119, 0.06) 54%,
+    transparent 70%
+  );
+  background-size: 240% 240%;
+  animation: hero-sweep 14s ease-in-out infinite;
+}
+@keyframes hero-sweep {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  .hero-sweep {
+    animation: none;
+  }
   .rise {
     opacity: 1 !important;
     transform: none !important;

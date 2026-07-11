@@ -3,6 +3,7 @@ import Link from "next/link";
 import NavMenu from "@/components/NavMenu";
 import MobileNav from "@/components/MobileNav";
 import VideoEmbed from "@/components/VideoEmbed";
+import AboutHero from "@/components/AboutHero";
 import { links } from "@/lib/links";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -36,8 +37,8 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="grain relative min-h-screen bg-void text-white">
-      {/* Header */}
-      <header className="site-header fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 md:px-12">
+      {/* Header — its own solid bar above the hero (not overlaying the parallax) */}
+      <header className="relative z-50 flex items-center justify-between border-b border-gold/10 bg-void px-6 py-5 md:px-12">
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/logo-mark.png"
@@ -53,84 +54,35 @@ export default function AboutPage() {
         </Link>
         <NavMenu />
         <div className="flex items-center gap-3">
-          <a
-            href={links.challenge3Day}
-            {...ext}
-            className="btn-lux btn-lux-sm hidden md:inline-flex"
-          >
-            Secure My Spot
-          </a>
+          <span className="hidden md:inline-flex">
+            <a href={links.challenge3Day} {...ext} className="btn-lux btn-lux-sm">
+              Secure My Spot
+            </a>
+          </span>
           <MobileNav />
         </div>
       </header>
 
       <main className="relative z-10">
-        {/* Founder hero */}
-        <section className="relative overflow-hidden px-6 pb-24 pt-36 md:pt-44">
-          <div
-            className="pointer-events-none absolute -left-20 top-10 h-[70vmin] w-[70vmin] rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(120,70,160,0.22) 0%, rgba(5,5,5,0) 70%)",
-            }}
-          />
-          <div className="relative mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[0.85fr_1fr]">
-            <div className="relative mx-auto w-full max-w-xs">
-              <div
-                className="pointer-events-none absolute -inset-6 rounded-full"
-                style={{
-                  background:
-                    "radial-gradient(circle, rgba(120,70,160,0.4) 0%, rgba(5,5,5,0) 70%)",
-                }}
-              />
-              <Image
-                src="/amyr-suit-portrait.jpg"
-                alt="Amyr Samah El, founder of Matisse Academy"
-                width={786}
-                height={806}
-                priority
-                className="relative aspect-[4/5] rounded-2xl border border-white/10 object-cover object-top shadow-2xl"
-              />
-            </div>
-            <div>
-              <p className="mb-5 text-xs uppercase tracking-luxe text-gold/70">
-                The Founder
-              </p>
-              <h1 className="font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
-                Amyr Samah El
-              </h1>
-              <p className="mt-4 text-xs uppercase tracking-[0.25em] text-gold-gradient">
-                Private Trust &amp; Wealth Protection Strategist
-              </p>
-              <div className="rule-luxe my-7 max-w-[8rem]" />
-              <p className="max-w-lg text-base leading-relaxed text-white/65">
-                Known as the <span className="text-white/85">#1 Government
-                Activist in Law</span>, Amyr Samah El has spent over seven years
-                mastering Exclusive Equity Jurisprudence — the lawful art of
-                resolving debts and obligations through remedy rather than
-                conflict. His conviction is simple: the private side of law and
-                finance is the real path to protecting what you build.
-              </p>
-              <div className="mt-8">
-                <p className="mb-3 text-[0.65rem] uppercase tracking-luxe text-gold/60">
-                  Areas of Focus
-                </p>
-                <ul className="flex flex-wrap gap-2.5">
-                  {focus.map((f) => (
-                    <li
-                      key={f}
-                      className="rounded-full border border-gold/25 px-3.5 py-1.5 text-[0.68rem] uppercase tracking-[0.15em] text-white/60"
-                    >
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a href={links.appointment} {...ext} className="btn-lux mt-9">
-                Work With Amyr
-                <span aria-hidden>→</span>
-              </a>
-            </div>
+        {/* Founder hero — parallax key art */}
+        <AboutHero ctaHref={links.appointment} ext={ext} />
+
+        {/* Areas of focus */}
+        <section className="relative border-t border-white/5 px-6 py-14">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="mb-5 text-[0.65rem] uppercase tracking-luxe text-gold/60">
+              Areas of Focus
+            </p>
+            <ul className="flex flex-wrap justify-center gap-2.5">
+              {focus.map((f) => (
+                <li
+                  key={f}
+                  className="rounded-full border border-gold/25 px-3.5 py-1.5 text-[0.68rem] uppercase tracking-[0.15em] text-white/60"
+                >
+                  {f}
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
@@ -149,51 +101,17 @@ export default function AboutPage() {
                 body of law built on notice, remedy, and standing.
               </p>
               <p>
-                In the years since, he has settled and closed close to a thousand
-                matters of debt and obligation through lawful remedy — work that
-                has earned recognition across an unusually broad clientele:
-                everyday consumers, bankers and lawyers, up-and-coming
-                entertainers, top executives, and professional athletes alike.
+                In the years since, he has devoted his practice to settling and
+                closing matters of debt and obligation through lawful remedy —
+                helping people move from conflict toward resolution, privately
+                and lawfully.
               </p>
               <p>
                 His focus spans traffic court, civil debt and obligation, and
-                criminal misdemeanors — always with the same aim: to move a
-                matter from conflict to resolution, privately and lawfully.
+                criminal misdemeanors — always with the same aim: to teach what
+                protects and to resolve rather than to fight.
               </p>
             </div>
-            <div className="mt-12 grid grid-cols-3 gap-6 text-center">
-              {[
-                { v: "7+", l: "Years in equity" },
-                { v: "~1,000", l: "Matters resolved" },
-                { v: "#1", l: "Government Activist in Law" },
-              ].map((s) => (
-                <div key={s.l}>
-                  <div className="font-serif text-3xl text-gold-gradient sm:text-4xl">
-                    {s.v}
-                  </div>
-                  <div className="mt-2 text-[0.62rem] uppercase tracking-luxe text-white/45">
-                    {s.l}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* In his words */}
-        <section className="relative border-t border-white/5 px-6 py-24">
-          <div className="mx-auto max-w-4xl text-center">
-            <p className="mb-8 text-xs uppercase tracking-luxe text-gold/70">
-              In His Words
-            </p>
-            <blockquote className="font-serif text-2xl leading-relaxed text-white/80 sm:text-3xl">
-              &ldquo;I guide individuals and families to protect their assets,
-              minimize liabilities, and secure generational wealth through
-              private trusts and lawful strategies.&rdquo;
-            </blockquote>
-            <p className="mt-6 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
-              Amyr Samah El
-            </p>
           </div>
         </section>
 
