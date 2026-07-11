@@ -149,16 +149,27 @@ export default function AboutHero({
           backgroundSize: "cover",
           backgroundPosition: "center 30%",
           transform: "scale(1.18)",
+          // Cinematic grade: deeper, richer, a touch darker than the raw art.
+          filter: "contrast(1.12) saturate(1.06) brightness(0.9)",
         }}
       />
 
-      {/* Warm depth glow rising from the skyline — mid plane. */}
+      {/* Cool night depth — kills the flat orange haze; premium dusk tone. */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(6,9,22,0.55) 0%, rgba(5,6,12,0) 34%, rgba(5,5,10,0.12) 60%, rgba(3,4,10,0.66) 100%)",
+        }}
+      />
+
+      {/* Warm depth glow rising from the skyline + a gold rim glint by the subject. */}
       <div
         ref={glowRef}
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(60% 50% at 32% 62%, rgba(176,120,42,0.28) 0%, rgba(5,5,5,0) 62%)",
+            "radial-gradient(58% 48% at 30% 62%, rgba(176,120,42,0.32) 0%, rgba(5,5,5,0) 60%), radial-gradient(26% 30% at 70% 34%, rgba(231,196,119,0.16) 0%, rgba(5,5,5,0) 68%)",
         }}
       />
 
@@ -171,7 +182,7 @@ export default function AboutHero({
       {/* Cinematic vignette — pulls focus to the center subject. */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ boxShadow: "inset 0 0 200px 40px rgba(0,0,0,0.75)" }}
+        style={{ boxShadow: "inset 0 0 220px 60px rgba(0,0,0,0.82)" }}
       />
 
       {/* Legibility scrim — darkens as you scroll into the hero. */}
