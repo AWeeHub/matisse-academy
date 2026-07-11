@@ -242,13 +242,15 @@ export default function AboutPage() {
                 Four domains, taught as one discipline.
               </h2>
             </Reveal>
-            <div className="mx-auto grid max-w-4xl gap-x-14 gap-y-12 sm:grid-cols-2">
+            <div className="mx-auto grid max-w-4xl gap-x-14 sm:grid-cols-2">
               {domains.map((d, i) => (
                 <Reveal
                   as="div"
                   key={d.name}
                   delay={i * 80}
-                  className="group flex items-start gap-5"
+                  className={`group flex items-start gap-5 py-9 ${
+                    i > 1 ? "border-t border-white/10" : ""
+                  }`}
                 >
                   <span className="w-9 shrink-0 font-serif text-3xl leading-none text-gold-gradient">
                     {d.n}
