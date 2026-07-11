@@ -175,21 +175,15 @@ export default function AboutPage() {
 
         {/* Matisse Academy — the mission (manifesto) */}
         <section className="relative overflow-hidden border-t border-white/5 px-6 py-28">
-          {/* Faint architecture texture + warm glow. */}
+          {/* On-theme CSS atmosphere: purple-gold nebula + gold starfield. */}
+          <div className="mission-aurora pointer-events-none absolute inset-0" />
+          <div className="mission-stars pointer-events-none absolute inset-0 opacity-80" />
+          {/* Legibility scrim + top/bottom void seams. */}
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.12]"
-            style={{
-              backgroundImage: "url('/bg-library.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-void via-void/75 to-void" />
-          <div
-            className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-[75%] -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(50% 60% at 50% 50%, rgba(176,120,42,0.12) 0%, rgba(5,5,5,0) 70%)",
+                "radial-gradient(62% 58% at 50% 50%, rgba(5,5,5,0.42) 0%, rgba(5,5,5,0.15) 55%, rgba(5,5,5,0.5) 100%), linear-gradient(180deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0) 22%, rgba(5,5,5,0) 78%, rgba(5,5,5,0.85) 100%)",
             }}
           />
           <Reveal className="relative z-10 mx-auto max-w-3xl text-center">
