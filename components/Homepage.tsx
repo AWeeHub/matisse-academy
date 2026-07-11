@@ -62,12 +62,38 @@ const pathways = [
 
 // PLACEHOLDER PROOF — swap these for real member results/quotes before
 // relying on this scene. Structure is final; copy is illustrative.
+// PLACEHOLDER social-proof metrics — swap for Amyr's real, verifiable numbers.
+// `to` is the count-up target; the label reads at rest as the formatted value.
 const stats = [
-  { value: "2,400+", label: "Members guided" },
-  { value: "180+", label: "Live sessions held" },
-  { value: "50", label: "States represented" },
-  { value: "4.9/5", label: "Member rating" },
+  { icon: "users", to: 2400, dec: 0, sep: true, suffix: "+", label: "Members Guided" },
+  { icon: "clock", to: 180, dec: 0, sep: false, suffix: "+", label: "Live Sessions Held" },
+  { icon: "globe", to: 50, dec: 0, sep: false, suffix: "", label: "States Represented" },
+  { icon: "star", to: 4.9, dec: 1, sep: false, suffix: "/5", label: "Member Rating" },
 ];
+const fmtStat = (s: (typeof stats)[number]) => {
+  const n = s.dec ? s.to.toFixed(s.dec) : String(s.to);
+  return (s.sep ? Number(n).toLocaleString() : n) + s.suffix;
+};
+const statIcons: Record<string, JSX.Element> = {
+  users: (
+    <path d="M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM21 20v-1a4 4 0 0 0-3-3.87M16 4.13A4 4 0 0 1 16 11.87" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  star: (
+    <path d="M12 3.5l2.6 5.3 5.9.86-4.25 4.14 1 5.87L12 17.9l-5.25 2.77 1-5.87L3.5 9.66l5.9-.86L12 3.5z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  ),
+};
 
 const testimonials = [
   {
@@ -317,6 +343,24 @@ export default function Homepage() {
           stagger: 0.08,
           scrollTrigger: { trigger: t, start: "top 68%", once: true },
         });
+        // Numbers count up when the section enters the viewport.
+        t.querySelectorAll(".t-num").forEach((el: Element) => {
+          const to = parseFloat(el.getAttribute("data-to") || "0");
+          const dec = parseInt(el.getAttribute("data-dec") || "0", 10);
+          const sep = el.getAttribute("data-sep") === "1";
+          const suf = el.getAttribute("data-suf") || "";
+          const obj = { v: 0 };
+          gsap.to(obj, {
+            v: to,
+            duration: 1.5,
+            ease: "power2.out",
+            scrollTrigger: { trigger: t, start: "top 68%", once: true },
+            onUpdate: () => {
+              const raw = dec ? obj.v.toFixed(dec) : String(Math.round(obj.v));
+              el.textContent = (sep ? Number(raw).toLocaleString() : raw) + suf;
+            },
+          });
+        });
         gsap.from(t.querySelectorAll(".t-card"), {
           y: 60,
           opacity: 0,
@@ -545,7 +589,22 @@ export default function Homepage() {
             <div className="mx-auto mt-16 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
               {stats.map((s) => (
                 <div key={s.label} className="t-stat text-center">
-                  <div className="font-serif text-4xl text-gold-gradient sm:text-5xl">{s.value}</div>
+                  <div className="mb-3 flex justify-center text-gold-bright/85">
+                    <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden>
+                      {statIcons[s.icon]}
+                    </svg>
+                  </div>
+                  <div className="font-serif text-4xl text-gold-gradient sm:text-5xl">
+                    <span
+                      className="t-num"
+                      data-to={s.to}
+                      data-dec={s.dec}
+                      data-sep={s.sep ? 1 : 0}
+                      data-suf={s.suffix}
+                    >
+                      {fmtStat(s)}
+                    </span>
+                  </div>
                   <div className="mt-2 text-[0.68rem] uppercase tracking-luxe text-white/45">{s.label}</div>
                 </div>
               ))}
