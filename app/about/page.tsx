@@ -87,23 +87,20 @@ export default function AboutPage() {
         {/* Founder hero — parallax key art */}
         <AboutHero ctaHref={links.appointment} ext={ext} />
 
-        {/* Areas of focus */}
-        <section className="relative border-t border-white/5 px-6 py-14">
-          <Reveal className="mx-auto max-w-4xl text-center">
-            <p className="mb-5 text-[0.65rem] uppercase tracking-luxe text-gold/60">
-              Areas of Focus
-            </p>
-            <ul className="flex flex-wrap justify-center gap-2.5">
-              {focus.map((f) => (
-                <li
-                  key={f}
-                  className="rounded-full border border-gold/25 px-3.5 py-1.5 text-[0.68rem] uppercase tracking-[0.15em] text-white/60 transition-colors hover:border-gold/50 hover:text-white/85"
-                >
+        {/* Areas of focus — slim capabilities strip tight under the hero */}
+        <section className="relative border-y border-gold/10 bg-white/[0.02] px-6 py-4">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            {focus.map((f, i) => (
+              <span key={f} className="flex items-center gap-4">
+                {i > 0 && (
+                  <span className="h-1 w-1 rounded-full bg-gold/50" aria-hidden />
+                )}
+                <span className="text-[0.62rem] uppercase tracking-luxe text-white/55 transition-colors hover:text-white/85">
                   {f}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+                </span>
+              </span>
+            ))}
+          </div>
         </section>
 
         {/* The Journey — editorial timeline */}
