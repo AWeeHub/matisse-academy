@@ -164,13 +164,6 @@ export default function CinematicIntro() {
           </a>
         </div>
 
-        {/* Scroll affordance. */}
-        <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2 text-white/45">
-          <span className="text-xl leading-none">↓</span>
-          <span className="text-[0.65rem] uppercase tracking-luxe">
-            Scroll to Begin
-          </span>
-        </div>
       </section>
 
       {/* The rest of the homepage. */}

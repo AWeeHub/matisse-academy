@@ -242,10 +242,6 @@ export default function AboutHero({
         </div>
       </div>
 
-      {/* Scroll cue. */}
-      <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-[0.6rem] uppercase tracking-luxe text-white/40">
-        Scroll
-      </div>
 
       {/* Seam into the page below. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-void" />

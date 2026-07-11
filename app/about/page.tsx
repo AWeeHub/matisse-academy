@@ -216,8 +216,24 @@ export default function AboutPage() {
         </section>
 
         {/* The four domains */}
-        <section className="relative border-t border-white/5 px-6 py-24">
-          <div className="mx-auto max-w-5xl">
+        <section className="relative overflow-hidden border-t border-white/5 px-6 py-24">
+          {/* Purple-gold particle key art. */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage: "url('/domains-bg.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(70% 60% at 50% 45%, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.35) 55%, rgba(5,5,5,0.72) 100%), linear-gradient(180deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0) 24%, rgba(5,5,5,0) 74%, rgba(5,5,5,0.85) 100%)",
+            }}
+          />
+          <div className="relative z-10 mx-auto max-w-5xl">
             <Reveal className="mb-14 text-center">
               <p className="mb-4 text-xs uppercase tracking-luxe text-gold/70">
                 <span className="text-gold-bright">IV</span> · Our Domains
