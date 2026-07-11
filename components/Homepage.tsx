@@ -649,7 +649,6 @@ export default function Homepage() {
           className="scene relative flex min-h-screen items-center overflow-hidden py-28"
         >
           <ChapterLine />
-          <div data-depth="6" data-tilt="0.22" className="pointer-events-none absolute left-0 top-1/2 h-[75vmin] w-[75vmin] -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(58,58,128,0.32) 0%, rgba(5,5,5,0) 66%)" }} />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(120,120,200,0.10), transparent)" }} />
           <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
 
@@ -695,7 +694,6 @@ export default function Homepage() {
           className="scene relative overflow-hidden border-t border-white/5 py-28"
         >
           <ChapterLine />
-          <div data-depth="6" data-tilt="0.2" className="pointer-events-none absolute left-1/2 top-0 h-[70vmin] w-[95vmin] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,60,150,0.26) 0%, rgba(5,5,5,0) 68%)" }} />
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(180,140,80,0.10), transparent)" }} />
 
           <div className="relative mx-auto max-w-6xl px-6" style={{ perspective: "1200px" }}>
@@ -770,13 +768,14 @@ export default function Homepage() {
           data-scene="final"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-32 text-center"
         >
-          {/* Purple-gold skyline key art. */}
+          {/* Purple-gold skyline key art — zoomed in so the water is cropped out. */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
               backgroundImage: "url('/seal-bg.jpg')",
               backgroundSize: "cover",
-              backgroundPosition: "center 55%",
+              backgroundPosition: "center 32%",
+              transform: "scale(1.5)",
             }}
           />
           {/* Legibility scrim + seam fades into the void top/bottom. */}
@@ -788,9 +787,6 @@ export default function Homepage() {
             }}
           />
           <ChapterLine />
-          <div data-depth="6" data-tilt="0.24" className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
-          <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
-          <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
 
           <div className="relative mx-auto max-w-2xl px-6">
             <div className="seal-wrap mb-10 flex justify-center">
