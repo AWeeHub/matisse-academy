@@ -717,6 +717,23 @@ export default function Homepage() {
           data-scene="final"
           className="scene relative flex min-h-screen items-center overflow-hidden border-t border-white/5 py-32 text-center"
         >
+          {/* Purple-gold skyline key art. */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage: "url('/seal-bg.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center 55%",
+            }}
+          />
+          {/* Legibility scrim + seam fades into the void top/bottom. */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(66% 60% at 50% 48%, rgba(5,5,5,0.5) 0%, rgba(5,5,5,0.32) 52%, rgba(5,5,5,0.72) 100%), linear-gradient(180deg, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0) 22%, rgba(5,5,5,0) 72%, rgba(5,5,5,0.9) 100%)",
+            }}
+          />
           <ChapterLine />
           <div data-depth="6" data-tilt="0.24" className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(120,70,160,0.26) 0%, rgba(5,5,5,0) 66%)" }} />
           <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 left-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(90deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
@@ -735,7 +752,7 @@ export default function Homepage() {
             <p className="fin-line mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-gold/60">
               VI · The Seal — Matthew 4:19 · KJV 1611
             </p>
-            <h2 className="fin-line mx-auto max-w-2xl font-serif text-4xl leading-[1.05] text-white sm:text-6xl">
+            <h2 className="fin-line mx-auto max-w-2xl font-serif text-4xl leading-[1.05] text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.85)] sm:text-6xl">
               The record is open. Add <span className="text-gold-gradient">your name.</span>
             </h2>
             <p className="fin-line mx-auto mt-5 max-w-lg text-sm text-white/50">
