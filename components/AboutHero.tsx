@@ -23,6 +23,7 @@ export default function AboutHero({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
+  const amyrRef = useRef<HTMLImageElement>(null);
 
   // Scroll-driven parallax only (no cursor follow — the scene stays steady when
   // the mouse moves). Each plane is offset by its own depth factor relative to
@@ -40,9 +41,11 @@ export default function AboutHero({
         if (!stage) return;
         const y = Math.max(0, -stage.getBoundingClientRect().top);
         if (bgRef.current)
-          bgRef.current.style.transform = `translate3d(0, ${y * 0.18}px, 0) scale(1.18)`;
+          bgRef.current.style.transform = `translate3d(0, ${y * 0.16}px, 0) scale(1.14)`;
         if (glowRef.current)
           glowRef.current.style.transform = `translate3d(0, ${y * 0.32}px, 0)`;
+        if (amyrRef.current)
+          amyrRef.current.style.transform = `translate3d(0, ${y * 0.26}px, 0)`;
         if (canvasRef.current)
           canvasRef.current.style.transform = `translate3d(0, ${y * 0.5}px, 0)`;
         if (contentRef.current) {
@@ -145,21 +148,21 @@ export default function AboutHero({
         ref={bgRef}
         className="absolute inset-0 will-change-transform"
         style={{
-          backgroundImage: "url('/about-hero.jpg')",
+          backgroundImage: "url('/about-bg.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center 30%",
-          transform: "scale(1.18)",
-          // Cinematic grade: deeper, richer, a touch darker than the raw art.
-          filter: "contrast(1.12) saturate(1.06) brightness(0.9)",
+          backgroundPosition: "center 42%",
+          transform: "scale(1.14)",
+          // The art is already graded — keep this light.
+          filter: "contrast(1.04) saturate(1.03)",
         }}
       />
 
-      {/* Cool night depth — kills the flat orange haze; premium dusk tone. */}
+      {/* Subtle bottom deepening for the water/foreground. */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(6,9,22,0.55) 0%, rgba(5,6,12,0) 34%, rgba(5,5,10,0.12) 60%, rgba(3,4,10,0.66) 100%)",
+            "linear-gradient(180deg, rgba(3,4,10,0.35) 0%, rgba(5,6,12,0) 30%, rgba(3,4,10,0) 62%, rgba(2,3,8,0.5) 100%)",
         }}
       />
 
@@ -194,6 +197,15 @@ export default function AboutHero({
             "linear-gradient(90deg, rgba(5,5,5,0.82) 0%, rgba(5,5,5,0.5) 38%, rgba(5,5,5,0) 62%), linear-gradient(0deg, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0) 45%)",
           opacity: 0.35,
         }}
+      />
+
+      {/* Subject plane — the real Amyr, standing over the skyline (desktop). */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={amyrRef}
+        src="/amyr-cut.png"
+        alt="Amyr Samah El, founder of Matisse Academy"
+        className="pointer-events-none absolute bottom-0 right-[1%] z-[6] hidden h-[94%] w-auto max-w-[50%] object-contain object-bottom drop-shadow-[0_10px_40px_rgba(0,0,0,0.55)] will-change-transform md:block"
       />
 
       {/* Front plane — headline + CTA. */}
