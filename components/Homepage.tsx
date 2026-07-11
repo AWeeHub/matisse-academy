@@ -652,9 +652,10 @@ export default function Homepage() {
           <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 mix-blend-screen" style={{ background: "linear-gradient(90deg, transparent, rgba(120,120,200,0.10), transparent)" }} />
           <div data-depth="40" data-tilt="0.7" className="pointer-events-none absolute inset-y-0 right-0 w-[13vw] max-w-[150px]" style={{ background: "linear-gradient(270deg, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0) 100%)" }} />
 
-          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1.1fr_0.9fr]">
-            <div>
-              <p className="s-fade mb-6 text-xs uppercase tracking-luxe text-gold/70">III · The Doctrine</p>
+          <div className="relative mx-auto grid max-w-6xl gap-x-14 gap-y-10 px-6 lg:grid-cols-[1.1fr_0.9fr]">
+            {/* Heading */}
+            <div className="s-fade lg:col-start-1 lg:row-start-1">
+              <p className="mb-6 text-xs uppercase tracking-luxe text-gold/70">III · The Doctrine</p>
               <h2 className="max-w-xl font-serif text-3xl leading-[1.16] text-white sm:text-5xl">
                 {"Mastery in equity, law, commerce, and private wealth — taught as one discipline."
                   .split(" ")
@@ -664,15 +665,11 @@ export default function Homepage() {
                     </span>
                   ))}
               </h2>
-              <a href={links.services} {...ext} className="s-fade btn-lux mt-10">
-                Explore Our Services
-                <span aria-hidden>→</span>
-              </a>
             </div>
 
-            {/* Right column — the four domains as a numbered ledger. */}
-            <div className="s-fade">
-              <div className="rule-luxe mb-8 max-w-[8rem]" />
+            {/* The four domains as a numbered ledger. */}
+            <div className="s-fade lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+              <div className="rule-luxe mb-8 hidden max-w-[8rem] lg:block" />
               <ul>
                 {domains.map((d, i) => (
                   <li key={d.name} className="flex items-baseline gap-5 border-b border-white/8 py-5">
@@ -685,6 +682,16 @@ export default function Homepage() {
                 ))}
               </ul>
             </div>
+
+            {/* CTA — sits under the heading on desktop, below the ledger on mobile. */}
+            <a
+              href={links.services}
+              {...ext}
+              className="s-fade btn-lux justify-self-start lg:col-start-1 lg:row-start-2 lg:mt-2"
+            >
+              Explore Our Services
+              <span aria-hidden>→</span>
+            </a>
           </div>
         </section>
 

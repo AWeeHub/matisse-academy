@@ -166,7 +166,7 @@ export default function AboutHero({
         ref={amyrRef}
         src="/amyr-cut.png"
         alt="Amyr Samah El, founder of Matisse Academy"
-        className="pointer-events-none absolute bottom-0 right-[1%] z-[6] hidden h-[94%] w-auto max-w-[50%] object-contain object-bottom drop-shadow-[0_10px_40px_rgba(0,0,0,0.55)] will-change-transform md:block"
+        className="pointer-events-none absolute bottom-0 right-[-20%] z-[6] h-[40%] w-auto max-w-[80%] object-contain object-bottom opacity-80 drop-shadow-[0_10px_40px_rgba(0,0,0,0.55)] will-change-transform sm:right-[-8%] sm:h-[58%] sm:opacity-90 md:right-[1%] md:h-[94%] md:max-w-[50%] md:opacity-100"
       />
 
       {/* Front plane — headline + CTA. */}
